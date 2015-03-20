@@ -94,7 +94,27 @@ angular.module('weberApp')
 			return promise;
 		};
 
-	}).service('CurrentUser1', function($http, Restangular) {
+	}).service('PostService', function($http, Restangular) {
+		this.posts = [];
+        var param1 = '{"author":1}';
+		this.get = function(postid) {
+
+
+			for (var i in this.posts) {
+				if (this.posts[i]._id == postid) {
+					return this.posts[i];
+				}
+			}
+
+			var promise = Restangular.one('posts', postid).get({embedded: param1}).$object;
+			console.log(promise)
+			promise._id = postid;
+			this.posts.push(promise);
+			return promise;
+		};
+
+	})
+	.service('CurrentUser1', function($http, Restangular) {
 		this.userId = null;
 		this.user = null;
 		this.reset = function() {

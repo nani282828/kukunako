@@ -144,13 +144,13 @@ angular.module('weberApp')
                 where:self.main_params,
                 embedded:self.embedded_param,
                 seed:Math.random(),
-                max_results: 4,
+                max_results: 10,
                 page:page.page,
                 sort: '[("message_created",-1)]',
             }).then(function(response){
 
                 console.log('loading messages at service')
-				if (response.length < 4) {
+				if (response.length < 10) {
 					page.end = true;
 				}
 
@@ -208,7 +208,7 @@ angular.module('weberApp')
 			    where:self.main_params,
                 embedded:self.embedded_param,
                 seed:Math.random(),
-                max_results: 4,
+                max_results: 10,
                 page:page.page,
                 sort: '[("message_created",-1)]'
 			}).then(function(posts) {

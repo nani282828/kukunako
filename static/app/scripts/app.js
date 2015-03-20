@@ -99,6 +99,10 @@ angular
 				templateUrl: '/static/app/views/userprofile.html',
 				controller: 'UserprofileCtrl',
 			})
+			.when('/post/:postid', {
+				templateUrl: '/static/app/views/post.html',
+				controller: 'PostLoadController'
+			})
 			.when('/forgotpassword', {
 				templateUrl: '/static/app/views/f_password.html'
 
