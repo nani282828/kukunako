@@ -358,21 +358,19 @@ angular.module('weberApp')
 
 		InfinitePosts.prototype.loadNotificPost = function(postid, author){
             console.log(postid, author)
-
-		    Restangular.one('posts', postid).get().then(function(post) {
-		        console.log(post)
-                this.posts.unshift({
-                    author: post.author,
-                    content: post.content,
-                    _created: post._created,
-                    _id: post._id,
-                    _etag: post._etag
-                });
-                console.log(this.posts)
-			}.bind(this));
-
-
-
+            if(this.user_obj._id !== author){
+                Restangular.one('posts', postid).get().then(function(post) {
+                    console.log(post)
+                    this.posts.unshift({
+                        author: post.author,
+                        content: post.content,
+                        _created: post._created,
+                        _id: post._id,
+                        _etag: post._etag
+                    });
+                    console.log(this.posts)
+                }.bind(this));
+            }
 		}
 
 		InfinitePosts.prototype.addPost = function(content, similar_keywords, imagePath) {
@@ -517,6 +515,28 @@ angular.module('weberApp')
    				return (ids.length ? "\"" + ids.join("\",\"") + "\"" : "");
 		}
 
+        // remove duplicate results
+        function removeDuplicateResults(results){
+
+            console.log('-------------remove duplicate results---------')
+            var array1 = results;
+            var authorIds = []
+
+            for(var i in array1){
+
+                if(authorIds.indexOf(array1[i].author._id) === -1){
+                    authorIds.push(array1[i].author._id)
+                }else{
+
+                    console.log('delete====>',i,array1)
+                    array1.splice(i,1)
+                    console.log(array1)
+                }
+            }
+            return (array1)
+            console.log(authorIds)
+        }
+
 		var  MatchMeResults = function(query) {
 
 			this.total_matches = 0;
@@ -552,13 +572,17 @@ angular.module('weberApp')
                         this.end = true;
     			   }
                    this.mresults.push.apply(this.mresults,data);
+
+                   var filterarray = removeDuplicateResults(this.mresults);
+                   console.log('filtered array==>', filterarray)
+
                    this.total_matches = data.length;
                    this.page = this.page + 1;
                    this.busy = false;
 				}.bind(this));
 
 				// also find in search activity
-				this.param1 = '{"$or":[{"keywords": {"$in":['+keywords+']}},{"content":{"$regex":".*'+this.query+'.*"}}]}';
+				/*this.param1 = '{"$or":[{"keywords": {"$in":['+keywords+']}},{"content":{"$regex":".*'+this.query+'.*"}}]}';
 			    this.param2 = '{"author":1}';
 
                 Restangular.all('searchActivity').getList({
@@ -571,11 +595,16 @@ angular.module('weberApp')
                    if (data.length < 10) {
                         this.sEnd = true;
     			   }
+
                    this.mresults.push.apply(this.mresults,data);
+
+                   var filterarray = removeDuplicateResults(this.mresults);
+                   console.log('filtered array==>', filterarray)
+
                    this.total_matches = this.total_matches+data.length;
                    this.sPage = this.sPage + 1;
                    this.sBusy = false;
-				}.bind(this));
+				}.bind(this));*/
 
 
             }

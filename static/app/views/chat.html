@@ -198,9 +198,8 @@
 						<div class="panel-footer" style="padding:10px 15px;">
 							<div class="row">
                                 <div class="col-sm-12">
-                                    <input  type="text" class="form-control input-sm" ng-model="SendMessage"
-                                           id="send_{{ chatroom.id}}"
-                                           ng-keyup="$event.keyCode == 13 && send_message(SendMessage, chatroom.id)"
+                                    <input type="text" class="form-control input-sm" ng-model="SendMessage"
+                                           ng-keyup="$event.keyCode == 13 && send_message(chatroom.id)"
                                            placeholder="Type your message here..." autofocus />
 
                                 </div>

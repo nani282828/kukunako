@@ -1,0 +1,82 @@
+<div class="container" style="margin-top:70px">
+    <div class="row">
+        <div class="col-md-5 col-md-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-lock" style="opacity:0.70"></span>
+                    <strong>Weber</strong>
+                    Login Credentials</div>
+                <div class="panel-body">
+                    <form class="form-horizontal" role="form" ng-submit="login()" name="myForm">
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label">
+                                Email
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="email"
+                                       class="form-control" id="email"
+                                       name="email" ng-model="formData.email" placeholder="Enter Email" required/>
+                                <span ng-show="myForm.email.$error.required && myForm.email.$dirty" style="color:red">
+                                    Email is required
+                                </span>
+                                <span ng-show="!myForm.email.$error.required && myForm.email.$error.email && myForm.email.$dirty"
+                                        style="color:red">
+                                    You entered an invalid email
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                Password
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control"
+                                       placeholder="Enter Password" id="password" name="password" ng-model="formData.password" required  />
+                                <span ng-show="myForm.password.$error.required && myForm.password.$dirty" style="color:red">
+                                    required
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-5">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"/>
+                                        Remember me
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <a href="#/forgotpassword">
+                                    Forgot Password?
+                                </a>
+                            </div>
+                        </div>
+                        <div class="form-group last">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <button type="submit" ng-disabled="!myForm.$valid" class="btn btn-success btn-sm" ng-click="submitLogin()">
+                                    Sign in</button>
+
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <div ng-if="error" class="panel-footer" style="color:red">
+                    <span style="color:red;">
+                        {{ error }}
+                    </span>
+                </div>
+                <div class="panel-footer">
+                    Not Registered?  <a href="#/signup">Register Here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body{
+        background-color:#fff;
+    }
+</style>

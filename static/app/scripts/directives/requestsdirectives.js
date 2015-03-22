@@ -382,7 +382,7 @@ angular.module('weberApp')
                             }else if(f_status.cf_status){
                                 var data = $scope.friendsactivity.remove_cfriends();
                                 data.then(function(data){
-                                    html ='<cancelrequest><button ng-click="frndcancelrequest("'+id+'")" class="btn btn-primary">AddFriend</button></cancelrequest>';
+                                    html ='<cancelrequest><button ng-click="frndcancelrequest(\''+id+'\')" class="btn btn-primary">AddFriend</button></cancelrequest>';
                                     e =$compile(html)($scope);
                                     $element.replaceWith(e);
                                 });

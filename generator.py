@@ -46,9 +46,12 @@ for raw_user in users:
     user['MatchedPeopleNotificCount'] = []
     user['password'] = generate_password_hash(user['password'])
     user['role'] = 'test'
+    print '----------------------------user-------------------------'
+    print user
     r = requests.post(url, data=json.dumps(user, default=json_util.default), headers=headers)
+    print '====================================================='
+    print r.content
     resp = json.loads(r.content)
-    print resp
     processed_users.append({'id': resp['_id'], 'etag': resp['_etag']})
 print '---------------------------------Adding friends to users-----------------------'
 print processed_users

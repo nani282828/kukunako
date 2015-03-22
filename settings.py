@@ -354,6 +354,7 @@ people = {
 
          'MatchedPeopleNotifications': {
             'type': 'list',
+
             'schema': {
 
                 'postid': {
@@ -366,25 +367,29 @@ people = {
                             'embeddable': True
                         },
 
-                    }
-                },
+                     'interestedList': {
+                        'type': 'list',
+                        'schema': {
+                            'type': 'objectid',
+                            #'unique': True,
+                            'data_relation': {
+                                'resource': 'people',
+                                'embeddable': True
+                            },
 
-                'interestedList': {
-                    'type': 'list',
-                    'schema': {
-                        'type': 'objectid',
-                        #'unique': True,
-                        'data_relation': {
-                            'resource': 'people',
-                            'embeddable': True
                         },
+                     },
+
+                    'updated_one': {
+                        'type': 'string'
+                    }
+
+
 
                     }
                 },
 
-                'updated_one': {
-                    'type': 'string',
-                }
+
 
 
             },

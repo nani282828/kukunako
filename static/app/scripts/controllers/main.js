@@ -37,7 +37,7 @@ angular.module('weberApp')
 				var loadPostIds = angular.copy(user.friends)
                 loadPostIds.push(user._id)
                 loadPostIds = "[\"" + loadPostIds.join("\",\"") + "\"]";
-				$scope.infinitePosts = new InfinitePosts(user, loadPostIds);
+                $scope.infinitePosts = new InfinitePosts(user, loadPostIds);
 
                 if (user.friends.length !== 0) {
 

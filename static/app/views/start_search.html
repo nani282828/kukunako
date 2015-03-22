@@ -1,4 +1,358 @@
-<div class="navbar navbar-default header-start-search navbar-fixed-top" style="background-color:#F8F8F8;">
+<!--<div ng-if="isAuthenticated()" ></div>-->
+<div class="container" style="min-height:2000px">
+    <!--<div class="col-md-3 colpadding" ng-if="isAuthenticated()" style="padding-top:30px;" >
+        <div class="thumbnail">
+            <div class="itemsContainer">
+                <div class="image">
+                    <a href="">
+                        <img class="img-rounded" style="width:;" src="{{user.picture.large}}" />
+                    </a>
+                </div>
+            </div>
+			<div class="caption text-center">
+				<h3 style="text-transform: capitalize;">{{CurrentUser}} </h3>
+				@{{user.username}}
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h5 style="margin:1px 0px 1px 0px">
+					About
+					<a href="" class="pull-right">
+						<h6 style="margin-top:0px">
+							See all
+						</h6>
+					</a>
+				</h5>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<h5 style="margin-bottom:5px;margin-top:0px;opacity:0.80" class="about-edit">
+							<i class="glyphicon glyphicon-check" style="opacity:0.65"></i>&nbsp;
+							Iam interested in:
+						</h5>
+						<h6 style="margin-top:1px">
+							<a href="" ng-repeat="interest in user.interests" style="line-height:1.2em;color:">
+
+									{{ interest }},&nbsp;
+
+							</a>
+						</h6>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<h5 style="margin-bottom:5px;margin-top:0px;opacity:0.80">
+							<i class="glyphicon glyphicon-folder-open" style="opacity:0.65"></i>&nbsp;
+							Studied at:
+						</h5>
+						<h6 style="margin-top:1px">
+							<a href="" style="line-height:1.2em;color:">
+
+									{{ user.study.graduate }}
+
+							</a>
+						</h6>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<h5 style="margin-bottom:5px;margin-top:0px;opacity:0.80">
+							<i class="glyphicon glyphicon-home" style="opacity:0.65"></i>&nbsp;
+							Lives in:
+						</h5>
+						<h6 style="margin-top:1px">
+							<a href="" style="line-height:1.2em;color:">
+								{{ user.location.state }},
+							</a>
+                            <a href="" style="line-height:1.2em;color:">
+                                 {{ user.location.city }},
+                            </a>
+                             <a href="" style="line-height:1.2em;color:">
+                                  {{ user.location.street }}
+                            </a>
+						</h6>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="clearfix panel-heading">Friends({{user.friends.length}})</div>
+                <a ng-repeat="friend in friends | limitTo : 8" href="#/profile/{{friend._id}}">
+                    <img data-placement="top-right" style="width:65px"
+                         data-content="{{friend.location.city}}, {{friend.location.state}}"
+                         title="{{friend.name.first}} {{friend.name.last}}" data-trigger="hover"
+                         bs-popover src="{{friend.picture.thumbnail}}">
+                </a>
+		</div>
+    </div>-->
+
+    <div class="col-sm-6">
+        <div class="row" style="padding-top:20px;" ng-if="!(isAuthenticated())">
+            <h3 style="font-family: 'Open sans',Arial,sans-serif;font-weight:300;">
+                Wonder what <strong style="opacity:0.70;">weber</strong> can do
+            </h3>
+            <h3 style="font-family: 'Open sans',Arial,sans-serif;font-weight:300;">
+                Search for people you are interested in
+            </h3>
+        </div>
+        <div class="row" style="padding-top:30px;">
+            <!--<form class="col-sm-12" style="padding:0px;" role="search">-->
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control form-control1" ng-model="query" focus="true"
+                           placeholder="Search anything in weber" ng-keyup="$event.keyCode == 13 && perfomSearch()"/>
+                    <i class="glyphicon glyphicon-search form-control-feedback"
+                       style=""></i>
+                </div>
+            <!--</form>-->
+        </div>
+
+
+        <div class="row" style="padding-top:50px;" infinite-scroll='matchResults.nextPage()'
+                                     infinite-scroll-disabled='matchResults.busy'
+                                     infinite-scroll-distance='0'
+                                     infinite-scroll-parent="true">
+
+            <div class="panel panel-body" style="border:1px solid #dcdcdc;" ng-repeat="rs in matchResults.mresults" >
+                <div class="media">
+                  <div class="media-left">
+                    <a href="#" class="pull-left" style="padding: 0px 7px;" href="">
+                      <img class="media-object" style="width:50px;border-radius:4px;" src="{{rs.author.picture.medium}}" alt="...">
+                    </a>
+                  </div>
+                  <div class="media-body">
+                    <h5 class="media-heading" style="font-family: 'Open sans',Arial,sans-serif;">
+                        <strong>{{rs.author.name.first}}</strong>
+                        <span class="pull-right">
+                            <!-- if post from you -->
+                            <a style="font-size:14px;" name="{{rs.author._id}}"
+                               ng-if="isAuthenticated() && user._id == rs.author._id" >
+                                post from you
+                            </a>
+                            <!-- if post not from you and you logged in-->
+                            <a  style="font-size:14px;" name="{{rs.author._id}}"
+                               ng-if="isAuthenticated() && user._id != rs.author._id"
+                               ng-click="openchatroom('{{ rs.author._id }}');addToConversations('{{ rs.author._id}}')">
+                               chat
+                            </a>
+                            <!-- if not logged in -->
+                            <a  ng-if="!(isAuthenticated())" style="font-size:14px;"
+                                name="{{rs.author._id}}" href="/#/login?query={{query}}">
+                                Chat(please login)
+                            </a>
+
+                        </span>
+                    </h5>
+                    <p class="display-text" ng-class="myVar"
+                       style="font-family: 'Open sans',Arial,sans-serif;padding-top:4px;margin-bottom:0px;">
+                        {{ rs.content }}
+                    </p>
+                    <seefulltextdirective>
+                        <p class="" ng-click="myVar='my-class';hide_text()">
+                              <a style="font-size:12px;cursor:pointer;color:#666;">
+                                  See full text
+                              </a>
+                        </p>
+                    </seefulltextdirective>
+                  </div>
+                </div>
+            </div>
+            <!--<div ng-show='matchResults.busy'>Loading data...</div>
+			<div ng-show='matchResults.end'>You Reached the end!</div>-->
+        </div>
+
+
+    </div>
+
+    <div class="col-sm-3 colpadding col-sm-offset-2"
+         style="position:fixed;bottom:0px;right:0px;width:300px;"
+         ng-if="!(isAuthenticated())">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel"
+                     style="border:1px solid #dcdcdc;background-color:#f2f2f2;height:100%;min-height:95vh !important;margin-bottom:0px;">
+                    <div class="panel-heading" style="margin-bottom:5px;border-bottom:1px solid #dcdcdc;">
+                        <h5 style="">What you can search in <strong>weber</strong></h5>
+                    </div>
+                    <div class="panel-body" style="padding:0px;margin-bottom:0px;background-color:#f2f2f2;">
+                        <div class="list-group" style="margin-bottom:0px;background-color:#f2f2f2;">
+                            <a href="" class="list-group-item" style="padding:3px;border:0px solid #dcdcdc;background-color:#f2f2f2;">
+                                <div class="media" style="border-bottom:1px solid #F7F7F7;">
+                                  <div class="media-left">
+
+                                      <img class="media-object pull-left" style="margin-right: 7px;width:35px;border-radius:4px;"
+                                           src="http://api.randomuser.me/portraits/med/men/49.jpg" alt="...">
+
+                                  </div>
+                                  <div class="media-body">
+                                    <h5 class="media-heading" style="font-family: 'Open sans',Arial,sans-serif;">
+                                        Surya Muppalla
+                                    </h5>
+                                    <p style="font-size:12px;white-space: nowrap;overflow:hidden !important;text-overflow: ellipsis;font-family: 'Open sans',Arial,sans-serif;padding-top:2px;">
+                                        Wonder what weber can do Search for people you are interested in
+                                    </p>
+                                  </div>
+                                </div>
+                            </a>
+                            <a href="" class="list-group-item" style="padding:3px;border:0px solid #dcdcdc;background-color:#f2f2f2;">
+                                <div class="media" style="border-bottom:1px solid #F7F7F7;">
+                                  <div class="media-left">
+
+                                      <img class="media-object pull-left" style="margin-right: 7px;width:35px;border-radius:4px;"
+                                           src="http://api.randomuser.me/portraits/med/women/59.jpg" alt="...">
+
+                                  </div>
+                                  <div class="media-body">
+                                    <h5 class="media-heading" style="font-family: 'Open sans',Arial,sans-serif;">
+                                        Vegesina Satyanarayana Raju
+                                    </h5>
+                                    <p style="font-size:12px;white-space: nowrap;overflow:hidden !important;text-overflow: ellipsis;font-family: 'Open sans',Arial,sans-serif;padding-top:2px;">
+                                        Wonder what weber can do Search for people you are interested in
+                                    </p>
+                                  </div>
+                                </div>
+                            </a>
+                            <a href="" class="list-group-item" style="padding:3px;border:0px solid #dcdcdc;background-color:#f2f2f2;">
+                                <div class="media" style="border-bottom:1px solid #F7F7F7;">
+                                  <div class="media-left">
+
+                                      <img class="media-object pull-left" style="margin-right: 7px;width:35px;border-radius:4px;"
+                                           src="http://api.randomuser.me/portraits/med/men/29.jpg" alt="...">
+
+                                  </div>
+                                  <div class="media-body">
+                                    <h5 class="media-heading" style="font-family: 'Open sans',Arial,sans-serif;">
+                                        RamaKrishna Parimi
+                                    </h5>
+                                    <p style="font-size:12px;white-space: nowrap;overflow:hidden !important;text-overflow: ellipsis;font-family: 'Open sans',Arial,sans-serif;padding-top:2px;">
+                                        Wonder what weber can do Search for people you are interested in
+                                    </p>
+                                  </div>
+                                </div>
+                            </a>
+
+                            <a href="" class="list-group-item" style="padding:3px;border:0px solid #dcdcdc;background-color:#f2f2f2;">
+                                <div class="media" style="border-bottom:1px solid #F7F7F7;">
+                                  <div class="media-left">
+
+                                      <img class="media-object pull-left" style="margin-right: 7px;width:35px;border-radius:4px;"
+                                           src="http://api.randomuser.me/portraits/med/women/69.jpg" alt="...">
+
+                                  </div>
+                                  <div class="media-body">
+                                    <h5 class="media-heading" style="font-family: 'Open sans',Arial,sans-serif;">
+                                        Ashok Raj Bathu
+                                    </h5>
+                                    <p style="font-size:12px;white-space: nowrap;overflow:hidden !important;text-overflow: ellipsis;font-family: 'Open sans',Arial,sans-serif;padding-top:2px;">
+                                        Wonder what weber can do Search for people you are interested in
+                                    </p>
+                                  </div>
+                                </div>
+                            </a>
+                            <a href="" class="list-group-item" style="padding:3px;border:0px solid #dcdcdc;background-color:#f2f2f2;">
+                                <div class="media" style="border-bottom:1px solid #F7F7F7;">
+                                  <div class="media-left">
+
+                                      <img class="media-object pull-left" style="margin-right: 7px;width:35px;border-radius:4px;"
+                                           src="http://api.randomuser.me/portraits/med/men/19.jpg" alt="...">
+
+                                  </div>
+                                  <div class="media-body">
+                                    <h5 class="media-heading" style="font-family: 'Open sans',Arial,sans-serif;">
+                                        Balakrishna Daggubati
+                                    </h5>
+                                    <p style="font-size:12px;white-space: nowrap;overflow:hidden !important;text-overflow: ellipsis;font-family: 'Open sans',Arial,sans-serif;padding-top:2px;">
+                                        Wonder what weber can do Search for people you are interested in
+                                    </p>
+                                  </div>
+                                </div>
+                            </a>
+                            <a href="" class="list-group-item" style="padding:3px;border:0px solid #dcdcdc;background-color:#f2f2f2;">
+                                <div class="media" style="border-bottom:1px solid #F7F7F7;">
+                                  <div class="media-left">
+
+                                      <img class="media-object pull-left" style="margin-right: 7px;width:35px;border-radius:4px;"
+                                           src="http://api.randomuser.me/portraits/med/women/79.jpg" alt="...">
+
+                                  </div>
+                                  <div class="media-body">
+                                    <h5 class="media-heading" style="font-family: 'Open sans',Arial,sans-serif;">
+                                        Vegesina Satyanarayana Raju
+                                    </h5>
+                                    <p style="font-size:12px;white-space: nowrap;overflow:hidden !important;text-overflow: ellipsis;font-family: 'Open sans',Arial,sans-serif;padding-top:2px;">
+                                        Wonder what weber can do Search for people you are interested in
+                                    </p>
+                                  </div>
+                                </div>
+                            </a>
+                            <a href="" class="list-group-item" style="padding:3px;border:0px solid #dcdcdc;background-color:#f2f2f2;">
+                                <div class="media" style="border-bottom:1px solid #F7F7F7;">
+                                  <div class="media-left">
+
+                                      <img class="media-object pull-left" style="margin-right: 7px;width:35px;border-radius:4px;"
+                                           src="http://api.randomuser.me/portraits/med/men/89.jpg" alt="...">
+
+                                  </div>
+                                  <div class="media-body">
+                                    <h5 class="media-heading" style="font-family: 'Open sans',Arial,sans-serif;">
+                                        Surya Muppalla
+                                    </h5>
+                                    <p style="font-size:12px;white-space: nowrap;overflow:hidden !important;text-overflow: ellipsis;font-family: 'Open sans',Arial,sans-serif;padding-top:2px;">
+                                        Wonder what weber can do Search for people you are interested in
+                                    </p>
+                                  </div>
+                                </div>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<style>
+    body{
+        padding-top:25px !important;
+
+    }
+    .add-on .input-group-btn > .btn {
+      border-left-color:#fff;left:-2px;
+      -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    }
+    /* stop the glowing blue shadow */
+    .form-control:focus {
+     box-shadow:none;
+     -webkit-box-shadow:none;
+     border-color:#cccccc;
+    }
+    .form-control1{
+        /*border-top:5px solid #ee9a4d;*/
+        border-top:5px solid #22A7F0;
+        height:50px;
+    }
+    .form-control-feedback {
+        position: absolute;
+        top: 7px;
+        right: 0;
+        z-index: 2;
+        display: block;
+        width: 40px;
+        height: 37px;
+        line-height: 34px;
+        text-align: center;
+        font-size: 20px;
+        opacity:0.70;
+    }
+</style>
+
+<!--<div class="navbar navbar-default header-start-search navbar-fixed-top" style="background-color:#F8F8F8;">
     <div class="container" style="padding:10px;">
         <div class="navbar-header">
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
@@ -34,7 +388,7 @@
                                     </a>
                                 </span>
                             </div>
-                            
+
                             <div class="form-group" style="height:50px;">
                                 <button type="submit" ng-disabled="!myForm1.$valid"
                                         class="btn btn-warning btn-sm" ng-click="submitLogin()">
@@ -56,7 +410,7 @@
 
 
 <!--<div ng-if="isAuthenticated()" ></div>-->
-<div class="container" style="min-height:2000px">
+<!--<div class="container" style="min-height:2000px">
     <div class="col-sm-12 col-md-6 col-lg-6">
         <div class="row" style="padding-top:80px;" ng-if="!(isAuthenticated())">
             <h2 style="color:#000;font-family: 'Open sans',Arial,sans-serif;font-weight:300;">
@@ -71,14 +425,14 @@
         </div>
         <div class="row" style="padding-top:30px;">
             <!--<form class="col-sm-12" style="padding:0px;" role="search">-->
-                <div class="form-group has-feedback">
+                <!--<div class="form-group has-feedback">
                     <input type="text" class="form-control form-control1" ng-model="query" focus="true"
                            placeholder="Search anything in weber" ng-keyup="$event.keyCode == 13 && perfomSearch()"/>
                     <i class="glyphicon glyphicon-search form-control-feedback"
                        style=""></i>
                 </div>
             <!--</form>-->
-        </div>
+        <!--</div>
         <div class="row"  ng-show="showNoResults">
             <div class="col-sm-12" style="padding:0px;">
                 <div class="panel panel-body" style="">
@@ -115,18 +469,18 @@
                         <strong><a href="/#/" style="color:#333;">{{rs.author.name.first}}</a></strong>
                         <span class="pull-right">
                             <!-- if post from you -->
-                            <a style="font-size:14px;" name="{{rs.author._id}}"
+                            <!--<a style="font-size:14px;" name="{{rs.author._id}}"
                                ng-if="isAuthenticated() && user._id == rs.author._id" >
                                 post from you
                             </a>
                             <!-- if post not from you and you logged in-->
-                            <a matchpersonroom style="font-size:14px;" name="{{rs.author._id}}"
+                            <!--<a matchpersonroom style="font-size:14px;" name="{{rs.author._id}}"
                                ng-if="isAuthenticated() && user._id != rs.author._id"
                                ng-click="openchatroom('{{ rs.author._id }}');addToConversations('{{ rs.author._id}}')">
                                chat
                             </a>
                             <!-- if not logged in -->
-                            <span ng-if="!(isAuthenticated())" style="font-size:14px;"
+                            <!--<span ng-if="!(isAuthenticated())" style="font-size:14px;"
                                 name="{{rs.author._id}}" class="chat_not_login">
                                 <a data-placement="top-right" style="width:65px"
                                     data-content="Please Login to Chat" data-trigger="hover" bs-popover >
@@ -159,7 +513,7 @@
     </div>
 
     <!--col-sm-4 starts-->
-        <div class="col-sm-12 col-md-12 col-lg-4 pull-right" style="padding-top:140px;">
+        <!--<div class="col-sm-12 col-md-12 col-lg-4 pull-right" style="padding-top:140px;">
     		<div class="panel panel-default" style="border:1px solid #dcdcdc;">
 			  	<div class="panel-body">
                     <h4 style="margin-top:0px;color:#000;font-family: 'Open sans',Arial,sans-serif;font-weight:300;">
@@ -202,7 +556,8 @@
 			    		</div>
 			    		<div class="form-group" style="">
 			    			<input class="form-control input-box input-md"
-                                   placeholder="Password(at least 6 Characters )" id="password" name="password" ng-model="formData.password" ng-minlength="5" ng-maxlength="15" type="password" value="">
+                                   placeholder="Password(at least 6 Characters )" id="password" name="password"
+                                   ng-model="formData.password" ng-minlength="5" ng-maxlength="15" type="password" value="" required>
                             <span ng-show="myForm.password.$error.required && myForm.password.$dirty" style="color:red">
                                 required
                             </span>
@@ -212,13 +567,16 @@
 			    		</div>
                         <div class="form-group" style="">
                             <label class="radio-inline">
-                              <input type="radio" ng-model="formData.gender" value="male">
+                              <input type="radio" ng-model="formData.gender" value="male" ng-change="removerequired()">
                               Male
                             </label>
                             <label class="radio-inline">
-                              <input type="radio" ng-model="formData.gender" value="female">
+                              <input type="radio" ng-model="formData.gender" value="female" ng-change="removerequired()" >
                               Female
                             </label>
+                             <span ng-show="gendererror" style="color:red">
+                                required
+                            </span>
                         </div>
 			    		<button ng-click = "registerUser()"
                                             type="submit" class="btn btn-block btn-primary"
@@ -232,7 +590,7 @@
 		</div>
 
     <!-- end of col-sm-4-->
-</div>
+<!--</div>
 
 
 
@@ -244,3 +602,5 @@
 
 
 </style>
+
+

@@ -9,7 +9,7 @@
  */
 angular.module('weberApp')
     .controller('WeberSearchCtrl', function($scope, $auth, Restangular,
-	 										InfinitePosts, $alert, $http,$location,
+	 										InfinitePosts, $alert, $http,$location,$socket,
 	 										CurrentUser, UserService,CurrentUser1,$rootScope,
 	 										SearchActivity, $routeParams, MatchMeResults) {
 
@@ -38,8 +38,14 @@ angular.module('weberApp')
         /* end of login functionality*/
 
         /* starting code of signup goes here */
-
+            $scope.removerequired = function(){
+                $scope.gendererror = false;
+            }
             $scope.registerUser = function() {
+                if(!($scope.formData.gender)){
+                    $scope.gendererror = true;
+                    return false;
+                }
                 $auth.signup({
                     email: $scope.formData.email,
                     password: $scope.formData.password,
@@ -65,6 +71,45 @@ angular.module('weberApp')
         /* ending of signup code */
 
 
+        $http.get('/api/me', {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).success(function(userId) {
+            Restangular.one('people', JSON.parse(userId)).get().then(function(user) {
+            $scope.openchatroom = function(id){
+                    console.log('open chat room', id)
+                if(!(sessionStorage.getItem(id))){
+                    // check room alredy open
+
+                    var json = {};
+                    Restangular.one('people', id).get({seed: Math.random()})
+                    .then(function(data){
+                        console.log('person deatils')
+                        console.log(data)
+                        json = {
+                            name:data.name.first,
+                            id: data._id,
+                            image:data.picture.medium,
+                            minimize:false,
+                            maximize:true,
+                            right:0,
+                            height:'364px'
+                        }
+
+                        sessionStorage.setItem(id, JSON.stringify(json));
+                        $socket.emit('connect', {data:id});
+                        // load messages into new open chat room
+
+                        $rootScope.chatactivity.loadMessages(user._id, id, json);
+
+                    });
+
+                }
+            }
+
+        });
+        });
 
 
         function combine_ids(ids) {
@@ -136,6 +181,36 @@ angular.module('weberApp')
             }
             else{}
          }
+
+           $scope.openchatroom = function(id){
+                    console.log('open chat room')
+                    if(!(sessionStorage.getItem(id))){
+                        // check room alredy open
+
+                        var json = {};
+                        Restangular.one('people', id).get({seed: Math.random()})
+                        .then(function(data){
+                            console.log('person deatils')
+                            console.log(data)
+                            json = {
+                                name:data.name.first,
+                                id: data._id,
+                                image:data.picture.medium,
+                                minimize:false,
+                                maximize:true,
+                                right:0,
+                                height:'364px'
+                            }
+
+                            sessionStorage.setItem(id, JSON.stringify(json));
+                            //socket.emit('connect', {data:id});
+                            // load messages into new open chat room
+                            $rootScope.chatactivity.loadMessages(user._id, id, json);
+
+                        });
+
+                    }
+                 }
 
         /*$scope.perfomSearch = function(){
 

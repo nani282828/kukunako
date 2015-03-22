@@ -121,6 +121,7 @@ angular.module('weberApp')
         }
 
         ChatActivity.prototype.loadMessages = function(user1, user2, roomdetails){
+            console.log(user1, user2, roomdetails)
             console.log('load messages calling----------------------')
             var self = this;
             this.busy = true;
@@ -133,6 +134,8 @@ angular.module('weberApp')
                 ']}';
 
             self.embedded_param = '{"sender":1,"receiver":1}'
+            console.log('------------open id pages-------------')
+            console.log(self.pages)
             var data = getKey_Pages(self.pages, user2)
             page = data.pageinfo;
             key = data.key;

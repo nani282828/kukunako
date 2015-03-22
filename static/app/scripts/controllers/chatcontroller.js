@@ -138,36 +138,47 @@ angular.module('weberApp')
                         }
                     }
                 }
+                $scope.testing = function(){
+                    console.log(this.sendmessage)
+                }
                 // sending and pushing message
-                $scope.send_message = function(text, Recept){
-                    console.log(Recept, user._id)
-                    var pushNewMessage = {
-                        sender :{
-                            name:{
-                                first:user.name.first
+                $scope.send_message = function(Recept){
+                    text = this.SendMessage;
+                    this.SendMessage = null;
+                    if(text){
+                        var pushNewMessage = {
+                            sender :{
+                                name:{
+                                    first:user.name.first
+                                },
+                                picture :{
+                                    medium:user.picture.medium
+
+                                },
+                                _id:user._id
                             },
-                            picture :{
-                                medium:user.picture.medium
 
+                            receiver:{
+                                _id:Recept
                             },
-                            _id:user._id
-                        },
 
-                        receiver:{
-                            _id:Recept
-                        },
+                            message:text,
+                            _created: new Date()
+                        }
 
-                        message:text,
-                        _created: new Date()
+                        $rootScope.chatactivity.pushMessage(Recept, pushNewMessage);
+
+                        //$scope.chatactivity.messages = data;
+
+                        socket.emit('send_message', {receiverid: Recept, senderid :user._id  ,message: text});
+                        $rootScope.chatactivity.sendMessage(Recept, text);
+                    }else{
+                        return false;
                     }
 
-                    $rootScope.chatactivity.pushMessage(Recept, pushNewMessage);
 
-                    //$scope.chatactivity.messages = data;
 
-                    socket.emit('send_message', {receiverid: Recept, senderid :user._id  ,message: text});
-                    $rootScope.chatactivity.sendMessage(Recept, text);
-                    $scope.SendMessage = {};
+
                     //document.getElementById("send_"+Recept).value="";
 
                 }
@@ -232,7 +243,7 @@ angular.module('weberApp')
                             socket.emit('connect', {data:id});
                             // load messages into new open chat room
                             $rootScope.chatactivity.loadMessages(user._id, id, json);
-
+                            console.log($rootScope.chatactivity)
                         });
 
                     }
@@ -240,10 +251,17 @@ angular.module('weberApp')
 
                  // closing open div
                  $scope.close_div = function(id){
-                    for(k in $scope.chatactivity.messages){
-                        if($scope.chatactivity.messages[k].id == id){
+
+                    for(k in $rootScope.chatactivity.messages){
+                        if($rootScope.chatactivity.messages[k].id == id){
                             // remove get chat room
-                            $scope.chatactivity.messages.splice(k,1)
+                            $rootScope.chatactivity.messages.splice(k,1)
+                        }
+                    }
+
+                    for(var i in $rootScope.chatactivity.pages){
+                        if($rootScope.chatactivity.pages[i].id == id){
+                            $rootScope.chatactivity.pages.splice(k,1)
                         }
                     }
                     // remove from chat room

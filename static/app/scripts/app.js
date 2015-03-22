@@ -77,7 +77,7 @@ angular
 		}
 	])
 	.config(function($routeProvider, $locationProvider, $authProvider) {
-		$authProvider.logoutRedirect = '/weber_search';
+		$authProvider.logoutRedirect = '/search';
 		$authProvider.loginOnSignup = false;
 		$routeProvider
 			.when('/home', {
@@ -130,7 +130,8 @@ angular
 				},
 				reloadOnSearch: false
 			})
-			.when('/login', {
+
+			.when('/login:query?', {
 				templateUrl: '/static/app/views/login.html',
 				controller: 'LoginCtrl',
 			})
