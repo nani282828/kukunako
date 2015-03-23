@@ -72,7 +72,7 @@
 			</div>
 
             <div class="panel-body" style="padding:1px;">
-                <a ng-repeat="friend in friends | limitTo : 6" href="#/profile/{{friend._id}}">
+                <a ng-repeat="friend in friends " href="#/profile/{{friend._id}}">
                     <img data-placement="top-right" style="width:87px"
                          data-content="{{friend.location.city}}, {{friend.location.state}}"
                          title="{{friend.name.first}} {{friend.name.last}}" data-trigger="hover" bs-popover src="{{friend.picture.thumbnail}}">
@@ -152,7 +152,7 @@
                             </p>
                         </div>
                     </div>
-                    <div class="row">
+                    <!--<div class="row">
                         <div class="col-sm-12">
                             <h6>
                                 <a ng-click="MatchAgree('{{ post._id }}','{{ post.author }}')" style="cursor:pointer;">
@@ -168,9 +168,9 @@
                                 </a>
                             </h6>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
-                <div class="panel-footer"
+                <!--<div class="panel-footer"
                      style="padding-top:5px;background-color:#fff;border:1px solid #FCF8F8;">
                     <div class="row">
                         <div class="col-sm-12">
@@ -184,7 +184,7 @@
                             </h6>
                         </div>
                     </div>
-                </div>
+                </div>-->
 			</div>
 			<div ng-show='infinitePosts.busy'>Loading data...</div>
 			<div ng-show='infinitePosts.end'>You Reached the end!</div>

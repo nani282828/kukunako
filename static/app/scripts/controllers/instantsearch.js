@@ -59,6 +59,7 @@ angular.module('weberApp')
     $scope.InstanceSearchPeoples = function(){
 
       $scope.instancesearch.getInstancePeoples($scope.InstanceSearchQuery);
+      //$scope.$apply();
 
     }
 

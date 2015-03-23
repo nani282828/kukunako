@@ -1,12 +1,22 @@
 import os
 
 
+
+if os.environ.get('PORT'):
+# We're hosted on Heroku! Use the MongoHQ sandbox as our backend.+ 
+    MONGO_HOST = '10.240.115.93'
+    MONGO_PORT = 27017
+    MONGO_USERNAME = 'test'
+    MONGO_PASSWORD = 'test'
+    MONGO_DBNAME = 'test'
+# also, correctly set the API entry point+# SERVER_NAME = '127.0.0.1:8000' #10.240.115.93:27017'
+else:
     # Running on local machine. Let's just use the local mongod instance.
-MONGO_HOST = '127.0.0.1'
-MONGO_PORT = 27017
-MONGO_USERNAME = 'test'
-MONGO_PASSWORD = 'test'
-MONGO_DBNAME = 'test'
+    MONGO_HOST = '127.0.0.1'
+    MONGO_PORT = 27017
+    MONGO_USERNAME = 'test'
+    MONGO_PASSWORD = 'test'
+    MONGO_DBNAME = 'test'
 
 
 URL_PREFIX = 'api'
@@ -163,6 +173,7 @@ messages = {
 people = {
     # 'title' tag used in item links.
     'item_title': 'person',
+    'allow_unknown': True,
     # by default the standard item entry point is defined as
     # '/people/<ObjectId>/'. We leave it untouched, and we also enable an
     # additional read-only entry point. This way consumers can also perform GET
@@ -188,7 +199,7 @@ people = {
                     'minlength': 1,
                     'maxlength': 15,
                     'unique': True,
-                },
+                },	
                 'title': {
                     'type': 'string'
                 }
@@ -296,46 +307,40 @@ people = {
 
         'notifications': {
             'type': 'list',
+
             'schema': {
-                'friend_requests': {
-                    'type': 'dict',
-                    'schema': {
+                'type':'dict',
+                'schema':{
+                    'friend_requests': {
                         'type': 'objectid',
-                        #'unique': True,
+
+                         #'unique': True,
                         'data_relation': {
                             'resource': 'people',
                             'embeddable': True
                         },
-                        'seen': {
+                    },
+                    'seen': {
                             'type': 'boolean',
                             'default': False
-                        }
                     }
-                },
-
-            },
+                }
+            }
         },
-        'accept_notifications': {
+
+        'acceptnotifications': {
             'type': 'list',
-            'schema': {
-                'accepted_id': {
-                    'type': 'dict',
-                    'schema': {
-                        'type': 'objectid',
-                        #'unique': True,
-                        'data_relation': {
-                            'resource': 'people',
-                            'embeddable': True
-                        },
-                        'seen': {
-                            'type': 'boolean',
-                            'default': False
-                        }
-                    }
-                },
+	    'schema':{
+		'type':'dict',
 
-            },
-        },
+	            'schema': {
+        	        'acceptedid': {
+                             'type': 'string'
+                     	}
+                 
+                    }
+	    }
+	},
 
         'friends': {
             'type': 'list',
@@ -347,53 +352,16 @@ people = {
                 }
             }
         },
-        'MatchedPeopleNotificCount':{
+
+        'matchedpeoplenotificcount':{
             'type': 'list'
         },
 
 
-         'MatchedPeopleNotifications': {
-            'type': 'list',
-
-            'schema': {
-
-                'postid': {
-                    'type': 'dict',
-                    'schema': {
-                        'type': 'objectid',
-                        #'unique': True,
-                        'data_relation': {
-                            'resource': 'posts',
-                            'embeddable': True
-                        },
-
-                     'interestedList': {
-                        'type': 'list',
-                        'schema': {
-                            'type': 'objectid',
-                            #'unique': True,
-                            'data_relation': {
-                                'resource': 'people',
-                                'embeddable': True
-                            },
-
-                        },
-                     },
-
-                    'updated_one': {
-                        'type': 'string'
-                    }
-
-
-
-                    }
-                },
-
-
-
-
-            },
+            'matchedpeoplenotifications': {
+            'type': 'list'
         }
+
 
     }
 }

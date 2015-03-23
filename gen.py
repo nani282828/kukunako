@@ -8,7 +8,7 @@ import json
 import time
 
 print '---------------------------------fetching users-----------------------'
-url = 'http://127.0.0.1:8000/api/people'
+url = 'http://weber.ooo/api/people'
 randomuser = urllib2.urlopen('http://api.randomuser.me/?results=10&seed='+str(random.randrange(0, 101, 2)))
 results = json.loads(randomuser.read())
 users=results['results']
@@ -40,10 +40,10 @@ for raw_user in users:
     #user['testing_doc'] = []
     user['movies'] = []
     user['notifications'] = []
-    user['accept_notifications'] = []
+    user['acceptnotifications'] = []
     user['conversations'] = []
-    user['MatchedPeopleNotifications'] = []
-    user['MatchedPeopleNotificCount'] = []
+    user['matchedpeoplenotifications'] = []
+    user['matchedpeoplenotificcount'] = []
     user['password'] = generate_password_hash(user['password'])
     user['role'] = 'test'
     print '----------------------------user-------------------------'
@@ -75,4 +75,4 @@ for user in processed_users:
 				post['content'] = generate_paragraph()[2]
 				r = requests.post(url + '/' + user['id'] + '/posts', data=json.dumps(post), headers={'content-type': 'application/json'})
 				print r.content
-		
+

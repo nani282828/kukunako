@@ -50,11 +50,13 @@ angular.module('weberApp')
                 $scope.chatdivnotification = [];
 
                 $rootScope.chatactivity = new ChatActivity(user);
-                $scope.loadLatestMessages = function(){
-                    //console.log('load message')
+
+                $rootScope.loadLatestMessages = function(){
+                    console.log('load message')
                     $rootScope.chatactivity.loadLatestMessages();
                 }
-                 if(user.conversations.length !== 0){
+
+                if(user.conversations.length !== 0){
                     $rootScope.chatactivity.getConversations();
                  }
 

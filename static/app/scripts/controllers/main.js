@@ -30,10 +30,8 @@ angular.module('weberApp')
 			}
 		}).success(function(user_id) {
 			Restangular.one('people',JSON.parse(user_id)).get({seed:Math.random()}).then(function(user) {
-				$scope.user = user;
 
-
-
+                $scope.user = user;
 				var loadPostIds = angular.copy(user.friends)
                 loadPostIds.push(user._id)
                 loadPostIds = "[\"" + loadPostIds.join("\",\"") + "\"]";
@@ -50,29 +48,34 @@ angular.module('weberApp')
 
 				$scope.submit_post = function(){
 
-				    console.log('file is ' + JSON.stringify($rootScope.file));
-                    var uploadUrl = "/fileUpload";
 
-                    var get_details = fileUpload.uploadFileToUrl($rootScope.file, uploadUrl)
+                        //console.log('file is ' + JSON.stringify($rootScope.file));
+                        var uploadUrl = "/fileUpload";
 
-                    get_details.then(function(response){
-                        console.log("------getting the url for an image-----")
-                        console.log(response.data)
-                        $rootScope.server_file_path = response.data;
-                        console.log("=====get server image path=====")
-                        console.log($rootScope.server_file_path)
-                    })
+                        var get_details = fileUpload.uploadFileToUrl($rootScope.file, uploadUrl)
 
-					$http({
-						url: '/similarwords',
-						method: "GET",
-						params: {new_post: $scope.new_post}
-					})
-					.success(function(similarwords) {
+                        get_details.then(function (response) {
+                            //console.log("------getting the url for an image-----")
+                            //console.log(response.data)
+                            $rootScope.server_file_path = response.data;
+                            //console.log("=====get server image path=====")
+                            //console.log($rootScope.server_file_path)
+                        })
+                     if($scope.new_post) {
+                        $http({
+                            url: '/similarwords',
+                            method: "GET",
+                            params: {new_post: $scope.new_post}
+                        })
+                            .success(function (similarwords) {
 
-					$scope.infinitePosts.addPost($scope.new_post,similarwords, $rootScope.server_file_path);
-					$scope.new_post = '';
-					});
+                                $scope.infinitePosts.addPost($scope.new_post, similarwords, $rootScope.server_file_path);
+                                $scope.new_post = '';
+                            });
+
+                    }else{
+                        return false;
+                    }
 				};
 
 				$scope.MatchAgree = function(postid, authorid ){
@@ -102,7 +105,7 @@ angular.module('weberApp')
                         }else if(user.friends.indexOf(data.author != -1) && data.postid != 'undefined'){
                             $scope.infinitePosts.loadNotificPost(data.postid, data.author)
                         }else{
-                            console.log('nothing to do')
+                            //console.log('nothing to do')
                         }
                     }
                 });
@@ -142,16 +145,13 @@ angular.module('weberApp')
                 }
 
                 $scope.confirm_delete = function(get_post_id){
-
-                    console.log("============confirm delete=====")
-                    console.log(checkdeletepost(get_post_id))
                     var result = checkdeletepost(get_post_id);
 
                     if(result.status){
                         $scope.infinitePosts.deletePost(result.post)
                     }
                     else{
-                        console.log(" failed in check post id with author")
+                        //console.log(" failed in check post id with author")
                     }
                 }
             }

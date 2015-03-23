@@ -28,21 +28,27 @@ angular.module('weberApp')
 
             self = this;
             this.query = query;
-            var req = {
-                method: 'POST',
-                url: '/api/getpeoplenames',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: {
-                    page: this.page,
-                    query: query.toLowerCase()
-                },
+            if((query)) {
+                var req = {
+                    method: 'POST',
+                    url: '/api/getpeoplenames',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: {
+                        page: this.page,
+                        query: query.toLowerCase()
+                    }
+                }
+
+                $http(req).success(function (peoples) {
+                    self.InstancesearchResult = peoples;
+                    console.log(self.InstancesearchResult)
+                }.bind(self));
+            }else{
+                self.InstancesearchResult = []
             }
-            $http(req).success(function(peoples){
-                self.InstancesearchResult = peoples;
-				console.log(self.InstancesearchResult)
-            }.bind(self));
+
         };
 
         InstanceSearch.prototype.nextPage = function() {
@@ -516,25 +522,20 @@ angular.module('weberApp')
 		}
 
         // remove duplicate results
-        function removeDuplicateResults(results){
+        function removeDuplicateResults(inputarry){
 
-            console.log('-------------remove duplicate results---------')
-            var array1 = results;
+            var temparray = []
             var authorIds = []
 
-            for(var i in array1){
-
-                if(authorIds.indexOf(array1[i].author._id) === -1){
-                    authorIds.push(array1[i].author._id)
-                }else{
-
-                    console.log('delete====>',i,array1)
-                    array1.splice(i,1)
-                    console.log(array1)
+            for(var i in inputarry){
+                //console.log(i)
+                if(authorIds.indexOf(inputarry[i].author._id) === -1){
+                    authorIds.push(inputarry[i].author._id)
+                    temparray.push(inputarry[i])
                 }
             }
-            return (array1)
-            console.log(authorIds)
+
+            return temparray;
         }
 
 		var  MatchMeResults = function(query) {
@@ -557,54 +558,50 @@ angular.module('weberApp')
 
             if(this.query){
                 keywords = combine_ids(this.query.split(" "));
-
+                var self = this;
                 this.param1 = '{"$or":[{"keywords": {"$in":['+keywords+']}},{"content":{"$regex":".*'+this.query+'.*"}}]}';
 			    this.param2 = '{"author":1}';
 
                 Restangular.all('posts').getList({
-				where : this.param1,
+				where : self.param1,
 				seed: Math.random(),
-				max_results: 10,
-				page: this.page,
-				embedded : this.param2
+				max_results: 70,
+				page: self.page,
+				embedded : self.param2
 				}).then(function(data) {
-                   if (data.length < 10) {
-                        this.end = true;
+
+                   if (data.length < 70) {
+                        self.end = true;
     			   }
-                   this.mresults.push.apply(this.mresults,data);
+                   self.mresults.push.apply(self.mresults,data);
 
-                   var filterarray = removeDuplicateResults(this.mresults);
-                   console.log('filtered array==>', filterarray)
+                   self.mresults = removeDuplicateResults(self.mresults);
 
-                   this.total_matches = data.length;
-                   this.page = this.page + 1;
-                   this.busy = false;
+                   self.total_matches = data.length;
+                   self.page = self.page + 1;
+                   self.busy = false;
 				}.bind(this));
 
 				// also find in search activity
-				/*this.param1 = '{"$or":[{"keywords": {"$in":['+keywords+']}},{"content":{"$regex":".*'+this.query+'.*"}}]}';
+				this.param1 = '{"$or":[{"keywords": {"$in":['+keywords+']}},{"content":{"$regex":".*'+this.query+'.*"}}]}';
 			    this.param2 = '{"author":1}';
 
                 Restangular.all('searchActivity').getList({
 				where : this.param1,
 				seed: Math.random(),
-				max_results: 10,
+				max_results: 70,
 				page: this.sPage,
 				embedded : this.param2
 				}).then(function(data) {
-                   if (data.length < 10) {
+                   if (data.length < 70) {
                         this.sEnd = true;
     			   }
-
                    this.mresults.push.apply(this.mresults,data);
-
-                   var filterarray = removeDuplicateResults(this.mresults);
-                   console.log('filtered array==>', filterarray)
-
+                   self.mresults = removeDuplicateResults(self.mresults);
                    this.total_matches = this.total_matches+data.length;
                    this.sPage = this.sPage + 1;
                    this.sBusy = false;
-				}.bind(this));*/
+				}.bind(this));
 
 
             }
@@ -652,23 +649,25 @@ angular.module('weberApp')
 
             if ((this.busy | this.end) && this.query) return;
 			this.busy = true;
+            var self = this;
 
 			Restangular.all('posts').getList({
-			    where : this.param1,
-				max_results: 10,
-				page: this.page,
-				embedded : this.param2
+			    where : self.param1,
+				max_results: 70,
+				page: self.page,
+				embedded : self.param2
 			}).then(function(data) {
 
                 if (data.length === 0) {
-					this.end = true;
+					self.end = true;
 				}
 				console.log('called infinity scroll')
-				this.mresults.push.apply(this.mresults, data);
-				this.page = this.page + 1;
-				this.busy = false;
+				self.mresults.push.apply(self.mresults, data);
+                self.mresults = removeDuplicateResults(self.mresults);
+				self.page = self.page + 1;
+				self.busy = false;
 
-			}.bind(this));
+			}.bind(self));
 
 
 		};
@@ -680,23 +679,26 @@ angular.module('weberApp')
 			if ((this.sBusy | this.sEnd) && this.query) return;
 
 			this.sBusy = true;
+            var self = this;
 
 			Restangular.all('searchActivity').getList({
-			    where : this.param1,
-				max_results: 10,
-				page: this.sPage,
-				embedded : this.param2
+			    where : self.param1,
+				max_results: 70,
+				page: self.sPage,
+				embedded : self.param2
 			}).then(function(data) {
 
                 if (data.length === 0) {
-					this.sEnd = true;
+					self.sEnd = true;
 				}
 
-				this.mresults.push.apply(this.mresults, data);
-				this.sPage = this.sPage + 1;
-				this.sBusy = false;
+				self.mresults.push.apply(self.mresults, data);
+                self.mresults = removeDuplicateResults(self.mresults);
 
-			}.bind(this));
+				self.sPage = self.sPage + 1;
+				self.sBusy = false;
+
+			}.bind(self));
 
 
 		};
