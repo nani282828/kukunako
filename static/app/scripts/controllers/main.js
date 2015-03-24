@@ -48,9 +48,9 @@ angular.module('weberApp')
 
 				$scope.submit_post = function(){
 
-
+                        $rootScope.server_file_path = 'hj'
                         //console.log('file is ' + JSON.stringify($rootScope.file));
-                        var uploadUrl = "/fileUpload";
+                        /*var uploadUrl = "/fileUpload";
 
                         var get_details = fileUpload.uploadFileToUrl($rootScope.file, uploadUrl)
 
@@ -60,7 +60,8 @@ angular.module('weberApp')
                             $rootScope.server_file_path = response.data;
                             //console.log("=====get server image path=====")
                             //console.log($rootScope.server_file_path)
-                        })
+                        })*/
+
                      if($scope.new_post) {
                         $http({
                             url: '/similarwords',
