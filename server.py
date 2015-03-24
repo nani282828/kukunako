@@ -40,8 +40,8 @@ app.config.update(
 	MAIL_SERVER='smtp.gmail.com',
 	MAIL_PORT=465,
 	MAIL_USE_SSL=True,
-	MAIL_USERNAME = 'suryachowdary93@gmail.com',
-	MAIL_PASSWORD = 'Ssurya@Mmuppalla7'
+	MAIL_USERNAME = 'nanisatya282828@gmail.com',
+	MAIL_PASSWORD = 'edk2239EK'
 	)
 mail=Mail(app)
 socketio = SocketIO(app)

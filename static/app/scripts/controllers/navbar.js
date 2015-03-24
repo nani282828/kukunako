@@ -141,6 +141,7 @@ angular.module('weberApp')
 
         function getMatchButtonNotific(currentuser){
             //currentuser.MatchedPeopleNotificCount.length)
+            console.log(currentuser)
             $scope.MatchButtonNotific = currentuser.MatchedPeopleNotificCount.length;
 
             $scope.MatchButtonNotifications = currentuser.MatchedPeopleNotifications;
@@ -158,7 +159,7 @@ angular.module('weberApp')
 
 
         get_friend_notifications(user);
-        getMatchButtonNotific(user);
+        //getMatchButtonNotific(user);
 
           $socket.on('friendnotifications', function(data){
             console.log(data)

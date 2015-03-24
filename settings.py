@@ -307,40 +307,47 @@ people = {
 
         'notifications': {
             'type': 'list',
-
             'schema': {
-                'type':'dict',
-                'schema':{
-                    'friend_requests': {
+                'friend_requests': {
+                    'type': 'dict',
+                    'schema': {
                         'type': 'objectid',
-
-                         #'unique': True,
+                        #'unique': True,
                         'data_relation': {
                             'resource': 'people',
                             'embeddable': True
                         },
-                    },
-                    'seen': {
+                        'seen': {
                             'type': 'boolean',
                             'default': False
+                        }
                     }
-                }
-            }
+                },
+
+            },
         },
 
-        'acceptnotifications': {
+        'accept_notifications': {
             'type': 'list',
-	    'schema':{
-		'type':'dict',
-
-	            'schema': {
-        	        'acceptedid': {
-                             'type': 'string'
-                     	}
-                 
+            'schema': {
+                'accepted_id': {
+                    'type': 'dict',
+                    'schema': {
+                        'type': 'objectid',
+                        #'unique': True,
+                        'data_relation': {
+                            'resource': 'people',
+                            'embeddable': True
+                        },
+                        'seen': {
+                            'type': 'boolean',
+                            'default': False
+                        }
                     }
-	    }
-	},
+                },
+
+            },
+        },
 
         'friends': {
             'type': 'list',
@@ -358,8 +365,30 @@ people = {
         },
 
 
-            'matchedpeoplenotifications': {
-            'type': 'list'
+
+        'MatchedPeopleNotifications': {
+            'type': 'list',
+            'schema': {
+                'type':'dict',
+
+                'postid' : {
+                    'type': 'objectid',
+                        #'unique': True,
+                        'data_relation': {
+                             'resource': 'people',
+                             'embeddable': True
+                        }
+                },
+
+                'InterestedLit':{
+                    'type':'list'
+                },
+
+                'seen': {
+                   'type': 'boolean',
+                   'default': False
+                }
+            }
         }
 
 

@@ -16,15 +16,15 @@ angular.module('weberApp')
 	 	/* login functionality code goes here*/
         $scope.submitLogin = function() {
 			$auth.login({
-				email: $scope.login_email,
-				password: $scope.login_password
+				email: this.login_email,
+				password: this.login_password
 			}).then(function(response) {
 				$auth.setToken(response.data.token);
 				$rootScope.isloggin = true;
 				$location.path('/home');
 			}, function(error) {
-                //console.log(error.data.error)
-				$scope.error = error.data.error;
+                console.log(error.data.error)
+				$scope.loginError = error;
 				$alert({
 					title: 'Login Failed:',
 					content: error.data.error,
@@ -38,38 +38,38 @@ angular.module('weberApp')
         /* end of login functionality*/
 
         /* starting code of signup goes here */
-            $scope.removerequired = function(){
-                $scope.gendererror = false;
-            }
+
             $scope.registerUser = function() {
-                if(!($scope.formData.gender)){
-                    $scope.gendererror = true;
-                    return false;
-                }
+                console.log("hai")
+                if (this.formData.gender) {
+
+
                 $auth.signup({
                     email: $scope.formData.email,
-                    password: $scope.formData.password,
-                    firstname: $scope.formData.firstname,
-                    lastname: $scope.formData.lastname,
-                    username: $scope.formData.firstname+$scope.formData.lastname,
-                    gender: $scope.formData.gender
-                }).then(function(response) {
+                    password: this.formData.password,
+                    firstname: this.formData.firstname,
+                    lastname: this.formData.lastname,
+                    username: this.formData.firstname + this.formData.lastname,
+                    gender: this.formData.gender
+                }).then(function (response) {
                     //console.log(response.data);
-                    $location.path('/email_details/'+$scope.formData.email);
-                }, function(error) {
-                    $scope.error = error;
+                    $location.path('/email_details/' + $scope.formData.email);
+                }, function (signuperror) {
+                    $scope.signUpError = signuperror;
                     $alert({
-                        title: 'Registration Failed: ',
+                        title: 'Registration Failed:',
                         content: error.data.error,
                         placement: 'top',
                         type: 'danger',
                         show: true
                     });
                 });
+            }else{
+                    $scope.gendererror = true;
+                }
             };
 
         /* ending of signup code */
-
 
         $http.get('/api/me', {
             headers: {

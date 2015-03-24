@@ -39,6 +39,7 @@ for raw_user in users:
     }
     #user['testing_doc'] = []
     user['movies'] = []
+    user['friends'] = []
     user['notifications'] = []
     user['accept_notifications'] = []
     user['conversations'] = []
@@ -61,7 +62,7 @@ for user in processed_users:
 		friends-set([user['id']])
 		headers['If-Match'] = user['etag']
 		friends_dict = {}
-		friends_dict['friends'] = []
+		#friends_dict['friends'] = []
 		print friends_dict
 		print headers
 		r = requests.patch(url + '/' + user['id'], data=json.dumps(friends_dict), headers=headers)
