@@ -1,4 +1,4 @@
-<div class="navbar navbar-inverse header-start-search navbar-fixed-top">
+<div class="navbar navbar-inverse header-start-search navbar-fixed-top" ng-if="isAuthenticated()">
     <div class="container" style="">
         <div class="navbar-header">
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
@@ -23,7 +23,7 @@
         </div>
         <center>
             <div class="navbar-collapse collapse show-when-minimize" id="navbar-main" style="">
-                <div class="col-sm-5" ng-controller="InstantsearchCtrl" ng-if="isAuthenticated()">
+                <div class="col-sm-5"  ng-show="isAuthenticated()" instancesearch >
                     <form role="form" style="margin-top: 8px;">
                         <div class="row">
                             <div class="col-xs-12">
@@ -35,13 +35,15 @@
                                         <button type="submit" class="btn">Search</button>
                                     </div><!-- /btn-group -->
                                 </div><!-- /input-group -->
-                                <div class="messages-scroll" ng-show="menuOpened" style="width:445px;position:absolute;padding:0px;overflow:auto;">
+                                <div class="messages-scroll"  style="width:445px;position:absolute;padding:0px;overflow:auto;">
 
                                     <div  id="scroll123" class="list-group" style="">
                                          <!--infinite-scroll='instancesearch.nextPage()'
                                             infinite-scroll-disabled='instancesearch.busy'
                                             infinite-scroll-distance='0'
                                             infinite-scroll-container="'#scroll123'"-->
+
+
 
                                         <div class="" style="margin-bottom:0px;"
                                                 ng-repeat="temp in instancesearch.InstancesearchResult"
@@ -80,7 +82,7 @@
 
                 <ul class="nav navbar-nav navbar-right" ng-if="isAuthenticated()" >
 
-                    <li><a href="#/search" ng-click="SeenMatchButton()">Match Me [{{ MatchButtonNotific }}]</a></li>
+                    <li><a href="#/search" ng-click="SeenMatchButton()">Match Me[{{ MatchButtonNotific }}]</a></li>
                     <li><a href="#/friends">Friends</a></li>
 
                     <li class="dropdown" style="padding:3px 10px;">
@@ -156,9 +158,9 @@
 
                             </i>
 
-                                <label class="label label-danger" ng-if="newnotific"
+                                <label class="label label-danger" ng-if="newnotific + MatchButtonNotific"
                                        style="position:absolute;font-size:10px;top: 5px;right: 0px;">
-                                        {{ newnotific }}
+                                        {{ newnotific + MatchButtonNotific }}
                                 </label>
 
                         </a>

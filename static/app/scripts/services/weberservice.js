@@ -17,6 +17,7 @@ angular.module('weberApp')
 	.factory('InstanceSearch', function($http, Restangular, $alert, $timeout) {
 
 		var InstanceSearch = function() {
+
 			this.InstancesearchResult = [];
 			this.busy = false;
 			this.end = false;
@@ -26,7 +27,7 @@ angular.module('weberApp')
 
 		InstanceSearch.prototype.getInstancePeoples = function(query){
 
-            self = this;
+            var self = this;
             this.query = query;
             if((query)) {
                 var req = {
@@ -56,7 +57,7 @@ angular.module('weberApp')
             console.log(this.busy, this.end)
             if (this.busy | this.end) return;
 			this.busy = true;
-			self = this;
+			var self = this;
             var req = {
                  method: 'POST',
                  url: '/api/getpeoplenames',
@@ -100,7 +101,64 @@ angular.module('weberApp')
 			return promise;
 		};
 
-	}).service('PostService', function($http, Restangular) {
+		this.deleteFromIList = function(userId,postId){
+		    var userNotifications = this.get(userId).MatchedPeopleNotifications;
+		    for(var temp in userNotifications){
+		        if(userNotifications[temp].postid == postId &&
+		        userNotifications[temp].interestedList.indexOf(userId) !== -1){
+		            userNotifications[temp].interestedList.splice(userNotifications[temp].interestedList.indexOf(userId),1)
+		        }
+		    }
+		    console.log('user==>',this.get(userId))
+		}
+
+		this.PushToIList = function(userId,postId){
+		    var userNotifications = this.get(userId).MatchedPeopleNotifications;
+		    for(var temp in userNotifications){
+		        if(userNotifications[temp].postid == postId &&
+		        userNotifications[temp].interestedList.indexOf(userId) === -1){
+		            userNotifications[temp].interestedList.push(userId);
+		        }
+		    }
+
+		}
+
+	})
+	.service('MatchButtonService', function($http, Restangular, CurrentUser1) {
+
+		this.checkMatchUnMatch = function(postid) {
+            var notifications = CurrentUser1.user.MatchedPeopleNotifications;
+
+            for(var i in notifications){
+                //console.log(notifications, postid)
+                if(notifications[i].postid == postid){
+
+                    for(var temp in notifications[i].interestedList){
+
+                        if(notifications[i].interestedList[temp] == CurrentUser1.user._id){
+                            //console.log('yes')
+                            return true;
+                        }else{
+                            //console.log('no')
+                            return false;
+                        }
+                    }
+
+                }
+            }
+			/*for (var i in this.users) {
+				if (this.users[i]._id == userId) {
+					return this.users[i];
+				}
+			}
+
+			var promise = Restangular.one('people',userId).get().$object;
+			promise._id = userId;
+			this.users.push(promise);
+			return promise;*/
+		};
+	})
+	.service('PostService', function($http, Restangular) {
 		this.posts = [];
         var param1 = '{"author":1}';
 		this.get = function(postid) {
@@ -113,14 +171,27 @@ angular.module('weberApp')
 			}
 
 			var promise = Restangular.one('posts', postid).get({embedded: param1}).$object;
-			console.log(promise)
+			//console.log(promise)
 			promise._id = postid;
 			this.posts.push(promise);
 			return promise;
 		};
 
-	})
-	.service('CurrentUser1', function($http, Restangular) {
+	}).service('sortIListService', function($http, Restangular,CurrentUser1) {
+		this.sendList = function(list){
+		    console.log('list===>', list)
+		    if(list.length){
+		        for(var temp in list){
+    		       if(list[temp] == CurrentUser1.user._id){
+                        list.push(list.splice( temp, 1 )[0]);
+	               }
+		        }
+    		    return list.reverse();
+		    }else
+		        return list;
+		}
+
+	}).service('CurrentUser1', function($http, Restangular) {
 		this.userId = null;
 		this.user = null;
 		this.reset = function() {
@@ -169,8 +240,8 @@ angular.module('weberApp')
     .factory('MatchButton', function($http,$auth,$q, Restangular) {
 
         var MatchButton = function(user,profileuserid, postid) {
-           console.log('-- at match button-----')
-           console.log(postid)
+           //console.log('-- at match button-----')
+           //console.log(postid)
            this.profileuserid = profileuserid,
            this.user = user,
            this.postid = postid
@@ -178,127 +249,127 @@ angular.module('weberApp')
         }
 
         MatchButton.prototype.addToInterested = function(){
-
-            var self = this;
-
-            Restangular.one('people', this.profileuserid).get({seed:Math.random()})
-            .then(function(profileuser){
-                 var checkvalue = false;
-                 var isPostCreated = false;
-
-                 if(profileuser.MatchedPeopleNotifications.length !== 0){
-
-                    for(var k in profileuser.MatchedPeopleNotifications){
-
-                        console.log(profileuser.MatchedPeopleNotifications[k].postid)
-                        console.log(self.postid)
-
-                        if(profileuser.MatchedPeopleNotifications[k].postid === self.postid){
-
-                            isPostCreated = true;
-
-                            if(profileuser.MatchedPeopleNotifications[k].interestedList.indexOf(self.user._id) === -1){
-                                checkvalue = true;
-                                profileuser.MatchedPeopleNotifications[k].interestedList.push(self.user._id)
-                                profileuser.MatchedPeopleNotifications[k].updated_one = new Date()
-                                profileuser.MatchedPeopleNotificCount.push({'postid':self.postid, 'authorid':self.user._id})
+           var deferred = $q.defer();
+           var self = this;
+           setTimeout(function() {
+              Restangular.one('people', self.profileuserid).get({seed:Math.random()})
+                  .then(function(profileuser){
+                         var checkvalue = false;
+                         var isPostCreated = false;
+                         // if user has alredy matched notifications count
+                         if(profileuser.MatchedPeopleNotifications.length !== 0){
+                            for(var k in profileuser.MatchedPeopleNotifications){
+                                if(profileuser.MatchedPeopleNotifications[k].postid === self.postid){
+                                    isPostCreated = true;
+                                    if(profileuser.MatchedPeopleNotifications[k].interestedList.indexOf(self.user._id) === -1){
+                                        checkvalue = true;
+                                        profileuser.MatchedPeopleNotifications[k].interestedList.push(self.user._id)
+                                        profileuser.MatchedPeopleNotifications[k].updated_one = new Date()
+                                        profileuser.MatchedPeopleNotificCount.push({'postid':self.postid, 'authorid':self.user._id})
+                                    }
+                                }
                             }
+
+                            // if user interestlist doesn't contains userid
+                            if(checkvalue){
+                                var data =  profileuser.patch({
+                                    'MatchedPeopleNotifications': profileuser.MatchedPeopleNotifications,
+                                    'MatchedPeopleNotificCount' : profileuser.MatchedPeopleNotificCount
+                                });
+                                 deferred.resolve(data);
+                            }
+                            // if postid doesnot created
+                            if(!(isPostCreated)){
+                                 var newMatch = {
+                                    'postid': self.postid,
+                                    'interestedList': [self.user._id],
+                                    'updated_one': new Date()
+                                }
+                                profileuser.MatchedPeopleNotifications.push(newMatch)
+                                profileuser.MatchedPeopleNotificCount.push({'postid':self.postid, 'authorid':self.user._id})
+                                var data =  profileuser.patch({
+                                   'MatchedPeopleNotifications' : profileuser.MatchedPeopleNotifications,
+                                   'MatchedPeopleNotificCount' : profileuser.MatchedPeopleNotificCount
+                                });
+                                deferred.resolve(data)
+                            }
+
+                         }
+                        // if first match occured to user
+                        else{
+
+                            var newMatch = {
+                                'postid': self.postid,
+                                'interestedList': [self.user._id],
+                                'updated_one': new Date()
+                            }
+
+                            profileuser.MatchedPeopleNotifications.push(newMatch)
+                            profileuser.MatchedPeopleNotificCount.push({'postid':self.postid, 'authorid':self.user._id})
+                            var data =  profileuser.patch({
+                               'MatchedPeopleNotifications' : profileuser.MatchedPeopleNotifications,
+                               'MatchedPeopleNotificCount' : profileuser.MatchedPeopleNotificCount
+                            });
+                            deferred.resolve(data)
                         }
-                    }
-
-                    if(checkvalue){
-
-                        console.log(profileuser.MatchedPeopleNotifications)
-                        profileuser.patch({
-                            'MatchedPeopleNotifications': profileuser.MatchedPeopleNotifications,
-                            'MatchedPeopleNotificCount' : profileuser.MatchedPeopleNotificCount
-
-                        }).then(function(data){
-                            console.log(data)
-                        });
-                    }
-
-                    if(!(isPostCreated)){
-                         var newMatch = {
-                            'postid': self.postid,
-                            'interestedList': [self.user._id],
-                            'updated_one': new Date()
-                        }
-                         profileuser.MatchedPeopleNotifications.push(newMatch)
-                         profileuser.MatchedPeopleNotificCount.push({'postid':self.postid, 'authorid':self.user._id})
-
-                        profileuser.patch({
-                           'MatchedPeopleNotifications' : profileuser.MatchedPeopleNotifications,
-                           'MatchedPeopleNotificCount' : profileuser.MatchedPeopleNotificCount
-                        }).then(function(data){
-                            console.log(data)
-                        });
-
-                    }
-
-                }
-                else{
-
-                    var newMatch = {
-                        'postid': self.postid,
-                        'interestedList': [self.user._id],
-                        'updated_one': new Date()
-                    }
-
-                    profileuser.MatchedPeopleNotifications.push(newMatch)
-                    profileuser.MatchedPeopleNotificCount.push({'postid':self.postid, 'authorid':self.user._id})
-                    console.log(profileuser.MatchedPeopleNotifications)
-                    profileuser.patch({
-                       'MatchedPeopleNotifications' : profileuser.MatchedPeopleNotifications,
-                       'MatchedPeopleNotificCount' : profileuser.MatchedPeopleNotificCount
-                    }).then(function(data){
-                        console.log(data)
-                    });
-                }
-            });
+                  });
+           }, 1000);
+           return deferred.promise;
         };
 
 
         MatchButton.prototype.DeleteFromInterested = function(){
             var self = this;
             // getting profile user details
-            Restangular.one('people', this.profileuserid).get({seed:Math.random()})
-            .then(function(profileuser){
-                 var checkvalue = false;
 
-                 if(profileuser.MatchedPeopleNotifications.length !== 0){
 
-                    // remove from MatchedPeopleNotifications list
-                    for(var k in profileuser.MatchedPeopleNotifications){
-                        if(profileuser.MatchedPeopleNotifications[k].postid === self.postid){
-                            console.log(profileuser.MatchedPeopleNotifications[k])
-                            if(profileuser.MatchedPeopleNotifications[k].interestedList.indexOf(self.user._id) !== -1){
-                                checkvalue = true;
-                                var indexvalue = profileuser.MatchedPeopleNotifications[k].interestedList.indexOf(self.user._id)
-                                profileuser.MatchedPeopleNotifications[k].interestedList.splice(indexvalue, 1)
+           var deferred = $q.defer();
+           var self = this;
+           setTimeout(function() {
 
-                            }else
-                                console.log('nothing to delete')
+                Restangular.one('people', self.profileuserid).get({seed:Math.random()})
+                .then(function(profileuser){
+                     var checkvalue = false;
+
+                     if(profileuser.MatchedPeopleNotifications.length !== 0){
+
+                        // remove from MatchedPeopleNotifications list
+                        for(var k in profileuser.MatchedPeopleNotifications){
+                            if(profileuser.MatchedPeopleNotifications[k].postid === self.postid){
+                                //console.log(profileuser.MatchedPeopleNotifications[k])
+                                if(profileuser.MatchedPeopleNotifications[k].interestedList.indexOf(self.user._id) !== -1){
+                                    checkvalue = true;
+                                    var indexvalue = profileuser.MatchedPeopleNotifications[k].interestedList.indexOf(self.user._id)
+                                    profileuser.MatchedPeopleNotifications[k].interestedList.splice(indexvalue, 1)
+
+                                }else
+                                    console.log('nothing to delete')
+                            }
                         }
-                    }
 
-                    for(var i in profileuser.MatchedPeopleNotificCount){
-                        if(profileuser.MatchedPeopleNotificCount[i].postid == self.postid &&
-                           profileuser.MatchedPeopleNotificCount[i].authorid == self.user._id){
-                               profileuser.MatchedPeopleNotificCount.splice(i,1)
-                           }
-                    }
+                        for(var i in profileuser.MatchedPeopleNotificCount){
+                            if(profileuser.MatchedPeopleNotificCount[i].postid == self.postid &&
+                               profileuser.MatchedPeopleNotificCount[i].authorid == self.user._id){
+                                   profileuser.MatchedPeopleNotificCount.splice(i,1)
+                               }
+                        }
 
-                    if(checkvalue){
-                        profileuser.patch({
-                            'MatchedPeopleNotifications': profileuser.MatchedPeopleNotifications,
-                            'MatchedPeopleNotificCount' : profileuser.MatchedPeopleNotificCount
-                        }).then(function(data){
-                            console.log(data)
-                        });
-                    }
-                }
-            });
+                        if(checkvalue){
+                            var data = profileuser.patch({
+                                'MatchedPeopleNotifications': profileuser.MatchedPeopleNotifications,
+                                'MatchedPeopleNotificCount' : profileuser.MatchedPeopleNotificCount
+                            });
+                             deferred.resolve(data)
+                        }
+                     }
+                });
+
+           }, 1000);
+
+           return deferred.promise;
+
+
+
         };
         return MatchButton;
     })
@@ -328,7 +399,7 @@ angular.module('weberApp')
 				sort: '[("_created",-1)]',
 				seed:Math.random()
 			}).then(function(posts) {
-                console.log('loadposts')
+                //console.log('loadposts')
 				if (posts.length < 10) {
 					this.end = true;
 				}
@@ -342,7 +413,7 @@ angular.module('weberApp')
 
 
 		InfinitePosts.prototype.nextPage = function() {
-		    console.log('nextpage')
+		    //console.log('nextpage')
 			if (this.busy | this.end) return;
 			this.busy = true;
 
@@ -363,10 +434,10 @@ angular.module('weberApp')
 		};
 
 		InfinitePosts.prototype.loadNotificPost = function(postid, author){
-            console.log(postid, author)
+            //console.log(postid, author)
             if(this.user_obj._id !== author){
                 Restangular.one('posts', postid).get().then(function(post) {
-                    console.log(post)
+                    //console.log(post)
                     this.posts.unshift({
                         author: post.author,
                         content: post.content,
@@ -374,7 +445,7 @@ angular.module('weberApp')
                         _id: post._id,
                         _etag: post._etag
                     });
-                    console.log(this.posts)
+                    //console.log(this.posts)
                 }.bind(this));
             }
 		}
@@ -412,7 +483,7 @@ angular.module('weberApp')
 		};
 
 		InfinitePosts.prototype.deletePost = function(post1) {
-		    console.log(post1._etag)
+		    //console.log(post1._etag)
 			Restangular.one('posts', post1._id).remove({},{
 			    'If-Match': (post1._etag).toString()
 			})
@@ -455,8 +526,8 @@ angular.module('weberApp')
                     sort: '[("_created",-1)]',
                     seed: Math.random()
                 }).then(function(data) {
-                    console.log('my search')
-                    console.log(data)
+                    //console.log('my search')
+                    //console.log(data)
                     if (data.length < 10) {
 					    this.end = true;
 				    }
@@ -481,7 +552,7 @@ angular.module('weberApp')
                         this.end = true;
                     }
                     this.searchResult.push.apply(this.searchResult,data);
-                    console.log(this.searchResult)
+                    //console.log(this.searchResult)
                     this.page = this.page + 1;
 				    this.busy = false;
             }.bind(this));
@@ -661,7 +732,7 @@ angular.module('weberApp')
                 if (data.length === 0) {
 					self.end = true;
 				}
-				console.log('called infinity scroll')
+				//console.log('called infinity scroll')
 				self.mresults.push.apply(self.mresults, data);
                 self.mresults = removeDuplicateResults(self.mresults);
 				self.page = self.page + 1;
@@ -674,10 +745,8 @@ angular.module('weberApp')
 
 
 		MatchMeResults.prototype.nextPageSearchResults = function() {
-            console.log("nextpage search resutls")
-
+            //console.log("nextpage search resutls")
 			if ((this.sBusy | this.sEnd) && this.query) return;
-
 			this.sBusy = true;
             var self = this;
 
@@ -699,8 +768,6 @@ angular.module('weberApp')
 				self.sBusy = false;
 
 			}.bind(self));
-
-
 		};
 
 

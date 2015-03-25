@@ -229,9 +229,9 @@ def signup():
             'password_test':request.json['password'],
             'email_confirmed':False,
             'picture' : {
-                'large' : "http://4.bp.blogspot.com/-iKp72hkipQo/T2DJIrT_alI/AAAAAAAAEfo/Nyj6kH9EgOE/s1600/04-logo.jpg",
-                'medium' : "http://4.bp.blogspot.com/-iKp72hkipQo/T2DJIrT_alI/AAAAAAAAEfo/Nyj6kH9EgOE/s1600/04-logo.jpg",
-                'thumbnail' : "http://4.bp.blogspot.com/-iKp72hkipQo/T2DJIrT_alI/AAAAAAAAEfo/Nyj6kH9EgOE/s1600/04-logo.jpg"
+                'large' : "https://0.s3.envato.com/files/30707637/Standing%20Bluebird%202012%20A1t.jpg",
+                'medium' : "https://0.s3.envato.com/files/30707637/Standing%20Bluebird%202012%20A1t.jpg",
+                'thumbnail' : "https://0.s3.envato.com/files/30707637/Standing%20Bluebird%202012%20A1t.jpg"
             },
             'phone': "",
             'interests': [],
@@ -276,6 +276,7 @@ def signup():
         response = jsonify(error='Your are already registered with this email')
         response.status_code = 401
         return response
+
 
 @app.route('/api/chat/sendmessage', methods=['POST'])
 def sendmessage():

@@ -22,40 +22,29 @@ angular.module('weberApp')
 
             // popup notifications code
             $scope.chat_message_Opened = false;
-
-
             $scope.chat_message_Menu = function(event) {
                 $scope.chat_message_Opened = !($scope.chat_message_Opened);
                 event.stopPropagation();
             };
 
             window.onclick = function() {
-
                 if ($scope.chat_message_Opened) {
                     $scope.chat_message_Opened = false;
-
                 // You should let angular know about the update that you have made, so that it can refresh the UI
                   $scope.$apply();
                 }
-
             };
             // popup notitications code end
 
             var date = new Date()
-
             this.userId = userId;
             Restangular.one('people', JSON.parse(userId)).get().then(function(user) {
-
-
                 $scope.chatdivnotification = [];
-
                 $rootScope.chatactivity = new ChatActivity(user);
-
                 $rootScope.loadLatestMessages = function(){
-                    console.log('load message')
+                    //console.log('load message')
                     $rootScope.chatactivity.loadLatestMessages();
                 }
-
                 if(user.conversations.length !== 0){
                     $rootScope.chatactivity.getConversations();
                  }
@@ -88,10 +77,10 @@ angular.module('weberApp')
 
                     }
                     else if(user._id != msg.senderid){
-                        console.log('yes from receiver')
+                        //console.log('yes from receiver')
                         // no chat rooms opened push message into latest Notifications
                         if(sessionStorage.getItem(msg.senderid) == null){
-                            console.log('no chat div opened')
+                           // console.log('no chat div opened')
                             $rootScope.chatactivity.pushLatestMessage(msg)
                              $scope.$apply(function(){
                                 $rootScope.chatactivity = $rootScope.chatactivity;
@@ -99,7 +88,7 @@ angular.module('weberApp')
 
                         }
                         else{
-                        console.log('yes chat room opened')
+                        //console.log('yes chat room opened')
                          new_message = {
                                   sender :{
                                     name:{
@@ -139,9 +128,6 @@ angular.module('weberApp')
                             $scope.chatdivnotification.splice(k,1)
                         }
                     }
-                }
-                $scope.testing = function(){
-                    console.log(this.sendmessage)
                 }
                 // sending and pushing message
                 $scope.send_message = function(Recept){
@@ -197,23 +183,11 @@ angular.module('weberApp')
                   return json;
                 }
 
-                // display divs on page load
-                /*function display_divs(){
-                   $rootScope.previous_divs = getData();
-                   var count = 270;
-                   for(k in $rootScope.previous_divs){
-                        $rootScope.previous_divs[k].right = count;
-                        count = count+315;
-                        socket.emit('connect', {data: $rootScope.previous_divs[k].id});
-                   }
-                   $rootScope.previous_divs;
-                }*/
-
-                function loadintodivs(){
+                 function loadintodivs(){
 
                     var chatrooms = getData();
                     for(k in  chatrooms){
-                        console.log(chatrooms[k])
+                        //console.log(chatrooms[k])
                         $rootScope.chatactivity.loadMessages(user._id, chatrooms[k].id, chatrooms[k]);
                    }
 
@@ -222,15 +196,17 @@ angular.module('weberApp')
 
                  // opens new chat room
                  $scope.openchatroom = function(id){
-                    console.log('open chat room')
+
+                    //console.log('open chat room')
+
                     if(!(sessionStorage.getItem(id))){
                         // check room alredy open
 
                         var json = {};
                         Restangular.one('people', id).get({seed: Math.random()})
                         .then(function(data){
-                            console.log('person deatils')
-                            console.log(data)
+                            //console.log('person deatils')
+                            //console.log(data)
                             json = {
                                 name:data.name.first,
                                 id: data._id,
@@ -245,11 +221,12 @@ angular.module('weberApp')
                             socket.emit('connect', {data:id});
                             // load messages into new open chat room
                             $rootScope.chatactivity.loadMessages(user._id, id, json);
-                            console.log($rootScope.chatactivity)
+                            //console.log($rootScope.chatactivity)
                         });
 
                     }
                  }
+
 
                  // closing open div
                  $scope.close_div = function(id){
@@ -279,7 +256,7 @@ angular.module('weberApp')
                     $rootScope.chatactivity.makeMessagesSeen(senderid);
 
                 $scope.loadOlder = function(){
-                    console.log('loading more data')
+                    //console.log('loading more data')
 
                 }               }
 
@@ -298,7 +275,7 @@ angular.module('weberApp')
                     if(user.conversations.indexOf(id) == -1 && user.friends.indexOf(id) == -1){
                         $scope.chatactivity.addToConversations(id);
                     }else{
-                        console.log('alredy added')
+                        //console.log('alredy added')
                     }
                 }
                     //display_divs();

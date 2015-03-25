@@ -43,8 +43,8 @@ for raw_user in users:
     user['notifications'] = []
     user['accept_notifications'] = []
     user['conversations'] = []
-    user['MatchedPeopleNotifications'] = []
     user['MatchedPeopleNotificCount'] = []
+    user['MatchedPeopleNotifications'] = []
     user['password'] = generate_password_hash(user['password'])
     user['role'] = 'test'
     print '----------------------------user-------------------------'

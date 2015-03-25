@@ -55,40 +55,40 @@
 				</h5>
 			</div>
 			<div class="panel-body">
-				<div class="row" style="padding-bottom:13px;">
+				<div class="row" style="padding-bottom:7px;">
 					<div class="col-sm-12">
-						<h5 style="margin-bottom:5px;margin-top:0px;" class="about-edit">
+						<h6 style="margin-bottom:5px;margin-top:0px;line-height:1.6em;" class="about-edit">
 							<i class="fa fa-dashboard" style="opacity:0.65;font-size:12px;"></i>&nbsp;
 							I am interested in:
                             <a ng-repeat="interest in friend.interests"
-                               style="line-height:1.2em;color:;text-decoration:none;">
+                               style="line-height:1.2em;text-decoration:none;">
 								{{ interest }}&nbsp;
 							</a>
-						</h5>
+						</h6>
 					</div>
 				</div>
-				<div class="row" style="padding-bottom:13px;">
+				<div class="row" style="padding-bottom:7px;">
 					<div class="col-sm-12">
-						<h5 style="margin-bottom:5px;margin-top:0px;">
+						<h6 style="margin-bottom:5px;margin-top:0px;line-height:1.6em;">
 							<i class="fa fa-graduation-cap" style="opacity:0.65;font-size:12px;"></i>
 							Studied at:
-                            <a style="line-height:1.2em;color:;text-decoration:none;">
+                            <a style="line-height:1.2em;text-decoration:none;">
 
 									{{ friend.study.graduate }}
 
 							</a>
-						</h5>
+						</h6>
 					</div>
 				</div>
-				<div class="row" style="padding-bottom:13px;">
+				<div class="row" style="padding-bottom:7px;">
 					<div class="col-sm-12">
-						<h5 style="margin-bottom:5px;margin-top:0px;">
+						<h6 style="margin-bottom:5px;margin-top:0px;line-height:1.6em;">
 							<i class="fa fa-home" style="opacity:0.65;font-size:13px;"></i>&nbsp;
 							Lives in:
-                            <a style="line-height:1.2em;color:;text-decoration:none;">
+                            <a style="line-height:1.2em;text-decoration:none;">
 								{{ friend.location.state }}, {{ friend.location.city }}
                             </a>
-						</h5>
+						</h6>
 					</div>
 				</div>
 			</div>
@@ -97,13 +97,13 @@
 			<div class="clearfix panel-heading" style="background-color:#fff;">
                 <h5>
                     <strong>
-                        Friends - <span style="opacity:0.70;">{{profileuser.friends.length}}</span>
+                        Friends - <span style="opacity:0.70;">{{user.friends.length}}</span>
                     </strong>
                 </h5>
 			</div>
 
-			<div class="panel-body" style="padding:1px;">
-                <a ng-repeat="friend in friends | limitTo : 6" href="#/profile/{{friend._id}}">
+            <div class="panel-body" style="padding:1px;">
+                <a ng-repeat="friend in friends " href="#/profile/{{friend._id}}">
                     <img data-placement="top-right" style="width:87px"
                          data-content="{{friend.location.city}}, {{friend.location.state}}"
                          title="{{friend.name.first}} {{friend.name.last}}" data-trigger="hover" bs-popover src="{{friend.picture.thumbnail}}">

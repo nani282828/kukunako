@@ -45,7 +45,7 @@ angular.module('weberApp')
 
 
                 $auth.signup({
-                    email: $scope.formData.email,
+                    email: this.formData.email,
                     password: this.formData.password,
                     firstname: this.formData.firstname,
                     lastname: this.formData.lastname,

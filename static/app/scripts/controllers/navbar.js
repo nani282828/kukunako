@@ -8,7 +8,7 @@
  * Controller of the weberApp
  */
 angular.module('weberApp')
-.directive('navbar', function () {
+.directive('navbardirective', function () {
     return {
         restrict: 'A', //This menas that it will be used as an attribute and NOT as an element. I don't like creating custom HTML elements
         replace: true,
@@ -17,13 +17,20 @@ angular.module('weberApp')
         controller: "navbarcontroller"
   }
 })
-    .controller('navbarcontroller',function($scope, $auth, CurrentUser, $alert,$rootScope,$timeout,
+    .controller('navbarcontroller',function($scope, $auth, CurrentUser, $alert,$rootScope,$timeout,InstanceSearch,
                                             $location,$http,Restangular,ChatActivity, $window,UserService,
                                             CurrentUser1,SearchActivity,FriendsNotific,friendsActivity,$socket) {
     //$scope.data = CurrentUser1;
     /*$timeout(function(){
         console.log($scope.data)
     }, 10000);*/
+    $scope.instancesearch = new InstanceSearch();
+
+    $scope.testingsearch = function(){
+       $scope.instancesearch.getInstancePeoples(this.InstanceSearchQuery)
+        $scope.testing = 'dddddddddddd'
+    }
+
     $scope.UserService = UserService
     $scope.dropdown = [{
         "text": "Settings",
@@ -76,12 +83,12 @@ angular.module('weberApp')
                 $scope.menuOpened = !($scope.menuOpened);
                 event.stopPropagation();
             };
-            console.log($window)
+            //console.log($window)
 
             $window.onclick = function() {
                 if ($scope.menuOpened) {
                   $scope.menuOpened = false;
-                  console.log("------------------------------------------------")
+                  //console.log("------------------------------------------------")
 
                 // You should let angular know about the update that you have made, so that it can refresh the UI
                   $scope.$apply();
@@ -141,28 +148,28 @@ angular.module('weberApp')
 
         function getMatchButtonNotific(currentuser){
             //currentuser.MatchedPeopleNotificCount.length)
-            console.log(currentuser)
+            //console.log(currentuser)
             $scope.MatchButtonNotific = currentuser.MatchedPeopleNotificCount.length;
 
             $scope.MatchButtonNotifications = currentuser.MatchedPeopleNotifications;
 
-            console.log('------------before sort')
-            console.log(currentuser.MatchedPeopleNotifications)
+            //console.log('------------before sort')
+            //console.log(currentuser.MatchedPeopleNotifications)
 
             currentuser.MatchedPeopleNotifications.sort(function(a,b) {
                 return new Date(a.updated_one).getTime() - new Date(b.updated_one).getTime()
             });
 
-            console.log('------------after sort-----')
-            console.log(currentuser.MatchedPeopleNotifications)
+            //console.log('------------after sort-----')
+            //console.log(currentuser.MatchedPeopleNotifications)
         }
 
 
         get_friend_notifications(user);
-        //getMatchButtonNotific(user);
+        getMatchButtonNotific(user);
 
           $socket.on('friendnotifications', function(data){
-            console.log(data)
+            //console.log(data)
             /*if(parseInt(data.searchNotific)){
                 $scope.searchActivity = new SearchActivity(user);
             }*/
@@ -185,61 +192,98 @@ angular.module('weberApp')
             }
 
         });
+        $scope.openchatroom = function(id){
+                    //console.log('open chat room', id)
+                if(!(sessionStorage.getItem(id))){
+                    // check room alredy open
 
-        $scope.getNewNotifcations = function(){
-
-            $scope.newnotific = null;
-            $http.get('/api/me', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': $auth.getToken()
-                }
-            }).success(function(user_id) {
-                Restangular.one('people',JSON.parse(user_id)).get({seed: Math.random()}).then(function(user) {
-
-                        var anotific = [];
-                        var reqnotific = [];
-                        var k = null;
-                        for(k in user.accept_notifications){
-                            user.accept_notifications[k].seen = true
-                            anotific.push(user.accept_notifications[k].accepted_id)
-                        }
-                        k = null;
-                        for(k in user.notifications){
-                            user.notifications[k].seen = true
-                            reqnotific.push(user.notifications[k].friend_id)
+                    var json = {};
+                    Restangular.one('people', id).get({seed: Math.random()})
+                    .then(function(data){
+                        //console.log('person deatils')
+                       // console.log(data)
+                        json = {
+                            name:data.name.first,
+                            id: data._id,
+                            image:data.picture.medium,
+                            minimize:false,
+                            maximize:true,
+                            right:0,
+                            height:'364px'
                         }
 
-                        user.patch(
-                        {	'all_seen':true,
-                            'accept_notifications':user.accept_notifications,
-                            'notifications': user.notifications
-                        }
-                        ).then(function(data){
-                            console.log('updated accept notifications')
-                        });
-                        var params = '{"_id": {"$in":["'+(reqnotific).join('", "') + '"'+']}}'
-                        Restangular.all('people').getList({
-                            where : params,
-                            seed: Math.random()
-                        }).then(function(response){
-                            $scope.rpeoples = response;
-                        });
+                        sessionStorage.setItem(id, JSON.stringify(json));
+                        $socket.emit('connect', {data:id});
+                        // load messages into new open chat room
 
-                        var params = '{"_id": {"$in":["'+(anotific).join('", "') + '"'+']}}'
-                        Restangular.all('people').getList({
-                            where : params,
-                            seed: Math.random()
-                        }).then(function(resposne){
-                            $scope.apeoples = resposne;
-                        });
+                        $rootScope.chatactivity.loadMessages(user._id, id, json);
 
                     });
-                });
-            }
+
+                }
+        }
+
+        $scope.getNewNotifcations = function(){
+            //$scope.MatchButtonNotific = null;
+            if($scope.newnotific || $scope.MatchButtonNotific){
+
+                $scope.newnotific = null;
+                $scope.MatchButtonNotific = null;
+
+                $http.get('/api/me', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': $auth.getToken()
+                    }
+                }).success(function(user_id) {
+                    Restangular.one('people',JSON.parse(user_id)).get({seed: Math.random()}).then(function(user) {
+
+                            var anotific = [];
+                            var reqnotific = [];
+                            var k = null;
+                            for(k in user.accept_notifications){
+                                user.accept_notifications[k].seen = true
+                                anotific.push(user.accept_notifications[k].accepted_id)
+                            }
+                            k = null;
+                            for(k in user.notifications){
+                                user.notifications[k].seen = true
+                                reqnotific.push(user.notifications[k].friend_id)
+                            }
+
+                            user.patch(
+                            {	'all_seen':true,
+                                'accept_notifications':user.accept_notifications,
+                                'notifications': user.notifications,
+                                'MatchedPeopleNotificCount':[]
+                            }
+                            ).then(function(data){
+                                //console.log('updated accept notifications')
+                            });
+
+                            var params = '{"_id": {"$in":["'+(reqnotific).join('", "') + '"'+']}}'
+                            Restangular.all('people').getList({
+                                where : params,
+                                seed: Math.random()
+                            }).then(function(response){
+                                $scope.rpeoples = response;
+                            });
+
+                            var params = '{"_id": {"$in":["'+(anotific).join('", "') + '"'+']}}'
+                            Restangular.all('people').getList({
+                                where : params,
+                                seed: Math.random()
+                            }).then(function(resposne){
+                                $scope.apeoples = resposne;
+                            });
+
+                        });
+                    });
+               }
+         }
 
             $scope.SeenMatchButton = function(){
-                console.log('clicekd')
+               // console.log('clicekd')
 
             }
 

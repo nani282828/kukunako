@@ -8,7 +8,7 @@
  * Controller of the weberApp
  */
 angular.module('weberApp')
-  .controller('InstantsearchCtrl', function ($scope, $routeParams, $location,
+  .controller('InstantsearchCtrl', function ($scope, $routeParams, $location,$rootScope,
                                              Restangular,$http,$auth, InstanceSearch) {
 
   /*$scope.searching = function(){
@@ -55,13 +55,35 @@ angular.module('weberApp')
         }
     } */
 
-    $scope.instancesearch = new InstanceSearch();
-    $scope.InstanceSearchPeoples = function(){
 
-      $scope.instancesearch.getInstancePeoples($scope.InstanceSearchQuery);
+
+    /*$scope.InstanceSearchPeoples = function(){
+
+
+
+      //$scope.$parent.testing = $scope.InstanceSearchQuery;
+      this.testing = $scope.instancesearch;
       //$scope.$apply();
 
-    }
+    }*/
 
 
- });
+ })
+.directive('instancesearch', function ($compile, CurrentUser, Restangular, $routeParams, friendsActivity,$route, InstanceSearch) {
+    return {
+        restrict: 'A',
+        replace: true,
+        link: function ($scope, element, attrs) {},
+        controller:function($scope, $element, $attrs, $transclude){
+            $scope.instancesearch = new InstanceSearch();
+            $scope.InstanceSearchPeoples = function() {
+
+                $scope.instancesearch.getInstancePeoples($scope.InstanceSearchQuery)
+                console.log($scope.instancesearch)
+                $scope.testing = 'dddddddddddcccccccccccddd'
+
+            }
+        }
+
+    };
+});

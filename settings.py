@@ -308,41 +308,47 @@ people = {
         'notifications': {
             'type': 'list',
             'schema': {
-                'friend_requests': {
-                    'type': 'dict',
-                    'schema': {
+                'type':'dict',
+                'schema':{
+                    'friend_id': {
                         'type': 'objectid',
                         #'unique': True,
                         'data_relation': {
                             'resource': 'people',
                             'embeddable': True
-                        },
-                        'seen': {
-                            'type': 'boolean',
-                            'default': False
                         }
+                    },
+                    'seen': {
+                        'type': 'boolean',
+                        'default': False
+                    },
+                    'daterequest':{
+                        'type':'string'
+                    },
+                    'timestamp':{
+                        'type':'integer'
                     }
-                },
+                }
 
-            },
+            }
         },
 
         'accept_notifications': {
             'type': 'list',
             'schema': {
-                'accepted_id': {
-                    'type': 'dict',
-                    'schema': {
+                'type':'dict',
+                'schema':{
+                    'accepted_id': {
                         'type': 'objectid',
                         #'unique': True,
                         'data_relation': {
                             'resource': 'people',
                             'embeddable': True
-                        },
-                        'seen': {
-                            'type': 'boolean',
-                            'default': False
                         }
+                    },
+                    'seen': {
+                        'type': 'boolean',
+                        'default': False
                     }
                 },
 
@@ -360,9 +366,32 @@ people = {
             }
         },
 
-        'matchedpeoplenotificcount':{
-            'type': 'list'
+        'MatchedPeopleNotificCount':{
+            'type': 'list',
+
+            'schema':{
+                'type':'dict',
+                'postid':{
+                    'type': 'objectid',
+                        #'unique': True,
+                        'data_relation': {
+                             'resource': 'posts',
+                             'embeddable': True
+                        }
+                },
+
+                'authorid':{
+                    'type': 'objectid',
+                        #'unique': True,
+                    'data_relation': {
+                        'resource': 'people',
+                        'embeddable': True
+                    }
+                }
+
+            }
         },
+
 
 
 
@@ -384,7 +413,7 @@ people = {
                     'type':'list'
                 },
 
-                'seen': {
+                'updated_one': {
                    'type': 'boolean',
                    'default': False
                 }

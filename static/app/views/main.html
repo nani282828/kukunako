@@ -116,6 +116,7 @@
              infinite-scroll-distance='0' infinite-scroll-container="'#userposts'">
 
 			<div class="media panel panel-default" ng-repeat="post in infinitePosts.posts">
+
 				<div class="panel-heading post-div" style="background-color:#fff;border-bottom:1px solid #F2F2F2;">
 					<a class="pull-left" style="padding: 5px;" href="#/profile/{{UserService.get(post.author)._id}}">
 						<img style="width:35px" class="media-object img-circle" src="{{UserService.get(post.author).picture.thumbnail}}" alt="">
@@ -152,25 +153,30 @@
                             </p>
                         </div>
                     </div>
-                    <!--<div class="row">
+                    <div class="row">
                         <div class="col-sm-12">
                             <h6>
-                                <a ng-click="MatchAgree('{{ post._id }}','{{ post.author }}')" style="cursor:pointer;">
+
+
+
+                                <a ng-if="!(MatchButtonService.checkMatchUnMatch(post._id))"
+                                   ng-click="MatchAgreeDirective('{{ post._id }}','{{ post.author }}');UserService.PushToIList(post.author,post._id)"
+                                   style="cursor:pointer" matchbuttondirective>
                                     Match
                                 </a>&nbsp;
 
-                                <a ng-click="MatchDisAgree('{{ post._id }}','{{ post.author }}')" style="cursor:pointer;">
+                                <a ng-if="MatchButtonService.checkMatchUnMatch(post._id)"
+                                   ng-click="MatchDisAgreeDirective('{{ post._id }}','{{ post.author }}');UserService.deleteFromIList(post.author,post._id)"
+                                   style="cursor:pointer" matchbuttondirective >
                                     UnMatch
                                 </a>&nbsp;
 
-                                <a href="">
-                                    Comments
-                                </a>
+
                             </h6>
                         </div>
-                    </div>-->
+                    </div>
                 </div>
-                <!--<div class="panel-footer"
+                <div class="panel-footer"
                      style="padding-top:5px;background-color:#fff;border:1px solid #FCF8F8;">
                     <div class="row">
                         <div class="col-sm-12">
@@ -178,13 +184,30 @@
                                 <a style="text-decoration:none;cursor:pointer;" alt="Match this post">
                                     <i class="fa fa-slideshare" style="font-size:14px;"></i>&nbsp;
                                 </a>
-                                <a href="">
-                                    Surya Muppalla
+                                <a href="" ng-repeat="matchPeople in UserService.get(post.author).MatchedPeopleNotifications">
+
+                                    <span ng-if="matchPeople.postid == post._id ">
+                                         {{ $index }}<br/>
+                                         {{ matchPeople }} === {{ post._id }}
+
+                                        <span ng-repeat="temp in sortIListService.sendList(matchPeople.interestedList)">
+                                            <span ng-if="user._id == temp">
+                                                you
+                                            </span>
+                                            <span ng-if="user._id != temp">
+                                                {{ UserService.get(temp).name.first }}
+                                            </span>
+                                        </span>
+                                    </span>
+
                                 </a>
+                                <span ng-if="!(sortIListService.sendList(matchPeople.interestedList).length)">0</span>
+                                 matched with this post
+
                             </h6>
                         </div>
                     </div>
-                </div>-->
+                </div>
 			</div>
 			<div ng-show='infinitePosts.busy'>Loading data...</div>
 			<div ng-show='infinitePosts.end'>You Reached the end!</div>
