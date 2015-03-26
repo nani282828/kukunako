@@ -159,13 +159,13 @@
 
 
 
-                                <a ng-if="!(MatchButtonService.checkMatchUnMatch(post._id))"
+                                <a ng-if="!(MatchButtonService.checkMatchUnMatch(post._id, user))"
                                    ng-click="MatchAgreeDirective('{{ post._id }}','{{ post.author }}');UserService.PushToIList(post.author,post._id)"
                                    style="cursor:pointer" matchbuttondirective>
                                     Match
                                 </a>&nbsp;
 
-                                <a ng-if="MatchButtonService.checkMatchUnMatch(post._id)"
+                                <a ng-if="MatchButtonService.checkMatchUnMatch(post._id, user)"
                                    ng-click="MatchDisAgreeDirective('{{ post._id }}','{{ post.author }}');UserService.deleteFromIList(post.author,post._id)"
                                    style="cursor:pointer" matchbuttondirective >
                                     UnMatch
@@ -185,10 +185,8 @@
                                     <i class="fa fa-slideshare" style="font-size:14px;"></i>&nbsp;
                                 </a>
                                 <a href="" ng-repeat="matchPeople in UserService.get(post.author).MatchedPeopleNotifications">
+                                    <span ng-if="matchPeople.postid == post._id">
 
-                                    <span ng-if="matchPeople.postid == post._id ">
-                                         {{ $index }}<br/>
-                                         {{ matchPeople }} === {{ post._id }}
 
                                         <span ng-repeat="temp in sortIListService.sendList(matchPeople.interestedList)">
                                             <span ng-if="user._id == temp">

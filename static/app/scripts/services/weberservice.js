@@ -109,7 +109,7 @@ angular.module('weberApp')
 		            userNotifications[temp].interestedList.splice(userNotifications[temp].interestedList.indexOf(userId),1)
 		        }
 		    }
-		    console.log('user==>',this.get(userId))
+		    //console.log('user==>',this.get(userId))
 		}
 
 		this.PushToIList = function(userId,postId){
@@ -126,16 +126,16 @@ angular.module('weberApp')
 	})
 	.service('MatchButtonService', function($http, Restangular, CurrentUser1) {
 
-		this.checkMatchUnMatch = function(postid) {
-            var notifications = CurrentUser1.user.MatchedPeopleNotifications;
+		this.checkMatchUnMatch = function(postid, user) {
 
+            var notifications = user.MatchedPeopleNotifications;
             for(var i in notifications){
                 //console.log(notifications, postid)
                 if(notifications[i].postid == postid){
 
                     for(var temp in notifications[i].interestedList){
 
-                        if(notifications[i].interestedList[temp] == CurrentUser1.user._id){
+                        if(notifications[i].interestedList[temp] == vuser._id){
                             //console.log('yes')
                             return true;
                         }else{
@@ -179,8 +179,7 @@ angular.module('weberApp')
 
 	}).service('sortIListService', function($http, Restangular,CurrentUser1) {
 		this.sendList = function(list){
-		    console.log('list===>', list)
-		    if(list.length){
+		    if(list && list.length){
 		        for(var temp in list){
     		       if(list[temp] == CurrentUser1.user._id){
                         list.push(list.splice( temp, 1 )[0]);
@@ -197,6 +196,7 @@ angular.module('weberApp')
 		this.reset = function() {
 			this.userId = null;
 		};
+
 		if (this.userId === null) {
 			$http.get('/api/me', {
 				headers: {
