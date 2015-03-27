@@ -8,7 +8,7 @@ import json
 import time
 
 print '---------------------------------fetching users-----------------------'
-url = 'http://127.0.0.1:8000/api/people'
+url = 'http://weber.ooo/api/people'
 randomuser = urllib2.urlopen('http://api.randomuser.me/?results=10&seed='+str(random.randrange(0, 101, 2)))
 results = json.loads(randomuser.read())
 users=results['results']

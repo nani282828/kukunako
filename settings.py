@@ -371,6 +371,7 @@ people = {
 
             'schema':{
                 'type':'dict',
+
                 'postid':{
                     'type': 'objectid',
                         #'unique': True,
@@ -378,15 +379,16 @@ people = {
                              'resource': 'posts',
                              'embeddable': True
                         }
-                },
+                }
 
-                'authorid':{
-                    'type': 'objectid',
+                #'authorid':{
+                #    'type': 'objectid',
                         #'unique': True,
-                    'data_relation': {
-                        'resource': 'people',
-                        'embeddable': True
-                    }
+                #    'data_relation': {
+                #        'resource': 'people',
+
+                #        'embeddable': True
+                #    }
                 }
 
             }
