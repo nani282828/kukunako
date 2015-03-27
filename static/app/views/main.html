@@ -100,6 +100,7 @@
 				</div>
 			</div>
 		</form>
+
 		<div ng-if="!(infinitePosts.posts.length)" class="well clearfix" style="background-color:#fff;">
 			<div class="row">
 				<div class="col-sm-12">
@@ -142,10 +143,38 @@
                     <div ng-if="post.post_image_path" class="row">
 						<div class="col-sm-12" style="padding:0px;">
 							<div class="thumbnail" style="border:0px solid;">
-								<img src="{{ post.post_image_path }}">
+								<img src="{{ post.post_image_path }}" style="cursor:pointer;"
+                                         data-toggle="modal" data-target="#{{ post._id }}">
 							</div>
 						</div>
 					</div>
+
+                    <div id="{{ post._id }}" class="modal fade bs-example-modal-lg"
+                     style="background-color:rgba(0, 0, 0, 0.81);" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4>Image</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="thumbnail" style="border:0px solid;">
+                                                <img src="{{ post.post_image_path }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                     <div class="row" style="padding-bottom:5px;">
                         <div class="col-sm-12">
                             <p>
@@ -206,6 +235,8 @@
                         </div>
                     </div>
                 </div>
+
+
 			</div>
 			<div ng-show='infinitePosts.busy'>Loading data...</div>
 			<div ng-show='infinitePosts.end'>You Reached the end!</div>
