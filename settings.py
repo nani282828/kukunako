@@ -367,9 +367,9 @@ people = {
         },
 
         'MatchedPeopleNotificCount':{
-            'type': 'list',
+            'type': 'list'
 
-            'schema':{
+            """'schema':{
                 'type':'dict',
 
                 'postid':{
@@ -390,7 +390,7 @@ people = {
                     }
                 }
 
-            }
+            }"""
         },
 
 
