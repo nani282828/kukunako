@@ -82,6 +82,25 @@ posts_schema = {
 
     }
 
+interests_schema = {
+
+        'author': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                     'resource': 'people',
+                     'field': '_id',
+                     'embeddable': True
+            },
+        },
+        'similarWordsOfInterests': {
+            'type': 'list',
+        },
+        'interests': {
+            'type': 'list',
+        },
+}
+
 searchActivity_schema = {
         'content': {
             'type': 'string',
@@ -431,6 +450,13 @@ posts = {
     #'url' : 'posts',
 }
 
+interests = {
+    'item_title': 'interests',
+    'schema': interests_schema,
+    #'url': 'people/posts/<regex("[a-f0-9]{24}"):author>',
+    #'url' : 'posts',
+}
+
 searchActivity = {
     'item_title': 'searchActivity',
     'schema' : searchActivity_schema,
@@ -473,6 +499,7 @@ DOMAIN = {
     'items':items,
     'people': people,
     'posts': posts,
+    'peopleInterests': interests,
     'searchActivity': searchActivity,
     'people_searchActivity':people_searchActivity,
     'people_posts':people_posts,

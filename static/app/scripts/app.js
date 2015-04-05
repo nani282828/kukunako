@@ -49,6 +49,10 @@ angular
         };
     }])*/
 
+   .config(["$socketProvider", function ($socketProvider) {
+      $socketProvider.setUrl("http://127.0.0.1:8000");
+    }])
+
 	.config(['RestangularProvider',
 		function(RestangularProvider) {
 			// point RestangularProvider.setBaseUrl to your API's URL_PREFIX

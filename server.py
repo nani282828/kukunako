@@ -202,8 +202,8 @@ def getSearchResults():
 @app.route('/similarwords')
 def getSimilarWords():
 
-    words = parse_sentence(request.args.get("new_post"))
-    post_tokens = create_tokens(request.args.get("new_post"))
+    words = parse_sentence(request.args.get("querystring"))
+    post_tokens = create_tokens(request.args.get("querystring"))
     keywords = set(list(post_tokens)+list(words))
     return json.dumps(list(set(keywords)))
 
@@ -497,7 +497,7 @@ def join_into_room(id):
 
 
 app.threaded=True
-socketio.run(app, host='192.168.0.101', port=8000)
+socketio.run(app, host='127.0.0.1', port=8000)
 
 # server sent events section
 """from redis import Redis

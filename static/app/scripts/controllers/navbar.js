@@ -68,9 +68,6 @@ angular.module('weberApp')
                 console.log(data)
             });
 
-
-
-
         // popup notifications code
             $scope.menuOpened = false;
             $scope.notificationOpened = false;

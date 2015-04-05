@@ -75,7 +75,9 @@
             <!--</form>-->
         </div>
 
-
+        <div ng-if="matchResults.saResultsNotFound && matchResults.mResultsNotFound && searched" ng-init="getSuggestedPeople()">
+            no results found but these peoples can help you...
+        </div>
         <div class="row" style="padding-top:50px;" infinite-scroll='matchResults.nextPage()'
                                      infinite-scroll-disabled='matchResults.busy'
                                      infinite-scroll-distance='0'
@@ -131,6 +133,10 @@
 
 
     </div>
+    <div ng-if="searched">
+        1) talk and clear your doubts without thinking about egoo
+    </div>
+    {{ matchResults.saResultsNotFound }} {{ matchResults.mResultsNotFound }} {{ searched }}
 
     <!--col-sm-4 starts-->
         <div ng-if="!(isAuthenticated())" class="col-sm-12 col-md-12 col-lg-4 pull-right" style="padding-top:140px;">

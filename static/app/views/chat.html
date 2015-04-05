@@ -148,10 +148,7 @@
 					<div class="panel-collapse" id="collapseOne">
 						<div class="panel-body"   style="height:270px;overflow:auto;background-color:#f2f2f2;"  id="{{ chatroom.id }}" scroll>
 							<ul class="chat"  >
-
-
                                 <div ng-repeat="message in chatroom.messages | reverse">
-
                                     <li
                                         ng-if="message.sender._id == chatroom.id" scrollitem
                                         class=" left clearfix"  >
@@ -171,8 +168,7 @@
                                             </p>
                                         </div>
                                     </li>
-                                    <li ng-if="message.receiver._id == chatroom.id"  class=" right clearfix" scrollitem
-                                        >
+                                    <li ng-if="message.receiver._id == chatroom.id"  class=" right clearfix" scrollitem>
                                         <!--<span class="chat-img pull-right">
                                             <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
                                         </span>-->
@@ -190,10 +186,7 @@
                                         </div>
                                     </li>
                                 </div>
-
-
-							</ul>
-
+    						</ul>
 						</div>
 						<div class="panel-footer" style="padding:10px 15px;">
 							<div class="row">
@@ -207,11 +200,6 @@
 						</div>
 					</div>
 				</div>
-
         </div>
-
-
-
     </div>
-
 </div>

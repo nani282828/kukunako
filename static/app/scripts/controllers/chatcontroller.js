@@ -1,5 +1,5 @@
 angular.module('weberApp')
-.controller('chatbarcontroller', function($scope, $auth, CurrentUser1,
+.controller('chatbarcontroller', function($scope, $auth, CurrentUser1,$socket,
                                           $http,$rootScope,SearchActivity,FriendsNotific,
                                           $document, Restangular,ChatActivity){
 
@@ -53,20 +53,20 @@ angular.module('weberApp')
                     $rootScope.chatactivity.getChatFriends();
                  }
 
-                var socket = io.connect('http://127.0.0.1:8000');
+                //var socket = io.connect('http://127.0.0.1:8000');
 
-                socket.on('connect', function() {
-                    socket.emit('connect', {data: user._id});
+                $socket.on('connect', function() {
+                    $socket.emit('connect', {data: user._id});
                 });
 
 
-                socket.on('join_status', function(msg) {
+                $socket.on('join_status', function(msg) {
                     if(msg.data){
                         console.log('successfully joined into room');
                     }
                 });
 
-                socket.on('receive_messages', function(msg) {
+                $socket.on('receive_messages', function(msg) {
 
                     console.log('message received')
                     new_message = {}
@@ -82,6 +82,7 @@ angular.module('weberApp')
                         if(sessionStorage.getItem(msg.senderid) == null){
                            // console.log('no chat div opened')
                             $rootScope.chatactivity.pushLatestMessage(msg)
+                            console.log('pushed message.........')
                              $scope.$apply(function(){
                                 $rootScope.chatactivity = $rootScope.chatactivity;
                           });
@@ -113,9 +114,11 @@ angular.module('weberApp')
 
 
                           $rootScope.chatactivity.pushMessage(msg.senderid, new_message);
-                          $scope.$apply(function(){
-                            $rootScope.chatactivity.messages = $rootScope.chatactivity.messages;
-                          });
+                          console.log('elese message pushed')
+
+                          //$scope.$apply(function(){
+                            //$rootScope.chatactivity.messages = $rootScope.chatactivity.messages;
+                          //});
 
                          msg = null;
                          }
@@ -158,7 +161,7 @@ angular.module('weberApp')
 
                         //$scope.chatactivity.messages = data;
 
-                        socket.emit('send_message', {receiverid: Recept, senderid :user._id  ,message: text});
+                        $socket.emit('send_message', {receiverid: Recept, senderid :user._id  ,message: text});
                         $rootScope.chatactivity.sendMessage(Recept, text);
                     }else{
                         return false;
@@ -176,16 +179,27 @@ angular.module('weberApp')
                 }
 
                 var getData = function(){
+                  console.log('---------session data--------')
+                  console.log(sessionStorage)
+
                   var json = [];
+
                   $.each(sessionStorage, function(i, v){
-                     json.push(angular.fromJson(v));
+                    if(sessionStorage.hasOwnProperty(i)){
+                        console.log('attrib==>', i ,'value==>',v)
+                        json.push(angular.fromJson(v));
+                     }
                   });
+
+                  console.log(json)
                   return json;
                 }
 
                  function loadintodivs(){
 
                     var chatrooms = getData();
+
+                    console.log('chat room opened previously', chatrooms)
                     for(k in  chatrooms){
                         //console.log(chatrooms[k])
                         $rootScope.chatactivity.loadMessages(user._id, chatrooms[k].id, chatrooms[k]);
@@ -218,7 +232,7 @@ angular.module('weberApp')
                             }
 
                             sessionStorage.setItem(id, JSON.stringify(json));
-                            socket.emit('connect', {data:id});
+                            $socket.emit('connect', {data:id});
                             // load messages into new open chat room
                             $rootScope.chatactivity.loadMessages(user._id, id, json);
                             //console.log($rootScope.chatactivity)

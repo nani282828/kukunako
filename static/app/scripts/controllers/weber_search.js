@@ -12,6 +12,8 @@ angular.module('weberApp')
 	 										InfinitePosts, $alert, $http,$location,$socket,
 	 										CurrentUser, UserService,CurrentUser1,$rootScope,
 	 										SearchActivity, $routeParams, MatchMeResults) {
+	 	$scope.searched = false;
+	 	$scope.searchBusy = false;
 
 	 	/* login functionality code goes here*/
         $scope.submitLogin = function() {
@@ -119,6 +121,7 @@ angular.module('weberApp')
         $scope.query = $routeParams.query;
 
         $scope.matchResults = new MatchMeResults($routeParams.query);
+        $scope.matchResults.newSearchResults();
 
         store_search_text($routeParams.query);
 
@@ -172,15 +175,27 @@ angular.module('weberApp')
         $scope.showNoResults = false;
 
         $scope.perfomSearch = function(){
+
+            $scope.searched = true;
+
             if($scope.query && ($routeParams.query == $scope.query)){
                 //$scope.matchResults = new MatchMeResults($scope.query);
             }else if($scope.query){
+
                 $location.search('query', $scope.query);
+
                 $scope.matchResults = new MatchMeResults($scope.query);
+                $scope.matchResults.newSearchResults();
+
                 store_search_text($scope.query);
             }
             else{}
          }
+
+        $scope.getSuggestedPeople = function(){
+            $scope.matchResults = new MatchMeResults($scope.query);
+            $scope.matchResults.getSuggestedPeople();
+        }
 
            $scope.openchatroom = function(id){
                     console.log('open chat room')

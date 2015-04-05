@@ -14,6 +14,8 @@ angular.module('weberApp')
 			return $sce.trustAsHtml(text);
 		};
 	})
+
+
 	.factory('InstanceSearch', function($http, Restangular, $alert, $timeout) {
 
 		var InstanceSearch = function() {
@@ -135,7 +137,7 @@ angular.module('weberApp')
 
                     for(var temp in notifications[i].interestedList){
 
-                        if(notifications[i].interestedList[temp] == vuser._id){
+                        if(notifications[i].interestedList[temp] == user._id){
                             //console.log('yes')
                             return true;
                         }else{
@@ -576,7 +578,7 @@ angular.module('weberApp')
             return $http({
                        url: '/similarwords',
                        method: "GET",
-                       params: {new_post: sentence }
+                       params: {queryString: sentence }
             });
 		}
 
@@ -586,7 +588,8 @@ angular.module('weberApp')
 
     return SearchActivity;
 
-	}).factory('MatchMeResults', function($http, Restangular, $alert, $timeout,CurrentUser,$auth,CurrentUser1) {
+	})
+	.factory('MatchMeResults', function($http, Restangular, $alert, $timeout,CurrentUser,$auth,CurrentUser1) {
 
         function combine_ids(ids) {
    				return (ids.length ? "\"" + ids.join("\",\"") + "\"" : "");
@@ -612,6 +615,8 @@ angular.module('weberApp')
 		var  MatchMeResults = function(query) {
 
 			this.total_matches = 0;
+			this.mResultsNotFound = false;
+			this.saResultsNotFound = false;
 			this.mresults = [];
 			this.matchedids = [];
 			this.totalNames = '';
@@ -626,9 +631,13 @@ angular.module('weberApp')
             this.sPage = 1;
             this.sEnd = false;
             this.sBusy = true;
+        };
+
+        MatchMeResults.prototype.newSearchResults = function(){
+
 
             if(this.query){
-                keywords = combine_ids(this.query.split(" "));
+                var keywords = combine_ids(this.query.split(" "));
                 var self = this;
                 this.param1 = '{"$or":[{"keywords": {"$in":['+keywords+']}},{"content":{"$regex":".*'+this.query+'.*"}}]}';
 			    this.param2 = '{"author":1}';
@@ -644,10 +653,12 @@ angular.module('weberApp')
                    if (data.length < 70) {
                         self.end = true;
     			   }
+    			   if(data.length == 0){
+    			        self.mResultsNotFound = true;
+    			   }
                    self.mresults.push.apply(self.mresults,data);
 
                    self.mresults = removeDuplicateResults(self.mresults);
-
                    self.total_matches = data.length;
                    self.page = self.page + 1;
                    self.busy = false;
@@ -667,16 +678,19 @@ angular.module('weberApp')
                    if (data.length < 70) {
                         this.sEnd = true;
     			   }
+
+    			   if(data.length == 0){
+    			       self.saResultsNotFound = true;
+    			   }
+
                    this.mresults.push.apply(this.mresults,data);
                    self.mresults = removeDuplicateResults(self.mresults);
                    this.total_matches = this.total_matches+data.length;
                    this.sPage = this.sPage + 1;
                    this.sBusy = false;
 				}.bind(this));
-
-
             }
-		};
+ 		};
 
 
 
@@ -780,7 +794,11 @@ angular.module('weberApp')
 					this.totalNames = data.length;
 					this.searchNames.push.apply(this.searchNames,data);
 				}.bind(this));
-			};
+		};
+
+		MatchMeResults.prototype.getSuggestedPeople = function(){
+
+		}
 
 		return MatchMeResults;
 	});
