@@ -1,7 +1,5 @@
 import os
 
-
-
 if os.environ.get('PORT'):
 # We're hosted on Heroku! Use the MongoHQ sandbox as our backend.+ 
     MONGO_HOST = '10.240.115.93'
@@ -93,9 +91,11 @@ interests_schema = {
                      'embeddable': True
             },
         },
+
         'similarWordsOfInterests': {
             'type': 'list',
         },
+
         'interests': {
             'type': 'list',
         },
@@ -309,6 +309,14 @@ people = {
                 'type': 'string',
             }
         },
+
+        'interestsimilarwords':{
+            'type':'list',
+            'schema': {
+                'type': 'string',
+            }
+        },
+
         'movies':{
             'type':'list',
             'schema': {
@@ -410,9 +418,6 @@ people = {
 
             }
         },
-
-
-
 
         'MatchedPeopleNotifications': {
             'type': 'list',

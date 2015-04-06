@@ -45,27 +45,38 @@ angular.module('weberApp')
                 console.log("hai")
                 if (this.formData.gender) {
 
-
-                $auth.signup({
-                    email: this.formData.email,
-                    password: this.formData.password,
-                    firstname: this.formData.firstname,
-                    lastname: this.formData.lastname,
-                    username: this.formData.firstname + this.formData.lastname,
-                    gender: this.formData.gender
-                }).then(function (response) {
-                    //console.log(response.data);
-                    $location.path('/email_details/' + $scope.formData.email);
-                }, function (signuperror) {
-                    $scope.signUpError = signuperror;
-                    $alert({
-                        title: 'Registration Failed:',
-                        content: error.data.error,
-                        placement: 'top',
-                        type: 'danger',
-                        show: true
+                var self = this;
+                var interests = ['cricket', 'football', 'soccer']
+                 $http.get('/api/similarwords',
+                    {
+                        headers:{'Content-Type':'application/json'},
+                        params : {querystring: 'work'}
+                    }).success(function(interestsSimilarWords) {
+                        console.log('successdata', interestsSimilarWords)
+                        var data = ['d','i','dd']
+                        $auth.signup({
+                            email: self.formData.email,
+                            password: self.formData.password,
+                            firstname: self.formData.firstname,
+                            lastname: self.formData.lastname,
+                            username: self.formData.firstname + self.formData.lastname,
+                            gender: self.formData.gender,
+                            interests: interests,
+                            interestsimilarwords: interestsSimilarWords
+                        }).then(function (response) {
+                            console.log('response data', response.data);
+                            $location.path('/email_details/' + self.formData.email);
+                        }, function (signuperror) {
+                            $scope.signUpError = signuperror;
+                            $alert({
+                                title: 'Registration Failed:',
+                                content: signuperror.data.error,
+                                placement: 'top',
+                                type: 'danger',
+                                show: true
+                            });
+                        });
                     });
-                });
             }else{
                     $scope.gendererror = true;
                 }
@@ -82,13 +93,9 @@ angular.module('weberApp')
             $scope.openchatroom = function(id){
                     console.log('open chat room', id)
                 if(!(sessionStorage.getItem(id))){
-                    // check room alredy open
-
                     var json = {};
                     Restangular.one('people', id).get({seed: Math.random()})
                     .then(function(data){
-                        console.log('person deatils')
-                        console.log(data)
                         json = {
                             name:data.name.first,
                             id: data._id,
@@ -118,13 +125,13 @@ angular.module('weberApp')
    				return (ids.length ? "\"" + ids.join("\",\"") + "\"" : "");
 		}
 
-        $scope.query = $routeParams.query;
-
-        $scope.matchResults = new MatchMeResults($routeParams.query);
-        $scope.matchResults.newSearchResults();
-
-        store_search_text($routeParams.query);
-
+        if($routeParams.query){
+            $scope.query = $routeParams.query;
+            $scope.matchResults = new MatchMeResults($routeParams.query);
+            $scope.matchResults.newSearchResults();
+            store_search_text($routeParams.query);
+            $scope.searched=true;
+        }
         function store_search_text(searchText){
             if(!($scope.user) && searchText){
                 console.log('no user and yes search text')
@@ -183,7 +190,6 @@ angular.module('weberApp')
             }else if($scope.query){
 
                 $location.search('query', $scope.query);
-
                 $scope.matchResults = new MatchMeResults($scope.query);
                 $scope.matchResults.newSearchResults();
 

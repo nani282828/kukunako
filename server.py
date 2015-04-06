@@ -199,9 +199,10 @@ def getSearchResults():
     else:
         return "none"
 
-@app.route('/similarwords')
+@app.route('/api/similarwords')
 def getSimilarWords():
-
+    print '----------------'
+    print request.args.get('querystring')
     words = parse_sentence(request.args.get("querystring"))
     post_tokens = create_tokens(request.args.get("querystring"))
     keywords = set(list(post_tokens)+list(words))
@@ -250,10 +251,13 @@ def signup():
                 'street' : ""
             },
             'friends' : [],
-            'notifications':[]
+            'notifications':[],
+            'interests': request.json['interests'],
+            'interestsimilarwords': request.json['interestsimilarwords']
         }
 
-        accounts.insert(user)
+        data = accounts.insert(user)
+        print '----------signup etag-----------'
         user_id = str(user['_id'])
         user_random_string = str(user['random_string'])
 

@@ -75,7 +75,7 @@ angular.module('weberApp')
 
                      if($scope.new_post) {
                         $http({
-                            url: '/similarwords',
+                            url: '/api/similarwords',
                             method: "GET",
                             params: {querystring: $scope.new_post}
                         })

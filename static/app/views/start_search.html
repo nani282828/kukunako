@@ -76,8 +76,9 @@
         </div>
 
         <div ng-if="matchResults.saResultsNotFound && matchResults.mResultsNotFound && searched" ng-init="getSuggestedPeople()">
-            no results found but these peoples can help you...
+
         </div>
+        <dvi ng-if="matchResults.suggestpeople">no results found but these peoples can help you...</dvi>
         <div class="row" style="padding-top:50px;" infinite-scroll='matchResults.nextPage()'
                                      infinite-scroll-disabled='matchResults.busy'
                                      infinite-scroll-distance='0'
@@ -90,6 +91,7 @@
                       <img class="media-object" style="width:50px;border-radius:4px;" src="{{rs.author.picture.medium}}" alt="...">
                     </a>
                   </div>
+
                   <div class="media-body">
                     <h5 class="media-heading" style="font-family: 'Open sans',Arial,sans-serif;">
                         <strong>{{rs.author.name.first}}</strong>
@@ -134,9 +136,9 @@
 
     </div>
     <div ng-if="searched">
-        1) talk and clear your doubts without thinking about egoo
+        1) text about how to search in weber
     </div>
-    {{ matchResults.saResultsNotFound }} {{ matchResults.mResultsNotFound }} {{ searched }}
+
 
     <!--col-sm-4 starts-->
         <div ng-if="!(isAuthenticated())" class="col-sm-12 col-md-12 col-lg-4 pull-right" style="padding-top:140px;">

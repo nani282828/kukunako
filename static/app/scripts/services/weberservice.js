@@ -576,9 +576,9 @@ angular.module('weberApp')
 
 		SearchActivity.prototype.getSimilarWords = function(sentence){
             return $http({
-                       url: '/similarwords',
+                       url: '/api/similarwords',
                        method: "GET",
-                       params: {queryString: sentence }
+                       params: {querystring: sentence }
             });
 		}
 
@@ -615,8 +615,10 @@ angular.module('weberApp')
 		var  MatchMeResults = function(query) {
 
 			this.total_matches = 0;
+
 			this.mResultsNotFound = false;
 			this.saResultsNotFound = false;
+
 			this.mresults = [];
 			this.matchedids = [];
 			this.totalNames = '';
@@ -631,6 +633,7 @@ angular.module('weberApp')
             this.sPage = 1;
             this.sEnd = false;
             this.sBusy = true;
+            this.suggestpeople = false;
         };
 
         MatchMeResults.prototype.newSearchResults = function(){
@@ -655,6 +658,7 @@ angular.module('weberApp')
     			   }
     			   if(data.length == 0){
     			        self.mResultsNotFound = true;
+
     			   }
                    self.mresults.push.apply(self.mresults,data);
 
@@ -681,6 +685,7 @@ angular.module('weberApp')
 
     			   if(data.length == 0){
     			       self.saResultsNotFound = true;
+
     			   }
 
                    this.mresults.push.apply(this.mresults,data);
@@ -784,8 +789,8 @@ angular.module('weberApp')
 			}.bind(self));
 		};
 
-
 		MatchMeResults.prototype.getMatchPeoples = function(searchText) {
+
 			var params = '{"$or":[{"name.first":{"$regex":".*'+searchText+'.*"}},{"name.last":{"$regex":".*'+searchText+'.*"}},'+
 			             '{"username":{"$regex":".*'+searchText+'.*"}}]}';
 			Restangular.all('people').getList({
@@ -794,9 +799,44 @@ angular.module('weberApp')
 					this.totalNames = data.length;
 					this.searchNames.push.apply(this.searchNames,data);
 				}.bind(this));
+
 		};
 
 		MatchMeResults.prototype.getSuggestedPeople = function(){
+            //var data =
+            //console.log('this query splited==>', data);
+            function combine_ids(ids) {
+   			    return (ids.length ? "\"" + ids.join("\",\"") + "\"" : "");
+		    }
+            var param = '{"interestsimilarwords":{"$in":['+combine_ids(this.query.split(" "))+']}}';
+            Restangular.all("people").getList({
+					where: param,
+					seed : Math.random()
+			}).then(function(data){
+			        this.suggestpeople = true;
+					//this.total_matches = data.length;
+					var tempresutls = [];
+					this.mresults.push.apply(this.mresults,data);
+
+					for(var temp in this.mresults){
+					    var author = {
+					        author:{
+                                name:{
+                                    first:this.mresults[temp].name.first,
+                                    last: this.mresults[temp].name.last,
+                                },
+                                _id:this.mresults[temp]._id,
+                                picture:{
+                                    medium:this.mresults[temp].picture.medium
+                                }
+                            }
+					    }
+					    tempresutls.push(author)
+
+					}
+
+					this.mresults = tempresutls;
+			}.bind(this));
 
 		}
 
