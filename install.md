@@ -60,3 +60,8 @@ gevent-websocket==0.9.2
 greenlet==0.4.2
 
 ujson==1.33
+
+
+socketio reference from here
+============================
+http://flask-socketio.readthedocs.org/en/latest/#flask.ext.socketio.SocketIO.run

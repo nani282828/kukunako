@@ -15,7 +15,10 @@ angular.module('weberApp')
 		};
 	})
 
+    /*.factory('socket', function(){
+        var socket =
 
+    })*/
 	.factory('InstanceSearch', function($http, Restangular, $alert, $timeout) {
 
 		var InstanceSearch = function() {
