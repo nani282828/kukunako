@@ -12,6 +12,26 @@ angular.module('weberApp')
 	    function($route, $location, $scope, $auth, Restangular, InfinitePosts, $alert, $http, CurrentUser, UserService) {
 
 
+
+        //ng-tags-input code for tags style interests
+            $scope.tags = [
+                ];
+                for(var i=0; i<$scope.tags.length; i++){
+                    console.log($scope.tags[i])
+                }
+                $scope.loadTags = function(query) {
+                         //return $http.get('/tags?query=' + query);
+                    };
+                $scope.tagAdded = function(tag) {
+                    console.log('Tag added: ', tag.text);
+                    console.log($scope.tags)
+                };
+                $scope.tagRemoved = function(tag) {
+                    console.log('Tag removed: ', tag);
+                    console.log($scope.tags)
+                };
+
+
 		$scope.UserService = UserService;
 		$http.get('/api/me', {
 			headers: {
@@ -19,15 +39,10 @@ angular.module('weberApp')
                 'Authorization':$auth.getToken()
 			}
 		}).success(function(user_id) {
-		    console.log(user_id)
-		    console.log(JSON.parse(user_id))
 			var passReq = Restangular.one("people", JSON.parse(user_id)).get({seed:Math.random()}).then(function(result) {
               $scope.user = result;
-              console.log("hai")
-              console.log($scope.user)
 
             });
-            console.log($scope.user)
 
 
             $scope.size='small';
@@ -109,7 +124,10 @@ angular.module('weberApp')
                     $scope.user = response;
 
                     $scope.user.username = $scope.u_username;
+                    console.log("-------checking user object------")
+                    console.log($scope.user)
                     console.log("=========before patch========")
+                    console.log($scope.user.username)
 
                     $scope.user.patch({
 
@@ -166,47 +184,64 @@ angular.module('weberApp')
                 });
 			};
 
-			$scope.updatePassword = function() {
-			    console.log("==========update password=========")
-			    console.log($scope.user.username)
-
-			    $http.post('/settingschangepassword',
+			$scope.checkUserCurrentPassword = function(){
+			    console.log($scope.formData.cPassword)
+			    $http.post('/check_user_current_password',
                     {
                         user_name:$scope.user.username,
-                        old_password:$scope.old_password,
-                        new_password:$scope.pw1
-                    }).
-                    success(function(data, status, headers, config) {
-                        console.log("====return data====")
-                        console.log(data)
-                        $scope.get_hash_new_password = data;
+                        old_password:$scope.formData.cPassword
+                    })
+                    .success(function(data, status, headers, config) {
+                        $scope.if_user_password_is_incorrect = false;
+                    })
+                    .error(function(error, status, headers, config) {
+                        $scope.if_user_password_is_incorrect = error.error;
+                    });
+			}
 
-                        console.log("=======get hashed password====")
-                        console.log($scope.get_hash_new_password)
 
-                        var Get_password_details = Restangular.one('people', $scope.user._id).get({seed:Math.random()});
+			$scope.updatePassword = function() {
+			    console.log("----testing password functionality-----")
+			    console.log($scope.formData.password)
 
-                        Get_password_details.then(function(response){
-                        $scope.user = response;
+			    $http.post('/get_new_hash_password',{
+                    user_name:$scope.user.username,
+                    new_password:$scope.formData.password
+                })
+                .success(function(data, status, headers, config) {
+                    console.log("-------getting status-------")
+                    console.log(status)
+                    $scope.get_hash_new_password = data;
+                    console.log("=======get hashed password====")
+                    console.log($scope.get_hash_new_password)
 
-                        console.log("=====user details===");
-                        console.log($scope.user);
-                        $scope.user.patch({
-                            'password':$scope.get_hash_new_password,
-                            'password_test':$scope.pw1
-                        }).then(function(response){
-                            // this callback will be called asynchronously
-                            // when the response is available
-
-                            console.log("===after patch=====");
-                            console.log(response);
+                    var updating_user_password = Restangular.one('people', $scope.user._id).get({seed:Math.random()});
+                    updating_user_password.then(function(response){
+                        console.log("--------user data-----")
+                        console.log(response)
+                        $scope.user_updated_data = response;
+                        $scope.user.password.password_updated = new Date();
+                        $scope.user_updated_data.patch({
+                            'password':{
+                                'password':$scope.get_hash_new_password,
+                                'password_test':$scope.formData.password,
+                                'password_updated':new Date()
+                            }
+                        })
+                        .then(function(response){
+                            console.log("----------after password patch update----------")
+                            console.log(response)
                         });
                     });
-
+                })
+                .error(function(error, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    console.log("----getting error status ------")
+                    console.log(status)
+                    console.log(error.error)
 
                 });
-
-
 			};
 
 			$scope.updateInterests = function() {
@@ -321,31 +356,8 @@ angular.module('weberApp')
 
                         console.log("===after interests patch=====");
                         console.log(response);
-
                     });
                 });
 			};
-
-
-
         });
-
-
-
-
-	})
-
-	.directive('pwCheck', [function () {
-    return {
-        require: 'ngModel',
-        link: function (scope, elem, attrs, ctrl) {
-            var firstPassword = '#' + attrs.pwCheck;
-            elem.add(firstPassword).on('keyup', function () {
-                scope.$apply(function () {
-                    // console.info(elem.val() === $(firstPassword).val());
-                    ctrl.$setValidity('pwmatch', elem.val() === $(firstPassword).val());
-                });
-            });
-        }
-    }
-}]);
+	});

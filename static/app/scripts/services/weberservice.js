@@ -135,7 +135,7 @@ angular.module('weberApp')
 
                     for(var temp in notifications[i].interestedList){
 
-                        if(notifications[i].interestedList[temp] == vuser._id){
+                        if(notifications[i].interestedList[temp] == user._id){
                             //console.log('yes')
                             return true;
                         }else{

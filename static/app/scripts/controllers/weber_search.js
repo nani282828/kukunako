@@ -13,6 +13,23 @@ angular.module('weberApp')
 	 										CurrentUser, UserService,CurrentUser1,$rootScope,
 	 										SearchActivity, $routeParams, MatchMeResults) {
 
+          $scope.tags = [
+            ];
+            for(var i=0; i<$scope.tags.length; i++){
+                console.log($scope.tags[i])
+            }
+            $scope.loadTags = function(query) {
+                     //return $http.get('/tags?query=' + query);
+                };
+            $scope.tagAdded = function(tag) {
+                console.log('Tag added: ', tag.text);
+                console.log($scope.tags)
+            };
+            $scope.tagRemoved = function(tag) {
+                console.log('Tag removed: ', tag);
+                console.log($scope.tags)
+            };
+
 	 	/* login functionality code goes here*/
         $scope.submitLogin = function() {
 			$auth.login({
@@ -42,32 +59,31 @@ angular.module('weberApp')
             $scope.registerUser = function() {
                 console.log("hai")
                 if (this.formData.gender) {
-
-
-                $auth.signup({
-                    email: this.formData.email,
-                    password: this.formData.password,
-                    firstname: this.formData.firstname,
-                    lastname: this.formData.lastname,
-                    username: this.formData.firstname + this.formData.lastname,
-                    gender: this.formData.gender
-                }).then(function (response) {
-                    //console.log(response.data);
-                    $location.path('/email_details/' + $scope.formData.email);
-                }, function (signuperror) {
-                    $scope.signUpError = signuperror;
-                    $alert({
-                        title: 'Registration Failed:',
-                        content: error.data.error,
-                        placement: 'top',
-                        type: 'danger',
-                        show: true
+                    $auth.signup({
+                        email: this.formData.email,
+                        password: this.formData.password,
+                        firstname: this.formData.firstname,
+                        lastname: this.formData.lastname,
+                        username: this.formData.firstname + this.formData.lastname,
+                        gender: this.formData.gender
+                    }).then(function (response) {
+                        //console.log(response.data);
+                        $location.path('/email_details/' + $scope.formData.email);
+                    }, function (signuperror) {
+                        $scope.signUpError = signuperror;
+                        $alert({
+                            title: 'Registration Failed:',
+                            content: error.data.error,
+                            placement: 'top',
+                            type: 'danger',
+                            show: true
+                        });
                     });
-                });
-            }else{
-                    $scope.gendererror = true;
                 }
-            };
+                else{
+                        $scope.gendererror = true;
+                    }
+              };
 
         /* ending of signup code */
 
@@ -293,4 +309,57 @@ angular.module('weberApp')
                 });
             }
         };
-     });
+     })
+     .directive('dropdownMultiselect', function(){
+       return {
+           restrict: 'E',
+           scope:{
+                model: '=',
+                options: '=',
+                pre_selected: '=preSelected'
+           },
+           template: "<div class='col-sm-12' style='padding:10px 0px;' data-ng-class='{open: open}'>"+
+            "<button class='btn btn-md btn-default btn-block dropdown-toggle' data-ng-toggle='dropdown' data-ng-click='open=!open;openDropdown()'>Select your Interests&nbsp;<span class='caret'></span></button>"+
+                    "<ul class='dropdown-menu' aria-labelledby='dropdownMenu'>" +
+                        "<li><a data-ng-click='selectAll()'><i class='fa fa-arrow-circle-right'></i>  Check All</a></li>" +
+                        "<li><a data-ng-click='deselectAll();'><i class='fa fa-arrow-circle-down'></i>  Uncheck All</a></li>" +
+                        "<li class='divider'></li>" +
+                        "<li data-ng-repeat='option in options'> <a data-ng-click='setSelectedItem()'>{{option.name}}<span data-ng-class='isChecked(option.id)'></span></a></li>" +
+                    "</ul>" +
+                "</div>" ,
+           controller: function($scope){
+
+               $scope.openDropdown = function(){
+                        $scope.selected_items = [];
+                        for(var i=0; i<$scope.pre_selected.length; i++){
+                            $scope.selected_items.push($scope.pre_selected[i].id);
+                        }
+                };
+
+                $scope.selectAll = function () {
+                    $scope.model = _.pluck($scope.options, 'id');
+                    console.log($scope.model);
+                };
+                $scope.deselectAll = function() {
+                    $scope.model=[];
+                    console.log($scope.model);
+                };
+                $scope.setSelectedItem = function(){
+                    var id = this.option.id;
+                    if (_.contains($scope.model, id)) {
+                        $scope.model = _.without($scope.model, id);
+                    } else {
+                        $scope.model.push(id);
+                    }
+                    console.log($scope.model);
+                    return false;
+                };
+                $scope.isChecked = function (id) {
+                    if (_.contains($scope.model, id)) {
+                        return 'fa fa-arrow-circle-right pull-right';
+                    }
+                    return false;
+                };
+           }
+       }
+    });

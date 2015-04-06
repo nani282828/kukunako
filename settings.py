@@ -230,12 +230,13 @@ people = {
             'maxlength': 25,
             'unique': True,
         },
-
-	      'password': {
-            'type': 'string'
-        },
-	      'password_test': {
-            'type': 'string'
+        'password': {
+            'type': 'dict',
+            'schema': {
+                'password': {'type': 'string'},
+                'password_test': {'type': 'string'},
+                'password_updated': {'type': 'string'}
+            },
         },
         'lastmessageseen': {
             'type': 'integer'
@@ -369,28 +370,7 @@ people = {
         'MatchedPeopleNotificCount':{
             'type': 'list'
 
-            """'schema':{
-                'type':'dict',
 
-                'postid':{
-                    'type': 'objectid',
-                        #'unique': True,
-                        'data_relation': {
-                             'resource': 'posts',
-                             'embeddable': True
-                        }
-                },
-
-                'authorid':{
-                    'type': 'objectid',
-                        #'unique': True,
-                    'data_relation': {
-                        'resource': 'people',
-                        'embeddable': True
-                    }
-                }
-
-            }"""
         },
 
 

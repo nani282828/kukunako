@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css(.) styles/vendor.css -->
+        <!-- bower:css -->
 
-<head>
-	<meta charset="utf-8">
-	<title></title>
-	<meta name="description" content="">
-	<meta name="viewport" content="width=device-width">
-	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-	<!-- build:css(.) styles/vendor.css -->
-	<!-- bower:css -->
+        <link rel="stylesheet" href="static/bower_components/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="static/bower_components/angular-motion/dist/angular-motion.css" />
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="/static/app/styles/bootstrap.css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto:500,400italic,700italic,300,100,700,500italic,400%7COpen+Sans:300,400,600,700&amp;lang=en"
+        rel="stylesheet">
+        <link rel="stylesheet" href="/static/app/styles/main.css">
+        <link rel="stylesheet" href="/static/app/styles/chat_css.css">
 
-	<link rel="stylesheet" href="static/bower_components/bootstrap/dist/css/bootstrap.css" />
-	<link rel="stylesheet" href="static/bower_components/angular-motion/dist/angular-motion.css" />
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-	<!-- endbower -->
-	<!-- endbuild -->
-	<!-- build:css(.tmp) styles/main.css -->
-	<link rel="stylesheet" href="/static/app/styles/bootstrap.css" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto:500,400italic,700italic,300,100,700,500italic,400%7COpen+Sans:300,400,600,700&amp;lang=en"
-    rel="stylesheet">
-	<link rel="stylesheet" href="/static/app/styles/main.css">
-	<link rel="stylesheet" href="/static/app/styles/chat_css.css">
-
-    <link rel="stylesheet" href="static/bower_components/ngImgCrop/compile/unminified/ng-img-crop.css"/>
-    <!-- endbuild -->
-</head>
+        <link rel="stylesheet" href="static/bower_components/ngImgCrop/compile/unminified/ng-img-crop.css"/>
+        <link rel="stylesheet" href="static/bower_components/ng-tags-input/ng-tags-input.css">
+        <link rel="stylesheet" href="static/bower_components/ng-tags-input/ng-tags-input.bootstrap.css">
+        <!-- endbuild -->
+    </head>
 
 <body ng-app="weberApp" ng-controller="indexCtrl">
 
@@ -79,7 +80,7 @@
 	<script src="static/bower_components/angular-resource/angular-resource.js"></script>
 	<script src="static/bower_components/angular-cookies/angular-cookies.js"></script>
 	<script src="static/bower_components/angular-sanitize/angular-sanitize.js"></script>
-	<script src="static/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="static/bower_components/angular-animate/angular-animate.js"></script>
 	<script src="static/bower_components/angular-touch/angular-touch.js"></script>
 	<script src="static/bower_components/angular-route/angular-route.js"></script>
 	<script src="static/bower_components/bootstrap/dist/js/bootstrap.js"></script>
@@ -96,9 +97,12 @@
 	<script src="static/bower_components/elasticsearch/elasticsearch.angular.js"></script>
     <script src="static/bower_components/angular-local-storage/angular-local-storage.js"></script>
 
-    <script src="static/bower_components/ng-socket/ngSocket.js"></script>
+    <script src="static/bower_components/ngsocket/ngSocket.js"></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
     <script type="text/javascript" src="static/bower_components/ngImgCrop/compile/unminified/ng-img-crop.js"></script>
+    <script type="text/javascript" src="static/bower_components/typeahead/typeahead.bundle.js"></script>
+    <script type="text/javascript" src="static/bower_components/ng-tags-input/ng-tags-input.js"></script>
+    <script type="text/javascript" src="static/bower_components/ng-tags-input/ng-tags-input.min.js"></script>
 
 	<!-- endbower -->
 

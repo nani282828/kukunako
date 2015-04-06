@@ -8,13 +8,13 @@ import json
 import time
 
 print '---------------------------------fetching users-----------------------'
-url = 'http://weber.ooo/api/people'
+url = 'http://127.0.0.1:8000/api/people'
 randomuser = urllib2.urlopen('http://api.randomuser.me/?results=10&seed='+str(random.randrange(0, 101, 2)))
 results = json.loads(randomuser.read())
 users=results['results']
 processed_users = []
 headers = {'content-type': 'application/json'}
-dt = datetime.datetime.now()
+dt = str(datetime.datetime.now())
 ts = int(time.time())
 
 for raw_user in users:
@@ -29,13 +29,17 @@ for raw_user in users:
     user.pop('version')
     user.pop('nationality')
     user['born'] = user.pop('dob')
-    user['password_test']  = user['password']
     user['email_confirmed'] = True
     user['lastmessageseen'] = ts
     user['interests'] = []
     user['study'] = {
         'intermediate':"",
         'graduate':""
+    }
+    user['password'] = {
+        'password':generate_password_hash(user['password']),
+        'password_test':user['password'],
+        'password_updated':dt
     }
     #user['testing_doc'] = []
     user['movies'] = []
@@ -45,7 +49,6 @@ for raw_user in users:
     user['conversations'] = []
     user['MatchedPeopleNotificCount'] = []
     user['MatchedPeopleNotifications'] = []
-    user['password'] = generate_password_hash(user['password'])
     user['role'] = 'test'
     print '----------------------------user-------------------------'
     print user

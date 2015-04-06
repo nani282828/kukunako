@@ -27,46 +27,15 @@
                     <form role="form" style="margin-top: 8px;">
                         <div class="row">
                             <div class="col-xs-12">
-                                <div class="input-group input-group-md">
-                                    <input type="text" id="searchText" ng-click="menuMenu($event)" class="form-control" ng-model="InstanceSearchQuery"
-                                           placeholder="Search Friends"
-                                           ng-change="InstanceSearchPeoples()" />
+                                <div class="input-group input-group-sm">
+                                    <input type="text" id="searchText" class="form-control" ng-model="InstanceSearchQuery"
+                                            ng-model="selectedState"
+                                            bs-options="state for state in states"
+                                            placeholder="Search Friends in Weber" bs-typeahead />
                                     <div class="input-group-btn">
                                         <button type="submit" class="btn">Search</button>
                                     </div><!-- /btn-group -->
                                 </div><!-- /input-group -->
-                                <div class="messages-scroll"  style="width:445px;position:absolute;padding:0px;overflow:auto;">
-
-                                    <div  id="scroll123" class="list-group" style="">
-                                         <!--infinite-scroll='instancesearch.nextPage()'
-                                            infinite-scroll-disabled='instancesearch.busy'
-                                            infinite-scroll-distance='0'
-                                            infinite-scroll-container="'#scroll123'"-->
-
-
-
-                                        <div class="" style="margin-bottom:0px;"
-                                                ng-repeat="temp in instancesearch.InstancesearchResult"
-                                                  >
-                                            <a style="" href="#/profile/{{ temp._id.$oid }}"
-                                               class="list-group-item search_a">
-                                                <div class="row">
-                                                    <div class="col-sm-2" style="padding-right:0px;">
-                                                        <img src="{{ temp.picture.thumbnail }}" class=""
-                                                             style="width:55px;border-radius:50%;">
-                                                    </div>
-                                                    <div class="col-sm-8 colpadding">
-                                                        <h5 style="opacity:0.75;margin-left:-10px;">
-                                                            {{ temp.name.first }} {{ temp.name.last }}
-                                                        </h5>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-
-
-                                    </div>
-                                </div>
                             </div><!-- /.col-xs-12 -->
                         </div><!-- /.row -->
                     </form>
@@ -82,7 +51,7 @@
 
                 <ul class="nav navbar-nav navbar-right" ng-if="isAuthenticated()" >
 
-                    <li><a href="#/search" ng-click="SeenMatchButton()">Match Me[{{ MatchButtonNotific }}]</a></li>
+                    <li><a href="#/search" ng-click="SeenMatchButton()">Match Me</a></li>
                     <li><a href="#/friends">Friends</a></li>
 
                     <li class="dropdown" style="padding:3px 10px;">
