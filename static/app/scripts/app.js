@@ -24,7 +24,8 @@ angular
 		'ngImgCrop',
 		'infinite-scroll',
 		'ngSocket',
-		'ngTagsInput'
+		'ngTagsInput',
+		'cgBusy'
 	])
 	.run(["$rootScope", "$location",
 		function($rootScope, $location) {

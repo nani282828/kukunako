@@ -19,7 +19,8 @@
     "lodash": "~2.4.1",
     "satellizer": "~0.8.7",
     "angular-moment": "~0.8.3",
-    "elasticsearch": "~3.0.2"
+    "elasticsearch": "~3.0.2",
+    "angular-busy": "~4.1.2"
   },
   "devDependencies": {
     "angular-mocks": "1.2.16",

@@ -11,21 +11,6 @@
                 </div>
 
                 <div class="panel-body messages-scroll" style="padding:0px;min-height:{{ get_inner_div_height }}px;max-height:{{ get_inner_div_height }}px;">
-                    <div class="row" style="cursor:pointer;" ng-if="!(chatactivity.chatfriends.length)">
-                        <div class="col-sm-4 col-sm-offset-4">
-                            <div class="">
-                                <div class="thumbnail" style="border:0px solid;">
-                                    <img src="https://pbs.twimg.com/profile_images/419852181869576193/yxaX7JJy_400x400.jpeg">
-                                </div>
-                            </div>
-                            
-                        </div>
-                        <div class="col-sm-12">
-                            <h5 class="text-center">
-                                You have no friends
-                            </h5>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div  class="media" ng-repeat="chatuser in chatactivity.chatfriends"
@@ -60,21 +45,6 @@
                     </h5>
                 </div>
                 <div class="panel-body messages-scroll" style="padding:0px;height:{{ get_inner_div_height }}px;max-height:{{ get_inner_div_height }}px;">
-                    <div class="row" style="padding-top:50px;cursor:pointer;" ng-if="!(chatactivity.conversations.length)">
-                      <div class="col-sm-6 col-sm-offset-3">
-                            <div class="">
-                                <div class="thumbnail" style="border:0px solid;">
-                                    <img src="https://pbs.twimg.com/profile_images/419852181869576193/yxaX7JJy_400x400.jpeg">
-                                </div>
-                            </div>
-                            
-                        </div>
-                        <div class="col-sm-12">
-                            <h5 class="text-center">
-                                You have no Conversations
-                            </h5>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="media" ng-repeat="conversation in chatactivity.conversations"

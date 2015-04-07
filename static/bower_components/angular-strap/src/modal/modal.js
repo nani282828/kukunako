@@ -9,7 +9,7 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
       backdropAnimation: 'am-fade',
       prefixClass: 'modal',
       prefixEvent: 'modal',
-      placement: 'top',
+      placement: 'center',
       template: 'modal/modal.tpl.html',
       contentTemplate: false,
       container: false,
@@ -123,6 +123,56 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
         };
 
         $modal.show = function() {
+
+
+
+
+
+            $scope.size='small';
+            $scope.type='circle';
+            $scope.imageDataURI='';
+            $scope.resImageDataURI='';
+            $scope.resImgFormat='image/png';
+            $scope.resImgQuality=1;
+            $scope.selMinSize=100;
+            $scope.resImgSize=200;
+            //$scope.aspectRatio=1.2;
+            $scope.onChange=function($dataURI) {
+              console.log('onChange fired');
+              console.log($dataURI)
+            };
+            $scope.onLoadBegin=function() {
+              console.log('onLoadBegin fired');
+            };
+            $scope.onLoadDone=function() {
+              console.log('onLoadDone fired');
+            };
+            $scope.onLoadError=function() {
+              console.log('onLoadError fired');
+            };
+            var handleFileSelect=function(evt) {
+              var file=evt.currentTarget.files[0];
+              console.log(file);
+              var reader = new FileReader();
+              reader.onload = function (evt) {
+                $scope.$apply(function($scope){
+                  $scope.imageDataURI=evt.target.result;
+                  console.log("============after base encoding the image===========")
+                  console.log($scope.imageDataURI);
+                });
+              };
+              reader.readAsDataURL(file);
+            };
+            angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+            $scope.$watch('resImageDataURI',function(){
+                console.log('Res image', $scope.resImageDataURI);
+                console.log("its just testing the encoding base64")
+
+
+            });
+
+
+
           if($modal.$isShown) return;
 
           if(scope.$emit(options.prefixEvent + '.show.before', $modal).defaultPrevented) {
@@ -293,6 +343,8 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
     };
 
   })
+
+
 
   .directive('bsModal', function($window, $sce, $modal) {
 

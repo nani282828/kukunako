@@ -1,0 +1,46 @@
+<div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border-radius:0px;min-height:400px;cursor:default;">
+      <div class="modal-header" style="background-color:#f5f5f5;">
+        <button type="button" class="close" ng-click="$hide()">&times;</button>
+        <h5 class="modal-title">
+            <label>
+                Update Profile Picture
+            </label>
+        </h5>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+              <div class="col-sm-12">
+                  <h6 style="opacity:0.80;">
+                      Image should be less than 700px, Should be JPEG, PNG, GIF.
+                  </h6>
+              </div>
+          </div>
+          <form ng-show="enableCrop=true">
+             <input ng-model="photo"
+                   onchange="angular.element(this).scope().file_changed(this)"
+                   type="file" accept="image/*" />
+            </form>
+
+            <div ng-if="enableCrop" class="cropArea" ng-class="{'big':size=='big', 'medium':size=='medium', 'small':size=='small'}">
+            <img-crop image="imageDataURI"
+                      result-image="$parent.resImageDataURI"
+                      change-on-fly="changeOnFly"
+                      area-type="{{type}}"
+                      area-min-size="selMinSize"
+                      result-image-format="{{resImgFormat}}"
+                      result-image-quality="resImgQuality"
+                      result-image-size="resImgSize"
+                      on-change="onChange($dataURI)"
+                      on-load-begin="onLoadBegin()"
+                      on-load-done="onLoadDone()"
+                      on-load-error="onLoadError()"
+            ></img-crop>
+                      <!--aspect-ratio="aspectRatio"-->
+            </div>
+
+      </div>
+    </div>
+  </div>
+</div>

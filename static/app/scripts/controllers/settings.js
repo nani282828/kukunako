@@ -9,19 +9,20 @@
  */
 angular.module('weberApp')
 	.controller('SettingsCtrl',
-	    function($route, $location, $scope, $auth, Restangular, InfinitePosts, $alert, $http, CurrentUser, UserService) {
-
+	    function($route, $location, $scope, $auth, $q, $rootScope,
+	                Restangular, InfinitePosts, $alert, $http, CurrentUser, UserService) {
 
 
         //ng-tags-input code for tags style interests
-            $scope.tags = [
-                ];
+            $scope.tags = [{ text: 'Tag9' },{ text: 'Tag10' }];
                 for(var i=0; i<$scope.tags.length; i++){
                     console.log($scope.tags[i])
                 }
                 $scope.loadTags = function(query) {
-                         //return $http.get('/tags?query=' + query);
-                    };
+                    var deferred = $q.defer();
+                    deferred.resolve([{ text: 'Tag11' },{ text: 'Tag12' },{ text: 'Tag13' }]);
+                    return deferred.promise;
+                }
                 $scope.tagAdded = function(tag) {
                     console.log('Tag added: ', tag.text);
                     console.log($scope.tags)
@@ -44,10 +45,14 @@ angular.module('weberApp')
 
             });
 
+            $scope.ud = function(){
+                console.log("hai")
+            }
+
 
             $scope.size='small';
-            $scope.type='circle';
-            $scope.imageDataURI='';
+            $scope.type='square';
+            $rootScope.imageDataURI='';
             $scope.resImageDataURI='';
             $scope.resImgFormat='image/png';
             $scope.resImgQuality=1;
@@ -67,20 +72,21 @@ angular.module('weberApp')
             $scope.onLoadError=function() {
               console.log('onLoadError fired');
             };
-            var handleFileSelect=function(evt) {
-              var file=evt.currentTarget.files[0];
-              console.log(file);
-              var reader = new FileReader();
-              reader.onload = function (evt) {
-                $scope.$apply(function($scope){
-                  $scope.imageDataURI=evt.target.result;
-                  console.log("============after base encoding the image===========")
-                  console.log($scope.imageDataURI);
-                });
-              };
-              reader.readAsDataURL(file);
+
+            $scope.file_changed = function(element, $scope) {
+
+                 var photofile = element.files[0];
+                 console.log("-------getting general file------")
+                 console.log(photofile)
+                 var reader = new FileReader();
+                 reader.onload = function(e) {
+                    console.log("hai")
+                    console.log($rootScope.imageDataURI = e.target.result)
+                    $rootScope.imageDataURI = e.target.result;
+                 };
+                 reader.readAsDataURL(photofile);
             };
-            angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+
             $scope.$watch('resImageDataURI',function(){
                 console.log('Res image', $scope.resImageDataURI);
                 console.log("its just testing the encoding base64")
@@ -89,6 +95,7 @@ angular.module('weberApp')
             });
 
             $scope.uploadFile = function(){
+
 
                 var Get_upload_details = Restangular.one('people', $scope.user._id).get({seed:Math.random()});
                     Get_upload_details.then(function(response){
@@ -360,4 +367,48 @@ angular.module('weberApp')
                 });
 			};
         });
-	});
+	}).directive('myDirective', function () {
+        return {
+            restrict : 'E',
+            replace : true,
+            controller: 'MyController',
+            link : function (scope, elem, attrs, controller) {
+                scope.message = 'Hello World! Message from directive';
+            }
+        };
+    })
+
+    .controller('MyController', function ($scope, $element, $attrs, $log, $timeout) {
+
+        // $timeout to wait the link function to be ready.
+        $timeout(function () {
+            // This prints Hello World as expected.
+            $log.debug($scope.message);
+         });
+
+
+        })
+
+
+    .directive('myDirective2', function () {
+        return {
+            restrict : 'E',
+            replace : true,
+            controller: 'MyController2',
+            link : function (scope, elem, attrs, controller) {
+                scope.log = function () {
+                  console.log(scope.message)
+                }
+            }
+        };
+    })
+
+    .controller('MyController2', function ($scope, $element, $attrs, $log, $timeout) {
+
+        $timeout(function () {
+            $scope.message = 'Hello World 2 - Message from controller';
+            $scope.log();
+         });
+
+
+        });

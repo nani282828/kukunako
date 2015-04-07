@@ -19,7 +19,7 @@ angular.module('weberApp')
                 console.log($scope.tags[i])
             }
             $scope.loadTags = function(query) {
-                     //return $http.get('/tags?query=' + query);
+                     return $http.get('/api/people?query=' + query);
                 };
             $scope.tagAdded = function(tag) {
                 console.log('Tag added: ', tag.text);
@@ -57,27 +57,21 @@ angular.module('weberApp')
         /* starting code of signup goes here */
 
             $scope.registerUser = function() {
-                console.log("hai")
                 if (this.formData.gender) {
-                    $auth.signup({
-                        email: this.formData.email,
-                        password: this.formData.password,
-                        firstname: this.formData.firstname,
-                        lastname: this.formData.lastname,
-                        username: this.formData.firstname + this.formData.lastname,
-                        gender: this.formData.gender
+                    var self = this;
+                    $scope.signupBusy = $auth.signup({
+                        email: self.formData.email,
+                        password: self.formData.password,
+                        password_updated:new Date(),
+                        firstname: self.formData.firstname,
+                        lastname: self.formData.lastname,
+                        username: self.formData.firstname + self.formData.lastname,
+                        gender: self.formData.gender
                     }).then(function (response) {
                         //console.log(response.data);
-                        $location.path('/email_details/' + $scope.formData.email);
+                        $location.path('/email_details/' + self.formData.email);
                     }, function (signuperror) {
                         $scope.signUpError = signuperror;
-                        $alert({
-                            title: 'Registration Failed:',
-                            content: error.data.error,
-                            placement: 'top',
-                            type: 'danger',
-                            show: true
-                        });
                     });
                 }
                 else{
