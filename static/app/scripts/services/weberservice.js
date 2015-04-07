@@ -816,7 +816,11 @@ angular.module('weberApp')
 					where: param,
 					seed : Math.random()
 			}).then(function(data){
-			        this.suggestpeople = true;
+                    alert(data.length)
+			        if(data.length >= 1){
+
+			            this.suggestpeople = true;
+			        }
 					//this.total_matches = data.length;
 					var tempresutls = [];
 					this.mresults.push.apply(this.mresults,data);

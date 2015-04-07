@@ -127,11 +127,10 @@ def login():
         response = jsonify(error='email is not confirmed')
         response.status_code = 401
         return response
-    if not user or not check_password_hash(user['password'], request.json['password']):
+    if not user or not check_password_hash(user['password']['password'], request.json['password']):
         response = jsonify(error='Wrong Email or Password')
         response.status_code = 401
         return response
-    #return json.dumps(user,default=json_util.default)
     token = create_token(user)
     return jsonify(token=token)
 
@@ -174,17 +173,31 @@ def changepassword():
         return password
 
 @login_required
-@app.route('/settingschangepassword', methods=['POST', 'GET'])
-def settingschangepassword():
+@app.route('/check_user_current_password', methods=['POST', 'GET'])
+def check_user_current_password():
     accounts = app.data.driver.db['people']
     user = accounts.find_one({'username': request.json['user_name']})
-    get_hash_new_password = generate_password_hash(request.json['new_password'])
-    print "======================================"
-    print get_hash_new_password
-    if check_password_hash(user['password'], request.json['old_password']):
-        return get_hash_new_password
+    if check_password_hash(user['password']['password'], request.json['old_password']):
+        response = jsonify(data = 'Your password is correct')
+        response.status_code = 200
+        return response
     else:
-        return "your current password is incorrect, Please check it"
+        response = jsonify(error = 'Your old password is incorrect')
+        response.status_code = 401
+        return response
+
+
+@login_required
+@app.route('/get_new_hash_password', methods=['POST', 'GET'])
+def get_new_hash_password():
+    accounts = app.data.driver.db['people']
+    user = accounts.find_one({'username': request.json['user_name']})
+    if user:
+        return generate_password_hash(request.json['new_password'])
+    else:
+        response = jsonify(error = 'No user Found')
+        response.status_code = 401
+        return response
 
 
 @app.route('/getsearch')
@@ -226,8 +239,11 @@ def signup():
                'first':request.json['firstname'],
                'last':request.json['lastname']
             },
-            'password' :generate_password_hash(request.json['password']),
-            'password_test':request.json['password'],
+            'password':{
+                'password':generate_password_hash(request.json['password']),
+                'password_test':request.json['password'],
+                'password_updated':str(datetime.now())
+            },
             'email_confirmed':False,
             'picture' : {
                 'large' : "https://0.s3.envato.com/files/30707637/Standing%20Bluebird%202012%20A1t.jpg",
@@ -253,7 +269,11 @@ def signup():
             'friends' : [],
             'notifications':[],
             'interests': request.json['interests'],
-            'interestsimilarwords': request.json['interestsimilarwords']
+            'interestsimilarwords': request.json['interestsimilarwords'],
+            'MatchedPeopleNotificCount':[],
+            'MatchedPeopleNotifications':[],
+            'conversations':[]
+
         }
 
         data = accounts.insert(user)

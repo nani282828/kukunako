@@ -23,7 +23,8 @@ angular
 		'elasticsearch',
 		'ngImgCrop',
 		'infinite-scroll',
-		'ngSocket'
+		'ngSocket',
+		'ngTagsInput'
 	])
 	.run(["$rootScope", "$location",
 		function($rootScope, $location) {

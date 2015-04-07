@@ -15,6 +15,28 @@ angular.module('weberApp')
 	 	$scope.searched = false;
 	 	$scope.searchBusy = false;
 
+
+	 	$scope.tags = [];
+
+        for(var i=0; i<$scope.tags.length; i++){
+            console.log($scope.tags[i])
+        }
+
+        $scope.loadTags = function(query) {
+        //return $http.get('/tags?query=' + query);
+        };
+
+        $scope.tagAdded = function(tag) {
+            console.log('Tag added: ', tag.text);
+            console.log($scope.tags)
+        };
+
+        $scope.tagRemoved = function(tag) {
+            console.log('Tag removed: ', tag);
+            console.log($scope.tags)
+        };
+
+
 	 	/* login functionality code goes here*/
         $scope.submitLogin = function() {
 			$auth.login({
@@ -46,11 +68,18 @@ angular.module('weberApp')
                 if (this.formData.gender) {
 
                 var self = this;
-                var interests = ['cricket', 'football', 'soccer']
+                var interests = []
+                var querystring = "";
+                for(var temp in $scope.tags){
+                    interests.push($scope.tags[temp].text.toString())
+                    querystring = querystring+$scope.tags[temp].text+" ";
+                }
+                console.log('querystring==>', querystring)
+
                  $http.get('/api/similarwords',
                     {
                         headers:{'Content-Type':'application/json'},
-                        params : {querystring: 'work'}
+                        params : {querystring: querystring.toString() }
                     }).success(function(interestsSimilarWords) {
                         console.log('successdata', interestsSimilarWords)
                         var data = ['d','i','dd']
