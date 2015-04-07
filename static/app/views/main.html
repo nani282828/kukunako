@@ -185,22 +185,19 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <h6>
-
-
-
                                 <a ng-if="!(MatchButtonService.checkMatchUnMatch(post._id, user))"
-                                   ng-click="MatchAgreeDirective('{{ post._id }}','{{ post.author }}');UserService.PushToIList(post.author,post._id)"
+                                   ng-click=" UserService.PushToIList(post.author,post._id);
+                                   MatchAgreeDirective('{{ post._id }}','{{ post.author }}')"
                                    style="cursor:pointer" matchbuttondirective>
                                     Match
                                 </a>&nbsp;
 
                                 <a ng-if="MatchButtonService.checkMatchUnMatch(post._id, user)"
-                                   ng-click="MatchDisAgreeDirective('{{ post._id }}','{{ post.author }}');UserService.deleteFromIList(post.author,post._id)"
+                                   ng-click="UserService.deleteFromIList(post.author,post._id);
+                                   MatchDisAgreeDirective('{{ post._id }}','{{ post.author }}')"
                                    style="cursor:pointer" matchbuttondirective >
                                     UnMatch
                                 </a>&nbsp;
-
-
                             </h6>
                         </div>
                     </div>
@@ -215,22 +212,22 @@
                                 </a>
                                 <a href="" ng-repeat="matchPeople in UserService.get(post.author).MatchedPeopleNotifications">
                                     <span ng-if="matchPeople.postid == post._id">
-
-
                                         <span ng-repeat="temp in sortIListService.sendList(matchPeople.interestedList)">
+
                                             <span ng-if="user._id == temp">
                                                 you
                                             </span>
+
                                             <span ng-if="user._id != temp">
                                                 {{ UserService.get(temp).name.first }}
                                             </span>
+
                                         </span>
                                     </span>
 
                                 </a>
                                 <span ng-if="!(sortIListService.sendList(matchPeople.interestedList).length)">0</span>
                                  matched with this post
-
                             </h6>
                         </div>
                     </div>

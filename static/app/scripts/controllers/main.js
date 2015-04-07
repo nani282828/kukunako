@@ -150,10 +150,8 @@ angular.module('weberApp')
             }
         }
     })
-
     .directive('matchbuttondirective', function ($compile, CurrentUser, Restangular,
-    $routeParams,MatchButton, friendsActivity) {
-
+     $routeParams,MatchButton, friendsActivity) {
         return {
             restrict: 'A',
             replace: true,
@@ -162,7 +160,6 @@ angular.module('weberApp')
                 $scope.matchbuttonbusy = false;
 
                 $scope.MatchAgreeDirective = function(postid, authorid  ){
-
                     if(!($scope.matchbuttonbusy)){
                        $scope.matchbuttonbusy = true;
                        var html = '<a ng-click="MatchDisAgreeDirective(\''+postid+'\',\''+authorid+'\');'+
@@ -170,10 +167,12 @@ angular.module('weberApp')
                                     'style="cursor:pointer" matchbuttondirective >UnMatch</a>';
                        var e =$compile(html)($scope);
                        $element.replaceWith(e);
+
                        for(var k in $scope.infinitePosts.posts){
                             if($scope.infinitePosts.posts[k].author === authorid &&
                                $scope.infinitePosts.posts[k]._id === postid){
                                $scope.matchbutton = new MatchButton($scope.user, authorid, postid);
+                               console.log('credentials==>', $scope.user, authorid, postid)
                                $scope.matchbutton.addToInterested().then(function(){
                                   $scope.matchbuttonbusy = false;
                                })
@@ -185,11 +184,14 @@ angular.module('weberApp')
 				$scope.MatchDisAgreeDirective = function(postid, authorid ){
                     if(!($scope.matchbuttonbusy)){
                         $scope.matchbuttonbusy = true;
+
                         var html = '<a ng-click="MatchAgreeDirective(\''+postid+'\',\''+authorid+'\');'+
                                                 'UserService.PushToIList(\''+authorid+'\',\''+postid+'\')"'+
                              'style="cursor:pointer" matchbuttondirective >Match</a>';
+
                         var e =$compile(html)($scope);
                         $element.replaceWith(e);
+
                         $scope.matchbutton = new MatchButton($scope.user, authorid, postid)
                         $scope.matchbutton.DeleteFromInterested()
                         .then(function(){

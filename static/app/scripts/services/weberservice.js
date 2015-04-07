@@ -89,17 +89,16 @@ angular.module('weberApp')
 		};
        return InstanceSearch;
     })
+
 	.service('UserService', function($http, Restangular) {
 		this.users = [];
 
 		this.get = function(userId) {
-
-			for (var i in this.users) {
+            for (var i in this.users) {
 				if (this.users[i]._id == userId) {
 					return this.users[i];
 				}
 			}
-
 			var promise = Restangular.one('people',userId).get().$object;
 			promise._id = userId;
 			this.users.push(promise);
@@ -120,6 +119,7 @@ angular.module('weberApp')
 		this.PushToIList = function(userId,postId){
 		    var userNotifications = this.get(userId).MatchedPeopleNotifications;
 		    for(var temp in userNotifications){
+                console.log('usenotifications==>', userNotifications[temp])
 		        if(userNotifications[temp].postid == postId &&
 		        userNotifications[temp].interestedList.indexOf(userId) === -1){
 		            userNotifications[temp].interestedList.push(userId);
@@ -129,40 +129,24 @@ angular.module('weberApp')
 		}
 
 	})
+
 	.service('MatchButtonService', function($http, Restangular, CurrentUser1) {
-
 		this.checkMatchUnMatch = function(postid, user) {
-
             var notifications = user.MatchedPeopleNotifications;
             for(var i in notifications){
-                //console.log(notifications, postid)
                 if(notifications[i].postid == postid){
-
                     for(var temp in notifications[i].interestedList){
-
                         if(notifications[i].interestedList[temp] == user._id){
-                            //console.log('yes')
                             return true;
                         }else{
-                            //console.log('no')
                             return false;
                         }
                     }
-
                 }
             }
-			/*for (var i in this.users) {
-				if (this.users[i]._id == userId) {
-					return this.users[i];
-				}
-			}
-
-			var promise = Restangular.one('people',userId).get().$object;
-			promise._id = userId;
-			this.users.push(promise);
-			return promise;*/
 		};
 	})
+
 	.service('PostService', function($http, Restangular) {
 		this.posts = [];
         var param1 = '{"author":1}';
@@ -254,8 +238,10 @@ angular.module('weberApp')
         }
 
         MatchButton.prototype.addToInterested = function(){
+
            var deferred = $q.defer();
            var self = this;
+
            setTimeout(function() {
               Restangular.one('people', self.profileuserid).get({seed:Math.random()})
                   .then(function(profileuser){
@@ -816,11 +802,10 @@ angular.module('weberApp')
 					where: param,
 					seed : Math.random()
 			}).then(function(data){
-                    alert(data.length)
-			        if(data.length >= 1){
 
-			            this.suggestpeople = true;
-			        }
+                   if(data.length >= 1){
+                     this.suggestpeople = true;
+			       }
 					//this.total_matches = data.length;
 					var tempresutls = [];
 					this.mresults.push.apply(this.mresults,data);
