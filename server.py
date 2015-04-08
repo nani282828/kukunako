@@ -244,7 +244,7 @@ def signup():
                 'password_test':request.json['password'],
                 'password_updated':str(datetime.now())
             },
-            'email_confirmed':False,
+            'email_confirmed':True,
             'picture' : {
                 'large' : "https://0.s3.envato.com/files/30707637/Standing%20Bluebird%202012%20A1t.jpg",
                 'medium' : "https://0.s3.envato.com/files/30707637/Standing%20Bluebird%202012%20A1t.jpg",
@@ -267,11 +267,10 @@ def signup():
                 'street' : ""
             },
             'friends' : [],
+            'matchnotifications':[],
             'notifications':[],
             'interests': request.json['interests'],
             'interestsimilarwords': request.json['interestsimilarwords'],
-            'MatchedPeopleNotificCount':[],
-            'MatchedPeopleNotifications':[],
             'conversations':[]
 
         }

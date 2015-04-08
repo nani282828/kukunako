@@ -116,12 +116,10 @@
                         <a class="dropdown-toggle" style="cursor:pointer;padding:13px 2px;" data-toggle="dropdown"
                            ng-click="getNewNotifcations()" style="cursor:pointer">
                             <i class="glyphicon glyphicon-globe" style="font-size:17px;opacity:0.55;">
-
                             </i>
-
-                                <label class="label label-danger" ng-if="unseenMnotific.length"
+                                <label class="label label-danger" ng-show ="unseenMnotific.length + newnotific"
                                        style="position:absolute;font-size:10px;top: 5px;right: 0px;">
-                                        {{ unseenMnotific.length }}
+                                        {{ unseenMnotific.length + newnotific}} 
                                 </label>
 
                         </a>

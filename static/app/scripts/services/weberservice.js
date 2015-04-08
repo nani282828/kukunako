@@ -332,65 +332,6 @@ angular.module('weberApp')
                                 })
                             });
                         }
-                        /*var checkvalue = false;
-                         var isPostCreated = false;
-                         // if user has alredy matched notifications count
-                         if(profileuser.MatchedPeopleNotifications.length !== 0){
-                            for(var k in profileuser.MatchedPeopleNotifications){
-                                if(profileuser.MatchedPeopleNotifications[k].postid === self.postid){
-                                    isPostCreated = true;
-                                    if(profileuser.MatchedPeopleNotifications[k].interestedList.indexOf(self.user._id) === -1){
-                                        checkvalue = true;
-                                        profileuser.MatchedPeopleNotifications[k].interestedList.push(self.user._id)
-                                        profileuser.MatchedPeopleNotifications[k].updated_one = new Date()
-                                        profileuser.MatchedPeopleNotificCount.push({'postid':self.postid, 'authorid':self.user._id})
-                                    }
-                                }
-                            }
-
-                            // if user interestlist doesn't contains userid
-                            if(checkvalue){
-                                var data =  profileuser.patch({
-                                    'MatchedPeopleNotifications': profileuser.MatchedPeopleNotifications,
-                                    'MatchedPeopleNotificCount' : profileuser.MatchedPeopleNotificCount
-                                });
-                                 deferred.resolve(data);
-                            }
-                            // if postid doesnot created
-                            if(!(isPostCreated)){
-                                 var newMatch = {
-                                    'postid': self.postid,
-                                    'interestedList': [self.user._id],
-                                    'updated_one': new Date()
-                                }
-                                profileuser.MatchedPeopleNotifications.push(newMatch)
-                                profileuser.MatchedPeopleNotificCount.push({'postid':self.postid, 'authorid':self.user._id})
-                                var data =  profileuser.patch({
-                                   'MatchedPeopleNotifications' : profileuser.MatchedPeopleNotifications,
-                                   'MatchedPeopleNotificCount' : profileuser.MatchedPeopleNotificCount
-                                });
-                                deferred.resolve(data)
-                            }
-
-                         }
-                        // if first match occured to user
-                        else{
-
-                            var newMatch = {
-                                'postid': self.postid,
-                                'interestedList': [self.user._id],
-                                'updated_one': new Date()
-                            }
-
-                            profileuser.MatchedPeopleNotifications.push(newMatch)
-                            profileuser.MatchedPeopleNotificCount.push({'postid':self.postid, 'authorid':self.user._id})
-                            var data =  profileuser.patch({
-                               'MatchedPeopleNotifications' : profileuser.MatchedPeopleNotifications,
-                               'MatchedPeopleNotificCount' : profileuser.MatchedPeopleNotificCount
-                            });
-                            deferred.resolve(data)
-                        }*/
-                        //deferred.resolve(post)
                   });
 
 
@@ -447,44 +388,6 @@ angular.module('weberApp')
                                 })
                             })
                         }
-
-
-
-                /*Restangular.one('people', self.profileuserid).get({seed:Math.random()})
-                .then(function(profileuser){
-                     var checkvalue = false;
-
-                     if(profileuser.MatchedPeopleNotifications.length !== 0){
-
-                        // remove from MatchedPeopleNotifications list
-                        for(var k in profileuser.MatchedPeopleNotifications){
-                            if(profileuser.MatchedPeopleNotifications[k].postid === self.postid){
-                                //console.log(profileuser.MatchedPeopleNotifications[k])
-                                if(profileuser.MatchedPeopleNotifications[k].interestedList.indexOf(self.user._id) !== -1){
-                                    checkvalue = true;
-                                    var indexvalue = profileuser.MatchedPeopleNotifications[k].interestedList.indexOf(self.user._id)
-                                    profileuser.MatchedPeopleNotifications[k].interestedList.splice(indexvalue, 1)
-
-                                }else
-                                    console.log('nothing to delete')
-                            }
-                        }
-
-                        for(var i in profileuser.MatchedPeopleNotificCount){
-                            if(profileuser.MatchedPeopleNotificCount[i].postid == self.postid &&
-                               profileuser.MatchedPeopleNotificCount[i].authorid == self.user._id){
-                                   profileuser.MatchedPeopleNotificCount.splice(i,1)
-                               }
-                        }
-
-                        if(checkvalue){
-                            var data = profileuser.patch({
-                                'MatchedPeopleNotifications': profileuser.MatchedPeopleNotifications,
-                                'MatchedPeopleNotificCount' : profileuser.MatchedPeopleNotificCount
-                            });
-                             deferred.resolve(data)
-                        }
-                     }*/
                 });
 
            }, 1000);
@@ -536,11 +439,17 @@ angular.module('weberApp')
 		};
 
         InfinitePosts.prototype.getSpecificPost = function(postid){
+            console.log('dddddddddd',postid)
             var embedded = '{"author":1}';
-            Restangular.all('posts', postid.postid).getList({embedded:embedded, seed:Math.random()})
+            Restangular.one('posts', postid.postid).get({embedded:embedded, seed:Math.random()})
             .then(function(data){
-
-                this.posts.push.apply(this.posts, data);
+                this.posts.push({
+                    '_id':data._id,
+                    'author':data.author,
+                    'content':data.content,
+                    '_created': data._created,
+                    '_etag': data._etag
+                });
                 console.log('posts--------->', this.posts);
                 console.log('ddata--------->', data);
             }.bind(this));
@@ -592,7 +501,7 @@ angular.module('weberApp')
 				content: content,
 				keywords: similar_keywords,
 				post_image_path : imagePath,
-				interestedPeople:{ }
+				interestedPeople: {}
 			}).then(function(data) {
 
                 this.posts.unshift({
@@ -619,12 +528,11 @@ angular.module('weberApp')
 			}.bind(this));
 		};
 
-		InfinitePosts.prototype.deletePost = function(post) {
-
+		InfinitePosts.prototype.deletePost = function(post, user) {
+            console.log('delete post details', post.author)
 			Restangular.one('posts', post._id).remove({},{
 			    'If-Match': (post._etag).toString()
-			})
-			.then(function(data) {
+			}).then(function(data) {
 			    for(var k in this.posts){
 			        if(this.posts[k]._id == post._id){
 			            this.posts.splice(k,1)
@@ -633,6 +541,17 @@ angular.module('weberApp')
 			        }
 			    }
 			}.bind(this));
+
+			for(var i in post.author.matchnotifications){
+			    if(post.author.matchnotifications[i].postid == post._id){
+    		       post.author.matchnotifications.splice(i,1)
+
+    		       user.patch({'matchnotifications':post.author.matchnotifications})
+    		       .then(function(data){
+    		            console.log('delete notification==>', data)
+    		       })
+			    }
+			}
 		};
 		return InfinitePosts;
 	}).factory('SearchActivity', function($http, Restangular, $alert, $timeout) {

@@ -145,10 +145,12 @@ angular.module('weberApp')
         }
 
         function getMatchButtonNotific(currentuser){
+
             $scope.unseenMnotific = []
             $scope.matchnotifications = currentuser.matchnotifications
             for(var temp in currentuser.matchnotifications){
-                if(currentuser.matchnotifications[temp].seen == false){
+                if(currentuser.matchnotifications[temp].seen == false &&
+                   currentuser.matchnotifications[temp].interestedperson == user._id){
                     $scope.unseenMnotific.push(currentuser.matchnotifications[temp])
                 }
             }
@@ -211,7 +213,6 @@ angular.module('weberApp')
                             }
 
                             if($scope.tempUnseen.length){
-
                                 for(var k in user.matchnotifications){
                                     if(user.matchnotifications[k].seen == false){
                                         user.matchnotifications[k].seen = true;
@@ -219,14 +220,14 @@ angular.module('weberApp')
                                 }
                             }
 
-                                user.patch({
-                                    'all_seen':true,
-                                    'accept_notifications':user.accept_notifications,
-                                    'notifications': user.notifications,
-                                    'matchnotifications': user.matchnotifications
-                                }).then(function(data){
-                                    console.log(data)
-                                });
+                            user.patch({
+                                'all_seen':true,
+                                'accept_notifications':user.accept_notifications,
+                                'notifications': user.notifications,
+                                'matchnotifications': user.matchnotifications
+                            }).then(function(data){
+                                console.log(data)
+                            });
 
 
                             var params = '{"_id": {"$in":["'+(reqnotific).join('", "') + '"'+']}}'
@@ -244,8 +245,6 @@ angular.module('weberApp')
                             }).then(function(resposne){
                                 $scope.apeoples = resposne;
                             });
-
-
                         });
                     });
                }

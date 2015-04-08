@@ -33,8 +33,9 @@ angular.module('weberApp')
 
 				$scope.infinitePosts = new InfinitePosts(user, []);
 				$scope.infinitePosts.getSpecificPost($routeParams)
+
                 $scope.confirm_delete = function(){
-                    $scope.infinitePosts.deletePost($scope.infinitePosts.posts[0])
+                    $scope.infinitePosts.deletePost($scope.infinitePosts.posts[0], user);
                 }
 
 			});
