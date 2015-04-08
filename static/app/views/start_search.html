@@ -58,6 +58,11 @@
                 </div>
             </div>
 
+            <div ng-if="matchResults.saResultsNotFound && matchResults.mResultsNotFound && searched" ng-init="getSuggestedPeople()">
+            </div>
+
+            <dvi ng-if="matchResults.suggestpeople">no results found but these peoples can help you...</dvi>
+
             <div class="row" style="padding-top:30px;" infinite-scroll='matchResults.nextPage()'
                                          infinite-scroll-disabled='matchResults.busy'
                                          infinite-scroll-distance='0'
@@ -112,6 +117,7 @@
                     </div>
                     <!--<div ng-show='matchResults.busy'>Loading data...</div>
                     <div ng-show='matchResults.end'>You Reached the end!</div>-->
+                    <div ng-show="!(matchResults.mresults.length)">no result found</div>
                 </div>
             </div>
         </div>

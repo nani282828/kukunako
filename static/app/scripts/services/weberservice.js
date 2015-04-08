@@ -928,24 +928,21 @@ angular.module('weberApp')
 		};
 
 		MatchMeResults.prototype.getSuggestedPeople = function(){
-            //var data =
-            //console.log('this query splited==>', data);
+
             function combine_ids(ids) {
    			    return (ids.length ? "\"" + ids.join("\",\"") + "\"" : "");
 		    }
+
             var param = '{"interestsimilarwords":{"$in":['+combine_ids(this.query.split(" "))+']}}';
             Restangular.all("people").getList({
 					where: param,
 					seed : Math.random()
 			}).then(function(data){
-
                    if(data.length >= 1){
                      this.suggestpeople = true;
 			       }
-					//this.total_matches = data.length;
 					var tempresutls = [];
 					this.mresults.push.apply(this.mresults,data);
-
 					for(var temp in this.mresults){
 					    var author = {
 					        author:{
@@ -960,12 +957,10 @@ angular.module('weberApp')
                             }
 					    }
 					    tempresutls.push(author)
-
 					}
 
 					this.mresults = tempresutls;
 			}.bind(this));
-
 		}
 
 		return MatchMeResults;
