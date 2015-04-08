@@ -28,9 +28,9 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="input-group input-group-sm">
-                                    <input type="text" id="searchText" class="form-control" ng-model="InstanceSearchQuery"
-                                            ng-model="selectedState"
-                                            bs-options="state for state in states"
+                                    <input type="text" id="searchText" class="form-control"
+                                            ng-model="selectedAddress" onchange="getAddress(selectedAddress)"
+                                            bs-options="address.formatted_address as address.formatted_address for address in getAddress($viewValue)"
                                             placeholder="Search Friends in Weber" bs-typeahead />
                                     <div class="input-group-btn">
                                         <button type="submit" class="btn">Search</button>
@@ -119,7 +119,7 @@
                             </form>
                         </div>
                     </li>
-                    
+
                     <li class="dropdown" style="padding:3px 10px">
                         <a class="dropdown-toggle" style="cursor:pointer;padding:13px 2px;" data-toggle="dropdown"
                            ng-click="getNewNotifcations()" style="cursor:pointer">

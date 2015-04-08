@@ -18,26 +18,21 @@ angular.module('weberApp')
   }
 })
     .controller('navbarcontroller',function($scope, $auth, CurrentUser, $alert,$rootScope,$timeout,InstanceSearch,
-                                            $location,$http,Restangular,ChatActivity, $window,UserService,
+                                            $location, $http, Restangular,ChatActivity, $window,UserService,
                                             CurrentUser1,SearchActivity,FriendsNotific,friendsActivity,$socket) {
     //$scope.data = CurrentUser1;
     /*$timeout(function(){
         console.log($scope.data)
     }, 10000);*/
 
-    $scope.selectedState = "Massachusetts";
-    $scope.states = ["Alabama","Alaska","Arizona","Arkansas",
-                        "California","Colorado","Connecticut","Delaware",
-                        "Florida","Georgia","Hawaii","Idaho","Illinois","Indiana",
-                        "Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland",
-                        "Massachusetts","Michigan","Minnesota","Mississippi","Missouri",
-                        "Montana","Nebraska","Nevada","New Hampshire","New Jersey",
-                        "New Mexico","New York","North Dakota","North Carolina","Ohio",
-                        "Oklahoma","Oregon","Pennsylvania","Rhode Island",
-                        "South Carolina","South Dakota","Tennessee","Texas",
-                        "Utah","Vermont","Virginia","Washington","West Virginia",
-                        "Wisconsin","Wyoming"
-                     ];
+    $scope.selectedAddress = '';
+      $scope.getAddress = function(viewValue) {
+        var params = {address: viewValue, sensor: false};
+        return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {params: params})
+        .then(function(res) {
+          return res.data.results;
+        });
+      };
 
 
     $scope.instancesearch = new InstanceSearch();

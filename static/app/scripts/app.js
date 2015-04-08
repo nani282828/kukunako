@@ -17,6 +17,7 @@ angular
 		'ngSanitize',
 		'ngTouch',
 		'mgcrea.ngStrap',
+		'mgcrea.ngStrap.typeahead',
 		'satellizer',
 		'restangular',
 		'angularMoment',
