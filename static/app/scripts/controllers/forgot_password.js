@@ -16,22 +16,19 @@ angular.module('weberApp')
             controller:function($scope, $http, $element, $attrs, $transclude){
 
                 $scope.sendPassword = function(){
-                    var html ='<image src="http://www.safeway.com/CMS/assets/media/images/styleimages/pleasewait.gif" style="width:;">';
-                    $element.html(html);
-                    $compile($element.contents())($scope);
 
-                    $http.post('/forgotpasswordlink', {email:$scope.email}).
+                    $scope.password_recovery_busy = $http.post('/forgotpasswordlink', {email:$scope.email}).
                         success(function(data, status, headers, config) {
                             // this callback will be called asynchronously
                             // when the response is available
-                            html = '<b>password link has been sent to your email</b><br><p>Please check your email</p>'
+                            var html = '<b>password link has been sent to your email</b><br><p>Please check your email</p>'
                             var e =$compile(html)($scope);
                             $element.replaceWith(e);
                         }).
                         error(function(error) {
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
-                            html = '<b>your email does not exist, Please check it once..</b>'
+                            var html = '<b>your email does not exist, Please check it once..</b>'
                             var e =$compile(html)($scope);
                             $element.replaceWith(e);
                         });

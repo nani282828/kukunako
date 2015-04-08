@@ -21,7 +21,7 @@ angular.module('weberApp')
 				$rootScope.isloggin = true;
 
 				if($routeParams.query){
-				    $location.path('search')
+				    $location.path('/home')
 				}
 				//$location.path('/home');
 			}, function(error) {

@@ -110,14 +110,6 @@ angular
 				templateUrl: '/static/app/views/post.html',
 				controller: 'PostLoadController'
 			})
-			.when('/forgotpassword', {
-				templateUrl: '/static/app/views/f_password.html'
-
-			})
-
-			.when('/users/:user_name/change_password_link/:password_random_string', {
-				templateUrl:'/static/app/views/change_password.html'
-			})
 
 			.when('/search/:query?', {
 				templateUrl: '/static/app/views/start_search.html',
@@ -178,6 +170,14 @@ angular
 			.when('/email_details/:userId', {
 				templateUrl: '/static/app/views/emaildetails.html',
 				controller:'EmailDetailsCtrl'
+			})
+			.when('/forgotpassword', {
+				templateUrl: '/static/app/views/f_password.html'
+
+			})
+
+			.when('/users/:user_name/change_password_link/:password_random_string', {
+				templateUrl:'/static/app/views/change_password.html'
 			})
 			.when('/confirm_account/users/:objectId/confirm/:user_random_string', {
 				templateUrl:'/static/app/views/confirm_email.html',

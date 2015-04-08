@@ -28,7 +28,8 @@ angular.module('weberApp')
 
         $scope.tagAdded = function(tag) {
             console.log('Tag added: ', tag.text);
-            console.log($scope.tags)
+            //$scope.tags.push(tag)
+            //alert(tag.text)
         };
 
         $scope.tagRemoved = function(tag) {

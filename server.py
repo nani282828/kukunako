@@ -246,9 +246,9 @@ def signup():
             },
             'email_confirmed':False,
             'picture' : {
-                'large' : "https://0.s3.envato.com/files/30707637/Standing%20Bluebird%202012%20A1t.jpg",
-                'medium' : "https://0.s3.envato.com/files/30707637/Standing%20Bluebird%202012%20A1t.jpg",
-                'thumbnail' : "https://0.s3.envato.com/files/30707637/Standing%20Bluebird%202012%20A1t.jpg"
+                'large' : "static/app/images/w-logo.jpg",
+                'medium' : "static/app/images/w-logo.jpg",
+                'thumbnail' : "static/app/images/w-logo.jpg"
             },
             'phone': "",
             'interests': [],
@@ -276,23 +276,21 @@ def signup():
         }
 
         data = accounts.insert(user)
-        print '----------signup etag-----------'
         user_id = str(user['_id'])
         user_random_string = str(user['random_string'])
 
-        msg = Message('Confirm your weber account',
-                      sender='suryachowdary93@gmail.com',
+        msg = Message('Confirm your Weber account',
+                      sender='nanisatya282828@gmail.com',
                       recipients=[request.json['email']]
 
             )
-        msg.html = "<p>Thanks for registering with us, " \
-                   "To complete your Weber registration, Follow this link:<br>\
-                    <br><p style='color:red;border:1px solid #dcdcdc;padding:10px;" \
-                   "width:800px;text-align:center;font-size:14px;'>" \
-                   "http://127.0.0.1:8000/#/confirm_account/users/"+user_id+"/confirm/"+user_random_string+"</p>\
-                    <br><br><br><br>\
-                    Thanks,<br>The Weber Team\
-                    </p>"
+        msg.html = '<div style="min-height:100px;border:1px solid #dcdcdc;">' \
+                   '<h5>Thanks for registering with us, To complete your Weber registration, Follow this link:</h5>' \
+                   '<div style="padding:20px 5px">' \
+                   '<a href="http://127.0.0.1:8000/#/confirm_account/users/'\
+                   +user_id+'/confirm/'+user_random_string+'">Click Here</a>' \
+                                                           '</div>' \
+                                                           '</div>'
         mail.send(msg)
         return user_id
     else:
