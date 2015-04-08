@@ -51,46 +51,52 @@ angular.module('weberApp')
                 console.log(user_name+password_random_string);
 
                 $scope.passwordButton = function(){
-                    var html ='<image src="/static/app/images/pleasewait.gif" style="width:;">';
-                    $element.html(html);
-                    $compile($element.contents())($scope);
 
-                    $http.post('/changepassword', {user_name:$routeParams.user_name, password:$scope.formData.password}).
-                        success(function(data, status, headers, config) {
+                    $scope.new_password = $http.post('/get_new_hash_password', {
+                            user_name:$routeParams.user_name,
+                            new_password:$scope.formData.password
+                        })
+                        .success(function(data, status, headers, config) {
                             console.log("========hashed password======");
                             console.log(data);
                             $scope.hashed_password = data;
+
+                            var Update_Password = Restangular.one('people', $routeParams.user_name).get({seed:Math.random()});
+
+                            Update_Password.then(function(response){
+                                $scope.user = response;
+
+                                console.log("=====user details===");
+                                console.log($scope.user);
+
+                                $scope.user.patch({
+                                    'password':{
+                                        'password':$scope.hashed_password,
+                                        'password_test':$scope.formData.password,
+                                        'password_updated':new Date()
+                                    }
+                                }).then(function(response){
+                                    // this callback will be called asynchronously
+                                    // when the response is available
+
+                                    console.log("===after patch=====");
+                                    console.log(response);
+                                    var html = '<b>your password has been changed</b>'
+                                    var e =$compile(html)($scope);
+                                    $element.replaceWith(e);
+
+                                });
+                            });
                         }).
                         error(function(error) {
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
-                            html = '<b>your email does not exist, Please check it once..</b>'
+                            var html = '<b>your email does not exist, Please check it once..</b>'
                             var e =$compile(html)($scope);
                             $element.replaceWith(e);
                     });
 
-                    var Update_Password = Restangular.one('people', $routeParams.user_name).get({seed:Math.random()});
 
-                    Update_Password.then(function(response){
-                        $scope.user = response;
-
-                        console.log("=====user details===");
-                        console.log($scope.user);
-
-                        $scope.user.patch({
-                            'password':$scope.hashed_password
-                        }).then(function(response){
-                            // this callback will be called asynchronously
-                            // when the response is available
-
-                            console.log("===after patch=====");
-                            console.log(response);
-                            html = '<b>your password has been changed</b>'
-                            var e =$compile(html)($scope);
-                            $element.replaceWith(e);
-
-                        });
-                    });
 
 
 
