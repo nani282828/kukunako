@@ -469,12 +469,7 @@ def fileupload():
 
 @socketio.on('connecting', namespace='/live')
 def joiningtoroom(data):
-
-    #print '========================'
-    #print data['id']
     if(join_into_room(data['id'])):
-        #print request.namespace.rooms
-        #print 'succesfuuly joined'
         emit('joiningstatus',{'data': data['id'] in request.namespace.rooms})
 
 

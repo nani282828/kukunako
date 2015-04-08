@@ -17,6 +17,7 @@ angular
 		'ngSanitize',
 		'ngTouch',
 		'mgcrea.ngStrap',
+		'mgcrea.ngStrap.typeahead',
 		'satellizer',
 		'restangular',
 		'angularMoment',
@@ -24,7 +25,8 @@ angular
 		'ngImgCrop',
 		'infinite-scroll',
 		'ngSocket',
-		'ngTagsInput'
+		'ngTagsInput',
+		'cgBusy'
 	])
 	.run(["$rootScope", "$location",
 		function($rootScope, $location) {

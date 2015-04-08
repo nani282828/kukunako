@@ -536,16 +536,14 @@ angular.module('weberApp')
 		};
 
         InfinitePosts.prototype.getSpecificPost = function(postid){
-            var self = this;
             var embedded = '{"author":1}';
-            console.log('ppppppppppp', postid.postid)
-
-            Restangular.one('posts', postid.postid).get({embedded:embedded, seed:Math.random()})
+            Restangular.all('posts', postid.postid).getList({embedded:embedded, seed:Math.random()})
             .then(function(data){
-                self.posts.push.apply(self.posts, data);
-                self.SpecificPost = data
-                console.log('ssssssssss', self.posts)
-            }.bind(self))
+
+                this.posts.push.apply(this.posts, data);
+                console.log('posts--------->', this.posts);
+                console.log('ddata--------->', data);
+            }.bind(this));
 
         }
 
@@ -621,14 +619,14 @@ angular.module('weberApp')
 			}.bind(this));
 		};
 
-		InfinitePosts.prototype.deletePost = function(post1) {
-		    //console.log(post1._etag)
-			Restangular.one('posts', post1._id).remove({},{
-			    'If-Match': (post1._etag).toString()
+		InfinitePosts.prototype.deletePost = function(post) {
+
+			Restangular.one('posts', post._id).remove({},{
+			    'If-Match': (post._etag).toString()
 			})
 			.then(function(data) {
 			    for(var k in this.posts){
-			        if(this.posts[k]._id == post1._id){
+			        if(this.posts[k]._id == post._id){
 			            this.posts.splice(k,1)
 			            this.SpecificPost = {};
 			            console.log("successfully deleted")
@@ -636,9 +634,6 @@ angular.module('weberApp')
 			    }
 			}.bind(this));
 		};
-
-
-
 		return InfinitePosts;
 	}).factory('SearchActivity', function($http, Restangular, $alert, $timeout) {
 

@@ -64,7 +64,6 @@ angular.module('weberApp')
         /* starting code of signup goes here */
 
             $scope.registerUser = function() {
-                console.log("hai")
                 if (this.formData.gender) {
 
                 var self = this;
@@ -83,7 +82,7 @@ angular.module('weberApp')
                     }).success(function(interestsSimilarWords) {
                         console.log('successdata', interestsSimilarWords)
                         var data = ['d','i','dd']
-                        $auth.signup({
+                        $scope.signupBusy = $auth.signup({
                             email: self.formData.email,
                             password: self.formData.password,
                             firstname: self.formData.firstname,
