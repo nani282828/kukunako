@@ -1,3 +1,4 @@
+
 <div class="container">
 	<div class="col-md-3 colpadding" wb-affix="150">
 		<div class="thumbnail">
@@ -44,6 +45,7 @@
 
 									{{ user.study.graduate }}
 
+
 							</a>
 						</h6>
 					</div>
@@ -86,15 +88,15 @@
 
 				<div class="panel-heading post-div" style="background-color:#fff;border-bottom:1px solid #F2F2F2;">
 					<a class="pull-left" style="padding: 5px;" href="#/profile/{{PostService.author._id}}">
-						<img style="width:35px" class="media-object img-circle" src="{{PostService.author.picture.thumbnail}}" alt="">
+						<img style="width:35px" class="media-object img-circle" src="{{infinitePosts.SpecificPost.author.picture.thumbnail}}" alt="">
 					</a>
 					<strong>
-						<a href="#/profile/{{PostService.author._id}}" style="color:#133444">
-							{{PostService.author.name.first}} {{PostService.author.name.last}}
+						<a href="#/profile/{{infinitePosts.SpecificPost.author._id}}" style="color:#133444">
+							{{infinitePosts.SpecificPost.author.name.first}} {{infinitePosts.SpecificPost.author.name.last}}
 						</a>
 					</strong>&nbsp;wrote on his story.
                     <confirmdelete>
-                        <a class="pull-right delete-div" ng-if="user._id == PostService.author._id" ng-click="deletediv(post._id)"
+                        <a class="pull-right delete-div" ng-if="user._id == infinitePosts.SpecificPost.author._id" ng-click="deletediv(post._id)"
                            style="cursor:pointer;font-size:12px">
                             Delete
                         </a>
@@ -102,43 +104,43 @@
 					<br>
 					<small class="text-muted">
                         <span class="glyphicon glyphicon-time" style="color:#2F5168"></span>
-						<span am-time-ago="PostService.author._created"></span></small>
+						<span am-time-ago="infinitePosts.SpecificPost.author._created"></span></small>
 					<br>
 				</div>
 				<div class="panel-body" style="margin-bottom:0px;padding-bottom:0px;">
                     <div ng-if="post.post_image_path" class="row">
 						<div class="col-sm-12" style="padding:0px;">
 							<div class="thumbnail" style="border:0px solid;">
-								<img src="{{ post.post_image_path }}">
+								<img src="{{ infinitePosts.SpecificPost.post_image_path }}">
 							</div>
 						</div>
 					</div>
                     <div class="row" style="padding-bottom:5px;">
                         <div class="col-sm-12">
                             <p>
-                                {{ PostService.content }}
+                                {{ infinitePosts.SpecificPost.content }}
+
                             </p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <h6>
+                             <h6>
 
-
-
-                                <a ng-if="!(MatchButtonService.checkMatchUnMatch(post._id))"
-                                   ng-click="MatchAgreeDirective('{{ post._id }}','{{ post.author }}');UserService.PushToIList(post.author,post._id)"
+                                <a ng-if="MatchButtonService.checkMatchUnMatch(infinitePosts.SpecificPost, user) == false"
+                                   ng-click=" pushToPost(infinitePosts.SpecificPost.author,infinitePosts.SpecificPost._id);
+                                   MatchAgreeDirective('{{ infinitePosts.SpecificPost._id }}','{{ infinitePosts.SpecificPost.author }}')"
                                    style="cursor:pointer" matchbuttondirective>
                                     Match
                                 </a>&nbsp;
 
-                                <a ng-if="MatchButtonService.checkMatchUnMatch(post._id)"
-                                   ng-click="MatchDisAgreeDirective('{{ post._id }}','{{ post.author }}');UserService.deleteFromIList(post.author,post._id)"
+                                <a
+                                        ng-if="MatchButtonService.checkMatchUnMatch(infinitePosts.SpecificPost, user) == true"
+                                   ng-click="deleteFromPost(infinitePosts.SpecificPost.author,infinitePosts.SpecificPost._id);
+                                   MatchDisAgreeDirective('{{ infinitePosts.SpecificPost._id }}','{{ infinitePosts.SpecificPost.author }}')"
                                    style="cursor:pointer" matchbuttondirective >
                                     UnMatch
                                 </a>&nbsp;
-
-
                             </h6>
                         </div>
                     </div>
@@ -147,6 +149,7 @@
                      style="padding-top:5px;background-color:#fff;border:1px solid #FCF8F8;">
                     <div class="row">
                         <div class="col-sm-12">
+                            {{ infinitePosts.SpecificPost.interestedPeople.interestedlist }}
                             <h6>
                                 <a style="text-decoration:none;cursor:pointer;" alt="Match this post">
                                     <i class="fa fa-slideshare" style="font-size:14px;"></i>&nbsp;

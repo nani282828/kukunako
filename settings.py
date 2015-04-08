@@ -77,7 +77,27 @@ posts_schema = {
             'type' : 'string',
         },
 
-
+	   	'interestedPeople':{
+	   		'type':'dict',
+	   		'schema':{
+	   			'interestedlist':{
+	   				'type':'list',
+	   				'schema':{
+	   					'type': 'objectid',
+                        'data_relation': {
+                            'resource': 'people',
+                            'embeddable': True
+                        }
+                     }
+	   			},
+	   			'presentupdated':{
+	   				'type':'integer'
+	   			},
+	   			'lastupdated':{
+	   				'type':'integer'
+	   			}
+	   		}
+	   	}
     }
 
 interests_schema = {
@@ -393,19 +413,19 @@ people = {
                 }
             }
         },
-
-        'MatchedPeopleNotificCount':{
-            'type': 'list'
-
-
-        },
-
-        'MatchedPeopleNotifications': {
+        'matchnotifications': {
             'type': 'list',
             'schema': {
                 'type':'dict',
-
                 'postid' : {
+                    'type': 'objectid',
+                        #'unique': True,
+                        'data_relation': {
+                             'resource': 'posts',
+                             'embeddable': True
+                        }
+                },
+                'interestedperson' : {
                     'type': 'objectid',
                         #'unique': True,
                         'data_relation': {
@@ -414,11 +434,7 @@ people = {
                         }
                 },
 
-                'InterestedLit':{
-                    'type':'list'
-                },
-
-                'updated_one': {
+                'seen': {
                    'type': 'boolean',
                    'default': False
                 }

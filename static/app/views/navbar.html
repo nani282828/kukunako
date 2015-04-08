@@ -17,7 +17,9 @@
                  style="padding:5px;font-size:20px;font-family: 'Open sans',Arial,sans-serif;">
 
               <h3 style="font-family: 'Open sans',Arial,sans-serif;font-weight:400;margin-top:5px;">
-                  <span style="margin-left: 0px;color:#fff;">Weber</span>
+                  <span style="margin-left: 0px;color:#fff;">
+                      Weber
+                  </span>
               </h3>
             </a>
         </div>
@@ -77,16 +79,6 @@
                                         </div>
                                     </div>
                                     <div class="panel-body" style="min-height:400px;max-height:400px;">
-                                        <div class="row" ng-if="!(chatactivity.latestMessages.length)">
-                                            <div class="col-sm-6 col-sm-offset-3" style="padding-top:10px;">
-                                                <div class="">
-                                                    <div class="thumbnail" style="border:0px solid;">
-                                                        <img src="https://pbs.twimg.com/profile_images/419852181869576193/yxaX7JJy_400x400.jpeg">
-                                                    </div>
-                                                </div>
-                                                <h5>0 Unread Msgs</h5>
-                                            </div>
-                                        </div>
                                         <div class="row" style="margin-bottom:0px;"
                                                ng-repeat="message in chatactivity.latestMessages  | limitTo : 5 ">
 
@@ -127,9 +119,9 @@
 
                             </i>
 
-                                <label class="label label-danger" ng-if="newnotific + MatchButtonNotific"
+                                <label class="label label-danger" ng-if="unseenMnotific.length"
                                        style="position:absolute;font-size:10px;top: 5px;right: 0px;">
-                                        {{ newnotific + MatchButtonNotific }}
+                                        {{ unseenMnotific.length }}
                                 </label>
 
                         </a>
@@ -149,21 +141,6 @@
                                         </div>
                                     </div>
                                     <div class="panel-body" style="height:200px;">
-                                        <div class="row" ng-if="!(rpeoples.length)">
-                                            <div class="col-sm-4 col-sm-offset-4">
-                                                <div class="">
-                                                    <div class="thumbnail" style="border:0px solid;">
-                                                        <img src="https://pbs.twimg.com/profile_images/419852181869576193/yxaX7JJy_400x400.jpeg">
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <h5 class="text-center">
-                                                    No new requests found
-                                                </h5>
-                                            </div>
-                                        </div>
 
                                         <div class="row" style="margin-top:7px" ng-repeat="requestedPeople in rpeoples">
                                             <div class="col-sm-2">
@@ -228,24 +205,25 @@
                                         </div>
 
 
-                                        <div ng-repeat="notification in MatchButtonNotifications
-                                         | orderBy:'-updated_one'"
-                                             ng-if="notification.interestedList.length"
-                                             class="row" style="margin-top:7px;border-bottom:1px solid #f2f2f2;padding-bottom:5px;" >
+                                        <div ng-repeat="notification in matchnotifications"
+                                         class="row" style="margin-top:7px;border-bottom:1px solid #f2f2f2;padding-bottom:5px;" >
+
                                             <div class="col-sm-2">
                                                 <img src=""
                                                      style="width:50px">
                                             </div>
                                             <div class="col-sm-10" >
                                                 <h5>
-                                                    <a href="#/post/{{ notification.postid }}" ng-if="notification.interestedList.length == 1" >
+
+                                                    <a href="#/post/{{ notification.postid }}" ng-if="matchnotifications.length == 1" >
                                                         <img src="">
-                                                        {{UserService.get(notification.interestedList[notification.interestedList.length - 1]).name.first}}
+                                                        {{UserService.get(notification.interestedperson).name.first}}
                                                         matched with your post
                                                     </a>
-                                                    <a ng-if="notification.interestedList.length == 2" href="#/post/{{ notification.postid }}">
-                                                        {{UserService.get(notification.interestedList[notification.interestedList.length - 1]).name.first}}
-                                                        and {{ notification.interestedList.length - 1 }} others matched your post
+
+                                                    <a ng-if="matchnotifications.length >= 2" href="#/post/{{ notification.postid }}">
+                                                        {{UserService.get(notification.interestedperson).name.first}}
+                                                        and {{ matchnotifications.length - 2 }} others matched your post
                                                     </a>
 
                                                 </h5>
@@ -259,7 +237,9 @@
                     </li>
                     <li>
                         <a href="" bs-dropdown="dropdown" style="padding-top: 11px; padding-bottom: 11px;" getuserdata>
-                            <img style="width:28px; border: 2px solid; margin-right: 5px;" class="img-circle" src="{{currentUser.picture.thumbnail}}" alt="">{{currentUser.username}} <span class="caret"></span>
+                            <img style="width:28px; border: 2px solid; margin-right: 5px;" class="img-circle" src="{{currentUser.picture.thumbnail}}" alt="">
+                            {{currentUser.username}}
+                            <span class="caret"></span>
                         </a>
                     </li>
                 </ul>

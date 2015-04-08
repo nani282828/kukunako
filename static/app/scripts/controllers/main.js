@@ -47,6 +47,7 @@ angular.module('weberApp')
                 loadPostIds = "[\"" + loadPostIds.join("\",\"") + "\"]";
 
                 $scope.infinitePosts = new InfinitePosts(user, loadPostIds);
+                $scope.infinitePosts.getEarlyPosts();
 
                 if (user.friends.length !== 0) {
 
@@ -107,6 +108,7 @@ angular.module('weberApp')
 			});
 		});
 	})
+
 	.directive('confirmdelete', function ($compile, CurrentUser, Restangular, $routeParams, friendsActivity) {
         return {
             restrict: 'E',
@@ -160,22 +162,25 @@ angular.module('weberApp')
                 $scope.matchbuttonbusy = false;
 
                 $scope.MatchAgreeDirective = function(postid, authorid  ){
+
                     if(!($scope.matchbuttonbusy)){
                        $scope.matchbuttonbusy = true;
-                       var html = '<a ng-click="MatchDisAgreeDirective(\''+postid+'\',\''+authorid+'\');'+
-                                    'UserService.deleteFromIList(\''+authorid+'\',\''+postid+'\')"'+
+
+                       /*var html = '<a ng-click="MatchDisAgreeDirective(\''+postid+'\',\''+authorid+'\');'+
+                                    'deleteFromPost(\''+authorid+'\',\''+postid+'\')"'+
                                     'style="cursor:pointer" matchbuttondirective >UnMatch</a>';
                        var e =$compile(html)($scope);
-                       $element.replaceWith(e);
+                       $element.replaceWith(e);*/
 
                        for(var k in $scope.infinitePosts.posts){
                             if($scope.infinitePosts.posts[k].author === authorid &&
                                $scope.infinitePosts.posts[k]._id === postid){
                                $scope.matchbutton = new MatchButton($scope.user, authorid, postid);
-                               console.log('credentials==>', $scope.user, authorid, postid)
+                               //console.log('credentials==>', $scope.user, authorid, postid)
                                $scope.matchbutton.addToInterested().then(function(){
                                   $scope.matchbuttonbusy = false;
                                })
+                               
                             }
                         }
                     }
@@ -185,12 +190,12 @@ angular.module('weberApp')
                     if(!($scope.matchbuttonbusy)){
                         $scope.matchbuttonbusy = true;
 
-                        var html = '<a ng-click="MatchAgreeDirective(\''+postid+'\',\''+authorid+'\');'+
-                                                'UserService.PushToIList(\''+authorid+'\',\''+postid+'\')"'+
+                        /*var html = '<a ng-click="MatchAgreeDirective(\''+postid+'\',\''+authorid+'\');'+
+                                                'pushToPost(\''+authorid+'\',\''+postid+'\')"'+
                              'style="cursor:pointer" matchbuttondirective >Match</a>';
 
                         var e =$compile(html)($scope);
-                        $element.replaceWith(e);
+                        $element.replaceWith(e);*/
 
                         $scope.matchbutton = new MatchButton($scope.user, authorid, postid)
                         $scope.matchbutton.DeleteFromInterested()
@@ -198,6 +203,33 @@ angular.module('weberApp')
                             $scope.matchbuttonbusy = false;
                         })
                     }
+				}
+
+				$scope.pushToPost = function(postauthor, postid){
+				    for(var temp in $scope.infinitePosts.posts){
+				        console.log($scope.infinitePosts.posts[temp]._id, 'postid==>', postid)
+				        if($scope.infinitePosts.posts[temp]._id == postid){
+				            if($scope.infinitePosts.posts[temp].interestedPeople.hasOwnProperty('interestedlist')){
+				                $scope.infinitePosts.posts[temp].interestedPeople.interestedlist.push($scope.user._id)
+    			                //console.log($scope.user._id)
+				            }else{
+				                $scope.infinitePosts.posts[temp].interestedPeople = { 'interestedlist' : [$scope.user._id] }
+
+				            }
+				        }
+				    }
+				}
+
+				$scope.deleteFromPost = function(postauthor, postid){
+				    for(var temp in $scope.infinitePosts.posts){
+				        if($scope.infinitePosts.posts[temp]._id == postid){
+				            var ilist = $scope.infinitePosts.posts[temp].interestedPeople.interestedlist;
+				            if(ilist.indexOf($scope.user._id) !== -1){
+				                ilist.splice(ilist.indexOf($scope.user._id), 1)
+    			                //console.log($scope.user._id)
+				            }
+				        }
+				    }
 				}
             }
         }

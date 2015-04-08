@@ -26,6 +26,7 @@ angular.module('weberApp')
                         loadPostIds.push(profileuser._id)
                         loadPostIds = "[\"" + loadPostIds.join("\",\"") + "\"]";
                         $scope.infinitePosts = new InfinitePosts(user_obj, loadPostIds);
+                        $scope.infinitePosts.getEarlyPosts();
 
 			            if ( $scope.profileuser.friends.length !== 0) {
                             var params = '{"_id": {"$in":["'+($scope.profileuser.friends).join('", "') + '"'+']}}'

@@ -7,13 +7,10 @@
  * Controller of the weberApp
  */
 angular.module('weberApp')
-	.controller('PostLoadController', function($http, $auth, Restangular, $scope, $routeParams, PostService) {
+	.controller('PostLoadController', function($http, $auth, Restangular, $scope,
+	                                           $routeParams, PostService, InfinitePosts) {
+
 	    $scope.postid = $routeParams.postid;
-	    $scope.PostService = PostService.get($scope.postid);
-	    console.log(PostService.posts)
-
-
-
 	    $http.get('/api/me', {
 			headers: {
 				'Content-Type': 'application/json',
@@ -33,6 +30,13 @@ angular.module('weberApp')
 						$scope.friends = friend;
 					});
 				}
+
+				$scope.infinitePosts = new InfinitePosts(user, []);
+				$scope.infinitePosts.getSpecificPost($routeParams)
+                $scope.confirm_delete = function(){
+                    $scope.infinitePosts.deletePost($scope.infinitePosts.SpecificPost)
+                }
+
 			});
 		});
 

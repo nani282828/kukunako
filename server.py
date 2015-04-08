@@ -407,13 +407,23 @@ def after_post_inserted(items):
 def after_friend_notification_get(updates, original):
     for attrbute,value in original.iteritems():
         if(attrbute == '_id'):
-            socketio.emit('friendnotifications',{'data':{'friendsnotifc': True}}, room = str(value))
+            socketio.emit('FMnotific',{'data':{'FMnotific': True}}, room = str(value))
             #key = 'friend_'+str(value)
             #pipe.set(key,'friend_notific')
     #pipe.execute()
 
+# match button notifications
+def postNotific(updates, original):
+    present = updates['interestedPeople']['presentupdated']
+    last =  updates['interestedPeople']['lastupdated']
+    if(present != last):
+        socketio.emit('FMnotific',{'data':{'FMnotific': True}}, room = str(original['author']))
+
+
+
 app.on_inserted_people_posts+= after_post_inserted
 app.on_updated_people+= after_friend_notification_get
+app.on_updated_posts = postNotific
 
 
 
@@ -450,7 +460,7 @@ def fileupload():
             renamed_filename = dt+'_'+filename
 
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], renamed_filename))
-            print os.path.join(app.config['UPLOAD_FOLDER'], renamed_filename)
+            #print os.path.join(app.config['UPLOAD_FOLDER'], renamed_filename)
         return os.path.join(app.config['UPLOAD_FOLDER'], renamed_filename)
 
 #chating part
@@ -460,11 +470,11 @@ def fileupload():
 @socketio.on('connecting', namespace='/live')
 def joiningtoroom(data):
 
-    print '========================'
-    print data['id']
+    #print '========================'
+    #print data['id']
     if(join_into_room(data['id'])):
-        print request.namespace.rooms
-        print 'succesfuuly joined'
+        #print request.namespace.rooms
+        #print 'succesfuuly joined'
         emit('joiningstatus',{'data': data['id'] in request.namespace.rooms})
 
 
@@ -472,24 +482,20 @@ def joiningtoroom(data):
 @socketio.on('connect')
 def creta_or_join(data):
 
-    print '========================'
-    print data['data']
+    #print '========================'
+    #print data['data']
     if(join_into_room(data['data'])):
-        print request.namespace.rooms
+        #print request.namespace.rooms
         emit('join_status',{'data': data['data'] in request.namespace.rooms})
 
-@socketio.on('otherEvent')
-def sampletesting(data):
-    print '===========received other event==========='
-    #return 'hai'
 
 @socketio.on('send_message')
 def send_to_room(data):
 
-    print '===========message============='
-    print data['receiverid']
-    print data['senderid']
-    print data['message']
+    #print '===========message============='
+    #print data['receiverid']
+    #print data['senderid']
+    #print data['message']
 
     emit('receive_messages',
          {

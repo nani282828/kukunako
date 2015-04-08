@@ -41,15 +41,14 @@ for raw_user in users:
         'password_test':user['password'],
         'password_updated':dt
     }
-    #user['testing_doc'] = []
     user['movies'] = []
+    user['matchnotifications'] = []
     user['friends'] = []
     user['notifications'] = []
     user['accept_notifications'] = []
     user['conversations'] = []
-    user['MatchedPeopleNotificCount'] = []
-    user['MatchedPeopleNotifications'] = []
-    user['role'] = 'test'
+    user['role'] = "test"
+
     print '----------------------------user-------------------------'
     print user
     r = requests.post(url, data=json.dumps(user, default=json_util.default), headers=headers)
@@ -73,10 +72,11 @@ for user in processed_users:
 print '---------------------------------Adding posts to users-----------------------'
 for user in processed_users:
     for _ in range(20):
-				post={}
-				post['type'] = 'text'
-				post['author'] = user['id']
-				post['content'] = generate_paragraph()[2]
-				r = requests.post(url + '/' + user['id'] + '/posts', data=json.dumps(post), headers={'content-type': 'application/json'})
-				print r.content
+        post={}
+        post['type'] = 'text'
+        post['author'] = user['id']
+        post['content'] = generate_paragraph()[2]
+        post['interestedPeople'] = {}
+        r = requests.post(url + '/' + user['id'] + '/posts', data=json.dumps(post), headers={'content-type': 'application/json'})
+        print r.content
 		

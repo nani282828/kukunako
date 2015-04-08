@@ -105,7 +105,7 @@ angular.module('weberApp')
 			return promise;
 		};
 
-		this.deleteFromIList = function(userId,postId){
+		/*this.deleteFromIList = function(userId, postId){
 		    var userNotifications = this.get(userId).MatchedPeopleNotifications;
 		    for(var temp in userNotifications){
 		        if(userNotifications[temp].postid == postId &&
@@ -116,42 +116,38 @@ angular.module('weberApp')
 		    //console.log('user==>',this.get(userId))
 		}
 
-		this.PushToIList = function(userId,postId){
+		this.PushToIList = function(userId, postId){
 		    var userNotifications = this.get(userId).MatchedPeopleNotifications;
 		    for(var temp in userNotifications){
-                console.log('usenotifications==>', userNotifications[temp])
+                //console.log('usenotifications==>', userNotifications[temp])
 		        if(userNotifications[temp].postid == postId &&
 		        userNotifications[temp].interestedList.indexOf(userId) === -1){
 		            userNotifications[temp].interestedList.push(userId);
 		        }
 		    }
 
-		}
+		}*/
 
 	})
-
 	.service('MatchButtonService', function($http, Restangular, CurrentUser1) {
-		this.checkMatchUnMatch = function(postid, user) {
-            var notifications = user.MatchedPeopleNotifications;
-            for(var i in notifications){
-                if(notifications[i].postid == postid){
-                    for(var temp in notifications[i].interestedList){
-                        if(notifications[i].interestedList[temp] == user._id){
-                            return true;
-                        }else{
-                            return false;
-                        }
-                    }
-                }
-            }
+		this.checkMatchUnMatch = function(post, user) {
+		     //console.log('interestedlist==>', post.interestedPeople.interestedlist,'userid==>', user._id)
+		     //console.log(post.interestedPeople.hasOwnProperty('interestedlist'))
+             if(post.interestedPeople.hasOwnProperty('interestedlist')
+                            &&
+                post.interestedPeople.interestedlist.indexOf(user._id) !== -1){
+                    return true;
+             }else{
+                return false;
+             }
 		};
 	})
-
 	.service('PostService', function($http, Restangular) {
 		this.posts = [];
         var param1 = '{"author":1}';
-		this.get = function(postid) {
 
+		this.get = function(postid) {
+		    console.log('postid==>', postid)
 
 			for (var i in this.posts) {
 				if (this.posts[i]._id == postid) {
@@ -159,12 +155,19 @@ angular.module('weberApp')
 				}
 			}
 
-			var promise = Restangular.one('posts', postid).get({embedded: param1}).$object;
-			//console.log(promise)
+			var promise = Restangular.one('posts', postid).get({embedded: param1, seed: Math.random() }).$object;
 			promise._id = postid;
 			this.posts.push(promise);
 			return promise;
 		};
+
+	    this.resetPost = function(postid){
+	        var promise = Restangular.one('posts', postid).get({embedded: param1, seed: Math.random() }).$object;
+			promise._id = postid;
+			this.posts.push(promise);
+			return promise;
+	    }
+
 
 	}).service('sortIListService', function($http, Restangular,CurrentUser1) {
 		this.sendList = function(list){
@@ -226,7 +229,7 @@ angular.module('weberApp')
             return CurrentUser;
     })
 
-    .factory('MatchButton', function($http,$auth,$q, Restangular) {
+    .factory('MatchButton', function($http,$auth,$q, Restangular,PostService) {
 
         var MatchButton = function(user,profileuserid, postid) {
            //console.log('-- at match button-----')
@@ -237,15 +240,99 @@ angular.module('weberApp')
 
         }
 
+
         MatchButton.prototype.addToInterested = function(){
 
            var deferred = $q.defer();
            var self = this;
 
            setTimeout(function() {
-              Restangular.one('people', self.profileuserid).get({seed:Math.random()})
-                  .then(function(profileuser){
-                         var checkvalue = false;
+               Restangular.one('posts', self.postid).get({seed:Math.random(), embedded:{'author':1}})
+                  .then(function(post){
+                        if(post.interestedPeople.hasOwnProperty('interestedlist')
+                            &&
+                            post.interestedPeople.interestedlist.indexOf(self.user._id) == -1){
+                            //console.log('insert has property and not in interested list')
+
+                            post.interestedPeople.interestedlist.push(self.user._id)
+                            //post.interestedPeople.presentupdated = 10;
+                            console.log((post.interestedPeople.lastupdated))
+                            post.patch({
+                                'interestedPeople':{
+                                'interestedlist': post.interestedPeople.interestedlist,
+                                'presentupdated' : parseInt(post.interestedPeople.lastupdated)+1,
+                                'lastupdated':0
+                                }
+                            }).then(function(data){
+                                console.log('successfully updated interests of post', data)
+
+                                Restangular.one('people', post.author._id).get({seed:Math.random()})
+                                .then(function(person){
+                                    var check = true;
+
+                                    for(var temp in person.matchnotifications){
+                                        if(person.matchnotifications[temp].postid == post._id &&
+                                           person.matchnotifications[temp].interestedperson == post.author._id){
+                                               check = false;
+                                               
+                                           }
+                                    }
+
+                                    if(check){
+                                        //alert('ffffffff')
+                                        person.matchnotifications.push({
+                                                'postid':post._id,
+                                                'interestedperson':self.user._id,
+                                                'seen':false
+                                            })
+                                        var data = person.patch({
+                                            'matchnotifications':person.matchnotifications
+                                        });
+                                        deferred.resolve(data)
+                                    }
+
+                                })
+
+                            });
+                        }else{
+                            post.interestedPeople.interestedlist= [self.user._id]
+                            post.interestedPeople.presentupdated = 1;
+                            post.interestedPeople.lastupdated = 0;
+                            post.patch({
+                                'interestedPeople':{
+                                    'interestedlist': post.interestedPeople.interestedlist,
+                                    'presentupdated' : parseInt(post.interestedPeople.lastupdated)+1,
+                                    'lastupdated':0
+                                }
+                            }).then(function(data){
+                                console.log('successfully updated first interest', data)
+
+                                 Restangular.one('people', post.author._id).get({seed:Math.random()})
+                                .then(function(person){
+                                    var check = true;
+                                    for(var temp in person.matchnotifications){
+                                        if(person.matchnotifications[temp].postid == post._id &&
+                                           person.matchnotifications[temp].interestedperson == post.author._id){
+                                               check = false;
+                                           }
+                                    }
+                                    if(check){
+                                        //alert('ddd')
+                                        person.matchnotifications.push({
+                                                'postid':post._id,
+                                                'interestedperson':self.user._id,
+                                                'seen':false
+                                            })
+
+                                        var data = person.patch({
+                                           'matchnotifications':person.matchnotifications
+                                        });
+                                        deferred.resolve(data)
+                                    }
+                                })
+                            });
+                        }
+                        /*var checkvalue = false;
                          var isPostCreated = false;
                          // if user has alredy matched notifications count
                          if(profileuser.MatchedPeopleNotifications.length !== 0){
@@ -302,8 +389,13 @@ angular.module('weberApp')
                                'MatchedPeopleNotificCount' : profileuser.MatchedPeopleNotificCount
                             });
                             deferred.resolve(data)
-                        }
+                        }*/
+                        //deferred.resolve(post)
                   });
+
+
+
+
            }, 1000);
            return deferred.promise;
         };
@@ -317,8 +409,48 @@ angular.module('weberApp')
            var deferred = $q.defer();
            var self = this;
            setTimeout(function() {
+                Restangular.one('posts', self.postid).get({seed:Math.random(), embedded:{'author':1}})
+                  .then(function(post){
+                        if(post.interestedPeople.hasOwnProperty('interestedlist')
+                            &&
+                            post.interestedPeople.interestedlist.indexOf(self.user._id) != -1){
+                            post.interestedPeople.interestedlist.splice(post.interestedPeople.interestedlist.indexOf(self.user._id),1)
+                            post.patch({
+                                 'interestedPeople':{
+                                    'interestedlist': post.interestedPeople.interestedlist,
+                                    'presentupdated' : 0,
+                                    'lastupdated':0
+                                }
+                            }).then(function(data){
 
-                Restangular.one('people', self.profileuserid).get({seed:Math.random()})
+
+                                console.log('successfully updated interests of post')
+                                 Restangular.one('people', post.author._id).get({seed:Math.random()})
+                                .then(function(person){
+                                    var check = false;
+
+                                    for(var temp in person.matchnotifications){
+                                        if(person.matchnotifications[temp].postid == post._id &&
+                                           person.matchnotifications[temp].interestedperson == post.author._id){
+                                               check = true;
+                                               person.matchnotifications.splice(temp,1);
+                                           }
+                                    }
+
+                                    if(check){
+                                        var data = person.patch({
+                                            'matchnotifications':person.matchnotifications
+                                        });
+                                        deferred.resolve(data)
+                                    }
+
+                                })
+                            })
+                        }
+
+
+
+                /*Restangular.one('people', self.profileuserid).get({seed:Math.random()})
                 .then(function(profileuser){
                      var checkvalue = false;
 
@@ -352,15 +484,12 @@ angular.module('weberApp')
                             });
                              deferred.resolve(data)
                         }
-                     }
+                     }*/
                 });
 
            }, 1000);
 
            return deferred.promise;
-
-
-
         };
         return MatchButton;
     })
@@ -374,34 +503,51 @@ angular.module('weberApp')
 		});
 	})
 	.factory('InfinitePosts', function($http, Restangular, $alert, $timeout) {
+
 		var InfinitePosts = function(user_obj,authorIds) {
 			this.posts = [];
+			this.SpecificPost = {},
 			this.user_obj = user_obj;
 			this.busy = true;
 			this.page = 1;
 			this.loadPostIds = authorIds;
 			this.end = false;
             this.params = '{"author": {"$in":'+this.loadPostIds+'}}';
+            console.log('author params===>', this.params)
+        }
 
-			Restangular.all('posts').getList({
-			    where : this.params,
-				max_results: 10,
-				page: this.page,
-				sort: '[("_created",-1)]',
-				seed:Math.random()
-			}).then(function(posts) {
-                //console.log('loadposts')
-				if (posts.length < 10) {
-					this.end = true;
-				}
-				this.posts.push.apply(this.posts, posts);
-				this.page = this.page + 1;
-				this.busy = false;
+        InfinitePosts.prototype.getEarlyPosts = function(){
+                Restangular.all('posts').getList({
+                    where : this.params,
+                    max_results: 10,
+                    page: this.page,
+                    sort: '[("_created",-1)]',
+                    seed:Math.random()
+                }).then(function(posts) {
+                    //console.log('loadposts')
+                    if (posts.length < 10) {
+                        this.end = true;
+                    }
+                    this.posts.push.apply(this.posts, posts);
+                    this.page = this.page + 1;
+                    this.busy = false;
 
-			}.bind(this));
-
+                }.bind(this));
 		};
 
+        InfinitePosts.prototype.getSpecificPost = function(postid){
+            var self = this;
+            var embedded = '{"author":1}';
+            console.log('ppppppppppp', postid.postid)
+
+            Restangular.one('posts', postid.postid).get({embedded:embedded, seed:Math.random()})
+            .then(function(data){
+                self.posts.push.apply(self.posts, data);
+                self.SpecificPost = data
+                console.log('ssssssssss', self.posts)
+            }.bind(self))
+
+        }
 
 		InfinitePosts.prototype.nextPage = function() {
 		    //console.log('nextpage')
@@ -447,7 +593,8 @@ angular.module('weberApp')
 				author: this.user_obj._id,
 				content: content,
 				keywords: similar_keywords,
-				post_image_path : imagePath
+				post_image_path : imagePath,
+				interestedPeople:{ }
 			}).then(function(data) {
 
                 this.posts.unshift({
@@ -456,7 +603,8 @@ angular.module('weberApp')
                     post_image_path : imagePath,
                     _created: new Date(),
                     _id:data._id,
-                    _etag: data._etag
+                    _etag: data._etag,
+                    interestedPeople: {}
 
 				});
 
@@ -479,20 +627,13 @@ angular.module('weberApp')
 			    'If-Match': (post1._etag).toString()
 			})
 			.then(function(data) {
-
 			    for(var k in this.posts){
 			        if(this.posts[k]._id == post1._id){
 			            this.posts.splice(k,1)
+			            this.SpecificPost = {};
+			            console.log("successfully deleted")
 			        }
 			    }
-
-					/*this.posts.unshift({
-					author: this.user_obj._id,
-					content: content,
-					_created: "a few seconds ago"
-					})*/
-
-					console.log("successfully deleted")
 			}.bind(this));
 		};
 

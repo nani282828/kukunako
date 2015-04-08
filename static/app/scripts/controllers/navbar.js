@@ -162,7 +162,16 @@ angular.module('weberApp')
         function getMatchButtonNotific(currentuser){
             //currentuser.MatchedPeopleNotificCount.length)
             //console.log(currentuser)
-            $scope.MatchButtonNotific = currentuser.MatchedPeopleNotificCount.length;
+            $scope.unseenMnotific = []
+            $scope.matchnotifications = currentuser.matchnotifications
+            console.log('unseeen')
+            for(var temp in currentuser.matchnotifications){
+                if(currentuser.matchnotifications[temp].seen == false){
+                    $scope.unseenMnotific.push(currentuser.matchnotifications[temp])
+                }
+            }
+
+            /*$scope.MatchButtonNotific = currentuser.MatchedPeopleNotificCount.length;
 
             $scope.MatchButtonNotifications = currentuser.MatchedPeopleNotifications;
 
@@ -174,20 +183,20 @@ angular.module('weberApp')
             });
 
             //console.log('------------after sort-----')
-            //console.log(currentuser.MatchedPeopleNotifications)
+            //console.log(currentuser.MatchedPeopleNotifications)*/
         }
 
 
         get_friend_notifications(user);
         getMatchButtonNotific(user);
 
-          $socket.on('friendnotifications', function(data){
+          $socket.on('FMnotific', function(data){
             //console.log(data)
             /*if(parseInt(data.searchNotific)){
                 $scope.searchActivity = new SearchActivity(user);
             }*/
 
-            if(data.data.friendsnotifc){
+            if(data.data.FMnotific){
 
                 $http.get('/api/me', {
                     headers: {
@@ -200,10 +209,8 @@ angular.module('weberApp')
                             get_friend_notifications(user);
                             getMatchButtonNotific(user);
                     });
-
                 });
             }
-
         });
         $scope.openchatroom = function(id){
                     //console.log('open chat room', id)

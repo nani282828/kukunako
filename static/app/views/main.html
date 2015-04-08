@@ -182,18 +182,21 @@
                             </p>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-sm-12">
                             <h6>
-                                <a ng-if="!(MatchButtonService.checkMatchUnMatch(post._id, user))"
-                                   ng-click=" UserService.PushToIList(post.author,post._id);
+
+                                <a ng-if="MatchButtonService.checkMatchUnMatch(post, user) == false"
+                                   ng-click=" pushToPost(post.author,post._id);
                                    MatchAgreeDirective('{{ post._id }}','{{ post.author }}')"
                                    style="cursor:pointer" matchbuttondirective>
                                     Match
                                 </a>&nbsp;
 
-                                <a ng-if="MatchButtonService.checkMatchUnMatch(post._id, user)"
-                                   ng-click="UserService.deleteFromIList(post.author,post._id);
+                                <a
+                                        ng-if="MatchButtonService.checkMatchUnMatch(post, user) == true"
+                                   ng-click="deleteFromPost(post.author,post._id);
                                    MatchDisAgreeDirective('{{ post._id }}','{{ post.author }}')"
                                    style="cursor:pointer" matchbuttondirective >
                                     UnMatch
@@ -201,7 +204,9 @@
                             </h6>
                         </div>
                     </div>
+
                 </div>
+
                 <div class="panel-footer"
                      style="padding-top:5px;background-color:#fff;border:1px solid #FCF8F8;">
                     <div class="row">
@@ -210,10 +215,9 @@
                                 <a style="text-decoration:none;cursor:pointer;" alt="Match this post">
                                     <i class="fa fa-slideshare" style="font-size:14px;"></i>&nbsp;
                                 </a>
-                                <a href="" ng-repeat="matchPeople in UserService.get(post.author).MatchedPeopleNotifications">
-                                    <span ng-if="matchPeople.postid == post._id">
-                                        <span ng-repeat="temp in sortIListService.sendList(matchPeople.interestedList)">
+                                <a>
 
+                                       <span ng-repeat="temp in sortIListService.sendList(post.interestedPeople.interestedlist)">
                                             <span ng-if="user._id == temp">
                                                 you
                                             </span>
