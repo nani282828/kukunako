@@ -34,7 +34,7 @@
             </form>
         </div>
     </div>
-    <div class="row" style="padding-top:100px;">
+    <div class="row" style="padding-top:60px;">
         <div class="col-lg-7">
             <div class="row" ng-if="!(isAuthenticated())">
                 <div class="col-sm-12">
@@ -58,10 +58,20 @@
                 </div>
             </div>
 
-            <div ng-if="matchResults.saResultsNotFound && matchResults.mResultsNotFound && searched" ng-init="getSuggestedPeople()">
+            <div ng-if="matchResults.saResultsNotFound && matchResults.mResultsNotFound && searched"
+                 ng-init="getSuggestedPeople()">
+
             </div>
 
-            <dvi ng-if="matchResults.suggestpeople">no results found but these peoples can help you...</dvi>
+            <div class="row" ng-if="matchResults.suggestpeople">
+                <div class="col-lg-12">
+                    <h5>
+                        <label style="color:#FFF;">
+                            no results found but these peoples can help you...
+                        </label>
+                    </h5>
+                </div>
+            </div>
 
             <div class="row" style="padding-top:30px;" infinite-scroll='matchResults.nextPage()'
                                          infinite-scroll-disabled='matchResults.busy'
@@ -75,7 +85,8 @@
                             <a href="#" class="pull-left" style="padding: 0px 7px;" href="">
                               <img class="media-object" style="width:50px;border-radius:4px;" data-placement="top-right" style="width:87px"
                                  data-content="{{rs.author.location.city}} {{rs.author.location.state}}"
-                                 title="{{rs.author.name.first}}, {{rs.author.name.last}}" data-trigger="hover" bs-popover src="{{rs.author.picture.medium}}" alt="...">
+                                 title="{{rs.author.name.first}}, {{rs.author.name.last}}"
+                                 data-trigger="hover" bs-popover src="{{rs.author.picture.medium}}" alt="...">
                             </a>
                           </div>
                           <div class="media-body">
@@ -117,7 +128,71 @@
                     </div>
                     <!--<div ng-show='matchResults.busy'>Loading data...</div>
                     <div ng-show='matchResults.end'>You Reached the end!</div>-->
-                    <div ng-show="!(matchResults.mresults.length)">no result found</div>
+                    <div class="row"
+                         ng-show="!(matchResults.mresults.length) && searched">
+                        <div class="col-lg-10">
+                            <h5>
+                                <label style="color:#FFF;">
+                                    No results found
+                                </label>
+                            </h5>
+                            <h5 style="margin-top:20px;">
+
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="!searched" style="margin-top:20px;">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <h5 style="color:;">
+                                        How to use in weber in simple 3 steps
+                                    </h5>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-lg-1" style="margin-right:10px;">
+                                            <i class="fa fa-search"
+                                               style="padding:17px;font-size:18px;background-color:#3090C7;color:#FFF;border-radius:50%;">
+
+                                            </i>&nbsp;
+                                        </div>
+                                        <div class="col-lg-10">
+                                            <label style="margin-top:3px;">Search</label><br />
+                                            Ex:I am going to grab a cup of coffee whose with me ?
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-1" style="margin-right:10px;">
+                                            <i class="fa fa-user"
+                                               style="padding:17px;font-size:18px;background-color:#4E9258;color:#FFF;border-radius:50%;">
+
+                                            </i>&nbsp;
+                                        </div>
+                                        <div class="col-lg-10">
+                                            <label style="margin-top:3px;">
+                                                Find a person
+                                            </label><br />
+                                            Ex:I am going to grab a cup of coffee whose with me ?
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-1" style="margin-right:10px;">
+                                            <i class="fa fa-check-circle"
+                                                style="padding:17px;font-size:18px;background-color:#FFA62F;color:#FFF;border-radius:50%;"></i>
+                                        </div>
+                                        <div class="col-lg-10">
+                                            <label style="margin-top:3px;">
+                                                Connect & Enjoy
+                                            </label><br />
+                                            Connect, Chat, Enjoy..
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

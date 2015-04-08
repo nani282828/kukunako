@@ -51,8 +51,8 @@ angular.module('weberApp')
 
 
             $scope.size='small';
-            $scope.type='square';
-            $rootScope.imageDataURI='';
+            $scope.type='circle';
+            $scope.imageDataURI='';
             $scope.resImageDataURI='';
             $scope.resImgFormat='image/png';
             $scope.resImgQuality=1;
@@ -72,21 +72,20 @@ angular.module('weberApp')
             $scope.onLoadError=function() {
               console.log('onLoadError fired');
             };
-
-            $scope.file_changed = function(element, $scope) {
-
-                 var photofile = element.files[0];
-                 console.log("-------getting general file------")
-                 console.log(photofile)
-                 var reader = new FileReader();
-                 reader.onload = function(e) {
-                    console.log("hai")
-                    console.log($rootScope.imageDataURI = e.target.result)
-                    $rootScope.imageDataURI = e.target.result;
-                 };
-                 reader.readAsDataURL(photofile);
+            var handleFileSelect=function(evt) {
+              var file=evt.currentTarget.files[0];
+              console.log(file);
+              var reader = new FileReader();
+              reader.onload = function (evt) {
+                $scope.$apply(function($scope){
+                  $scope.imageDataURI=evt.target.result;
+                  console.log("============after base encoding the image===========")
+                  console.log($scope.imageDataURI);
+                });
+              };
+              reader.readAsDataURL(file);
             };
-
+            angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
             $scope.$watch('resImageDataURI',function(){
                 console.log('Res image', $scope.resImageDataURI);
                 console.log("its just testing the encoding base64")
@@ -95,7 +94,6 @@ angular.module('weberApp')
             });
 
             $scope.uploadFile = function(){
-
 
                 var Get_upload_details = Restangular.one('people', $scope.user._id).get({seed:Math.random()});
                     Get_upload_details.then(function(response){
@@ -114,6 +112,7 @@ angular.module('weberApp')
                             'thumbnail':$scope.resImageDataURI
                         }
                     }).then(function(response){
+                        $route.reload();
 
                         console.log("=====after patch========")
                         console.log(response)

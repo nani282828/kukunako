@@ -32,13 +32,13 @@
                               <i class="fa fa-angle-right pull-right"></i>
                           </a>
                       </li>
-                      <li class="list-group-item">
+                      <!--<li class="list-group-item">
                           <span class="fa fa-phone text-primary"></span>&nbsp;
                           <a data-target="#c" data-toggle="tab" style="cursor:pointer;color:#333;">
                               Mobile
                               <i class="fa fa-angle-right pull-right"></i>
                           </a>
-                      </li>
+                      </li>-->
                       <li class="list-group-item">
                           <span class="fa fa-microphone text-primary"></span>&nbsp;
                           <a data-target="#d" data-toggle="tab" style="cursor:pointer;color:#333;">
@@ -46,7 +46,7 @@
                               <i class="fa fa-angle-right pull-right"></i>
                           </a>
                       </li>
-                      <li class="list-group-item">
+                      <!--<li class="list-group-item">
                           <span class="fa fa-globe text-primary"></span>&nbsp;
                           <a data-target="#a" data-toggle="tab" style="cursor:pointer;color:#333;">
                               Notifications
@@ -59,7 +59,7 @@
                               Connections
                               <i class="fa fa-angle-right pull-right"></i>
                           </a>
-                      </li>
+                      </li>-->
                     </ul>
                   </div>
                 </div>
@@ -92,7 +92,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <h5>
-                                                <label style="cursor:pointer;">{{ user.username }}</label>
+                                                <span style="cursor:pointer;">{{ user.username }}</span>
                                             </h5>
                                         </div>
                                     </div>
@@ -162,7 +162,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <h5>
-                                                <label style="cursor:pointer;">{{ user.email }}</label>
+                                                <span style="cursor:pointer;">{{ user.email }}</span>
                                             </h5>
                                         </div>
                                     </div>
@@ -229,7 +229,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <h5>
-                                                <label style="cursor:pointer;">{{ user.name.first }} {{ user.name.last }}</label>
+                                                <span style="cursor:pointer;">{{ user.name.first }} {{ user.name.last }}</span>
                                             </h5>
                                         </div>
                                     </div>
@@ -315,12 +315,12 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <h5 ng-repeat="interest in user.interests">
-                                                <label style="cursor:pointer;">{{ interest }}</label>
+                                                <span style="cursor:pointer;">{{ interest }}</span>
                                             </h5>
                                             <h5 style="opacity:0.90;" ng-if="!(user.interests.length)">
-                                                <label style="color:red;cursor:pointer;">
+                                                <span style="cursor:pointer;">
                                                     Please add some interests here
-                                                </label>
+                                                </span>
                                             </h5>
                                         </div>
                                     </div>
@@ -388,9 +388,9 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <h5>
-                                                <label style="cursor:pointer;">
+                                                <span style="cursor:pointer;">
                                                     {{ user.location.state }}, {{ user.location.city }}, {{ user.location.street }}
-                                                </label>
+                                                </span>
                                             </h5>
                                         </div>
                                     </div>
@@ -500,14 +500,14 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <h5 ng-if="user.study.intermediate">
-                                                <label style="cursor:pointer;">
+                                                <span style="cursor:pointer;">
                                                     {{ user.study.intermediate }}, {{ user.study.graduate }}
-                                                </label>
+                                                </span>
                                             </h5>
                                             <h5 ng-if="!(user.study.intermediate)">
-                                                <label style="cursor:pointer;color:red;">
+                                                <span style="cursor:pointer;">
                                                     Please Update Your Studies
-                                                </label>
+                                                </span>
                                             </h5>
                                         </div>
                                     </div>
@@ -611,7 +611,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <h5>
-                                                <label style="cursor:pointer;">Updated on {{user.password.password_updated}}</label>
+                                                <span style="cursor:pointer;">Updated on {{user.password.password_updated}}</span>
                                             </h5>
                                         </div>
                                     </div>
@@ -831,8 +831,7 @@
                         <div class="row" style="cursor:pointer;"
                              ng-click="mobile_section = !mobile_section">
                             <div class="col-sm-12">
-                                <div class="jumbotron"
-                                     style="padding:10px;border-radius: 3px;margin-bottom:3px;">
+                                <div class="jumbotron" style="padding:10px;border-radius: 3px;margin-bottom:3px;">
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <div class="thumbnail" style="margin-bottom:0px;">
@@ -840,15 +839,63 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-8">
-                                            <button type="button" class="btn btn-sm btn-danger"
-                                                     data-animation="am-fade-and-scale" data-placement="center"
-                                                    data-template="static/app/views/uploadimage.html"
-                                                     bs-modal="modal">
-                                                Change Profile Picture
-                                            </button>
-                                            <a ng-click="showFileButton">
+                                            <a class="popup-link"
+                                               data-popup-target="#example-popup">
                                                 Change Profile Picture
                                             </a>
+
+                                            <div id="example-popup" class="popup">
+                                                <div class="popup-body">
+                                                    <span class="popup-exit"></span>
+
+                                                    <div class="popup-content">
+                                                            <h2 class="popup-title">Update Profile Picture</h2>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <span>
+                                                                        <h6 style="opacity:0.70">
+                                                                            <strong>
+                                                                                Note:&nbsp;
+                                                                            </strong>
+                                                                            Image should be less than 700px, Should be JPEG, PNG, GIF.
+                                                                        </h6>
+                                                                    </span>
+                                                                    <span>
+                                                                        <!--<input type="file" file-model="myFile" class="btn btn-sm btn-default" />-->
+                                                                        <form ng-show="enableCrop=true">
+                                                                            <input type="file" class="btn btn-primary btn-sm" id="fileInput" />
+                                                                        </form>
+                                                                        <br>
+
+                                                                          <div ng-if="enableCrop" class="cropArea" ng-class="{'big':size=='big', 'medium':size=='medium', 'small':size=='small'}">
+                                                                            <img-crop image="imageDataURI"
+                                                                                      result-image="$parent.resImageDataURI"
+                                                                                      change-on-fly="changeOnFly"
+                                                                                      area-type="{{type}}"
+                                                                                      area-min-size="selMinSize"
+                                                                                      result-image-format="{{resImgFormat}}"
+                                                                                      result-image-quality="resImgQuality"
+                                                                                      result-image-size="resImgSize"
+                                                                                      on-change="onChange($dataURI)"
+                                                                                      on-load-begin="onLoadBegin()"
+                                                                                      on-load-done="onLoadDone()"
+                                                                                      on-load-error="onLoadError()"
+                                                                            ></img-crop>
+                                                                                      <!--aspect-ratio="aspectRatio"-->
+                                                                          </div>
+                                                                    </span>
+                                                                    <span class="pull-left">
+                                                                        <input style="margin-top:5px"
+                                                                               ng-click="show_profile_picture = !show_profile_picture;uploadFile()"
+                                                                               type="submit" value="Update Profile Image"
+                                                                               class="btn btn-sm btn-default" />
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="popup-overlay"></div>
                                         </div>
                                     </div>
                                 </div>
