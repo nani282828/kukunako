@@ -314,8 +314,11 @@
                                             </h5>
                                         </div>
                                         <div class="col-sm-6">
-                                            <h5 ng-repeat="interest in user.interests">
-                                                <span style="cursor:pointer;">{{ interest }}</span>
+                                            <h5>
+                                                <span ng-repeat="interest in user.interests"
+                                                      style="cursor:pointer;">
+                                                    {{ interest.text }}{{$last ? '' : ', '}}
+                                                </span>
                                             </h5>
                                             <h5 style="opacity:0.90;" ng-if="!(user.interests.length)">
                                                 <span style="cursor:pointer;">
@@ -327,7 +330,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" ng-show="interests_section" style="padding-top:10px;">
+                        <div class="row" ng-show="interests_section"
+                             style="padding-top:10px;">
                             <div class="col-sm-12">
                                 <form name="myiForm">
                                     <div class="row">
@@ -346,7 +350,7 @@
                                                 </label>
                                             </h6>
                                         </div>
-                                        <div class="col-lg-6 colpadding">
+                                        <div class="col-lg-8 colpadding">
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <tags-input ng-model="tags" id="interests_tag" name="interests_tag" on-tag-added="tagAdded($tag)"

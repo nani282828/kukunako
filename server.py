@@ -95,9 +95,10 @@ def me():
     return Response(json.dumps(g.user_id),  mimetype='application/json')
 
 
-@app.route('/api/getpeoplenames',  methods=['GET','POST'])
-def getnames():
 
+"""@app.route('/api/getpeoplenames',  methods=['GET','POST'])
+def getnames():
+    print ''
     page =  request.json['page']
     query = request.json['query']
     accounts = app.data.driver.db['people']
@@ -108,7 +109,20 @@ def getnames():
                 {"username":{"$regex":".*"+query+".*"}}
             ]}).limit(10);
 
+    return json_util.dumps(data)"""
+
+@app.route('/api/getpeoplenames/<query>',  methods=['GET','POST'])
+def getnames(query):
+    accounts = app.data.driver.db['people']
+    data = accounts.find({"$or":[
+                {"name.first":{"$regex":".*"+query+".*"}},
+                {"name.name":{"$regex":".*"+query+".*"}},
+                {"username":{"$regex":".*"+query+".*"}}
+            ]}).limit(10);
+
     return json_util.dumps(data)
+
+
 
 
 @app.route('/foo/<path:filename>')

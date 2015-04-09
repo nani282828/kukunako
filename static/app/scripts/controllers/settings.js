@@ -13,24 +13,11 @@ angular.module('weberApp')
 	                Restangular, InfinitePosts, $alert, $http, CurrentUser, UserService) {
 
 
-        //ng-tags-input code for tags style interests
-            $scope.tags = [{ text: 'Tag9' },{ text: 'Tag10' }];
-                for(var i=0; i<$scope.tags.length; i++){
-                    console.log($scope.tags[i])
-                }
-                $scope.loadTags = function(query) {
-                    var deferred = $q.defer();
-                    deferred.resolve([{ text: 'Tag11' },{ text: 'Tag12' },{ text: 'Tag13' }]);
-                    return deferred.promise;
-                }
-                $scope.tagAdded = function(tag) {
-                    console.log('Tag added: ', tag.text);
-                    console.log($scope.tags)
-                };
-                $scope.tagRemoved = function(tag) {
-                    console.log('Tag removed: ', tag);
-                    console.log($scope.tags)
-                };
+        $scope.searched = false;
+	 	$scope.searchBusy = false;
+
+
+
 
 
 		$scope.UserService = UserService;
@@ -42,13 +29,31 @@ angular.module('weberApp')
 		}).success(function(user_id) {
 			var passReq = Restangular.one("people", JSON.parse(user_id)).get({seed:Math.random()}).then(function(result) {
               $scope.user = result;
-
+                $scope.tags = $scope.user.interests;
+                console.log($scope.user)
+                console.log($scope.tags)
             });
 
-            $scope.ud = function(){
-                console.log("hai")
+
+
+            for(var i=0; i<$scope.tags.length; i++){
+                console.log($scope.tags[i])
             }
 
+            $scope.loadTags = function(query) {
+            //return $http.get('/tags?query=' + query);
+            };
+
+            $scope.tagAdded = function(tag) {
+                console.log('Tag added: ', tag.text);
+                //$scope.tags.push(tag)
+                //alert(tag.text)
+            };
+
+            $scope.tagRemoved = function(tag) {
+                console.log('Tag removed: ', tag);
+                console.log($scope.tags)
+            };
 
             $scope.size='small';
             $scope.type='circle';
@@ -250,6 +255,8 @@ angular.module('weberApp')
                 });
 			};
 
+
+
 			$scope.updateInterests = function() {
 
 			    var Get_interests_details = Restangular.one('people', $scope.user._id).get({seed:Math.random()});
@@ -257,14 +264,15 @@ angular.module('weberApp')
                     $scope.user = response;
                     console.log("=========before patch========")
 
-                    var data = ($scope.interests.toString()).split(",");
-
-                    for(var k in data){
-                        $scope.user.interests.push(data[k]);
+                    var interests = []
+                    var querystring = "";
+                    for(var temp in $scope.tags){
+                        interests.push($scope.tags[temp].text.toString())
+                        querystring = querystring+$scope.tags[temp].text+" ";
                     }
-                    $scope.user.interests = $scope.user.interests;
+                    $scope.user.interests = interests;
                     $scope.user.patch({
-                        'interests':$scope.user.interests
+                        'interests':interests
                     }).then(function(response){
 
                         console.log("===after interests patch=====");

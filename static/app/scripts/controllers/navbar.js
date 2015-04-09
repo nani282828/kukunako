@@ -18,8 +18,39 @@ angular.module('weberApp')
   }
 })
     .controller('navbarcontroller',function($scope, $auth, CurrentUser, $alert,$rootScope,$timeout,InstanceSearch,
+                                            InstanceSearchHistory,
                                             $location, $http, Restangular,ChatActivity, $window,UserService,
                                             CurrentUser1,SearchActivity,FriendsNotific,friendsActivity,$socket) {
+
+    /* testing of auto complete code for search results in weber*/
+        $scope.instanceSearchHistory = {};
+
+        $scope.doSomething = function(typedthings){
+            if(typedthings){
+                $scope.movies = [];
+                var data = InstanceSearchHistory.get(typedthings);
+                if (typeof data.then !== 'undefined') {
+                    data.then(function(data){
+                    console.log('if part')
+                    $scope.movies = data.data;
+                    InstanceSearchHistory.pushToHistory(data.data, typedthings)
+                    })
+                }else{
+                    $scope.movies = data;
+                }
+            }
+        }
+
+        $scope.doSomethingElse = function(suggestion){
+            console.log("Suggestion selected: ", suggestion._id);
+            $location.path('profile/'+suggestion._id.$oid)
+        }
+
+
+    /* end of auto complete code and remember factory of this code is there at the bottom of the page*/
+
+
+
     $scope.selectedAddress = '';
       $scope.getAddress = function(viewValue) {
         var params = {address: viewValue, sensor: false};

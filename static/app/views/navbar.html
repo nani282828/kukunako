@@ -29,47 +29,11 @@
                     <form role="form" style="margin-top: 8px;">
                         <div class="row">
                             <div class="col-xs-12">
-                                <div class="input-group input-group-sm">
-                                    <input type="text" id="searchText" ng-click="menuMenu($event)"
-                                           class="form-control" ng-model="InstanceSearchQuery"
-                                           placeholder="Search Friends"
-                                           ng-change="InstanceSearchPeoples()" />
-                                    <div class="input-group-btn">
-                                        <button type="submit" class="btn">Search</button>
-                                    </div><!-- /btn-group -->
-                                </div><!-- /input-group -->
-                                <!--ng-show="menuOpened"-->
-                                <div class="messages-scroll"
-                                     style="width:445px;position:absolute;padding:0px;overflow:auto;">
+                                <autocomplete ng-model="result" attr-placeholder="Search friends in Weber"
+                                              click-activation="false" data="movies" on-type="doSomething"
+                                              on-select="doSomethingElse" attr-inputclass="form-control input-md">
 
-                                    <div  id="scroll123" class="list-group" style="">
-                                         <!--infinite-scroll='instancesearch.nextPage()'
-                                            infinite-scroll-disabled='instancesearch.busy'
-                                            infinite-scroll-distance='0'
-                                            infinite-scroll-container="'#scroll123'"-->
-
-                                        <div class="" style="margin-bottom:0px;"
-                                                ng-repeat="temp in instancesearch.InstancesearchResult"
-                                                  >
-                                            <a style="" href="#/profile/{{ temp._id.$oid }}"
-                                               class="list-group-item search_a">
-                                                <div class="row">
-                                                    <div class="col-sm-2" style="padding-right:0px;">
-                                                        <img src="{{ temp.picture.thumbnail }}" class=""
-                                                             style="width:55px;border-radius:50%;">
-                                                    </div>
-                                                    <div class="col-sm-8 colpadding">
-                                                        <h5 style="opacity:0.75;margin-left:-10px;">
-                                                            {{ temp.name.first }} {{ temp.name.last }}
-                                                        </h5>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-
-
-                                    </div>
-                                </div>
+                                </autocomplete>
                             </div><!-- /.col-xs-12 -->
                         </div><!-- /.row -->
                     </form>
@@ -88,8 +52,8 @@
                     <li><a href="#/search" ng-click="SeenMatchButton()">Match Me</a></li>
                     <li><a href="#/friends">Friends</a></li>
 
-                    <li class="dropdown" style="padding:3px 10px;">
-                        <a class="dropdown-toggle" style="cursor:pointer;padding:13px 2px;" data-toggle="dropdown"
+                    <li class="dropdown" style="">
+                        <a class="dropdown-toggle" style="cursor:pointer;" data-toggle="dropdown"
                            ng-click="loadLatestMessages()" style="cursor:pointer">
                             <i class="glyphicon glyphicon-envelope"
                                style="font-size:17px;opacity:0.55;">
@@ -144,8 +108,8 @@
                         </div>
                     </li>
 
-                    <li class="dropdown" style="padding:3px 10px">
-                        <a class="dropdown-toggle" style="cursor:pointer;padding:13px 2px;" data-toggle="dropdown"
+                    <li class="dropdown" style="">
+                        <a class="dropdown-toggle" style="cursor:pointer;" data-toggle="dropdown"
                            ng-click="getNewNotifcations()" style="cursor:pointer">
                             <i class="glyphicon glyphicon-globe" style="font-size:17px;opacity:0.55;">
                             </i>

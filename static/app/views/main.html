@@ -30,8 +30,8 @@
 							<i class="fa fa-dashboard" style="opacity:0.65;font-size:12px;"></i>&nbsp;
 							I am interested in:
                             <a ng-repeat="interest in user.interests"
-                               style="line-height:1.2em;color:;text-decoration:none;">
-								{{ interest }}&nbsp;
+                               style="line-height:1.2em;color:;text-decoration:none;text-transform:capitalize;">
+								{{ interest }}{{$last ? '' : ', '}}&nbsp;
 							</a>
 						</h6>
 					</div>
@@ -81,18 +81,15 @@
 		</div>
 	</div>
 	<div class="col-md-6 colpadding" style="min-height:2000px">
-		<form role="form" class="post-to-timeline panel panel-default panel-body clearfix">
+		<!--<form role="form" class="post-to-timeline panel panel-default panel-body clearfix">
 			<textarea ng-model="new_post" class="form-control"
                       style="height: 70px;margin-bottom: 10px;resize: none;" placeholder="Whats happening?" required></textarea>
 			<div class="row">
 				<div class="col-sm-6">
-                    <!--<input type="file" id="fileInput" class="btn btn-default btn-sm">-->
                     <span class="btn btn-sm btn-default btn-file">
                         <i class="glyphicon glyphicon-camera" style="color:#4E9258;"></i>
-                        <input type="file" id="fileInput" />
+                        <input type="file" id="fileInput" ng-model="fileArea" />
                     </span>
-					<!--<a class="btn btn-sm btn-default"><i class="glyphicon glyphicon-facetime-video"></i></a>
-					<a class="btn btn-sm btn-default"><i class="glyphicon glyphicon-map-marker"></i></a>-->
 				</div>
 				<div class="col-sm-2 pull-right">
                     <button ng-click="submit_post()" type="submit" class="btn btn-primary btn-block btn-sm">
@@ -100,7 +97,26 @@
                     </button>
 				</div>
 			</div>
-		</form>
+		</form>-->
+        <form name="myForm">
+            <fieldset><legend>Upload on form submit</legend>
+                Username: <input type="text" name="userName" ng-model="username" size="39" required="">
+                            <i ng-show="myForm.userName.$error.required">*required</i><br>
+                Profile Picture: <input type="file" ng-file-select="" ng-model="picFile" name="file" accept="image/*"
+                                        ng-file-change="generateThumb(picFile[0], $files)" required="">
+            <i ng-show="myForm.file.$error.required">*required</i>
+                <br>
+                {{ picFile[0] }}
+
+                <button ng-disabled="!myForm.$valid" ng-click="upload(picFile)">Submit</button>
+                <img ng-show="picFile[0].dataUrl != null" ng-src="{{picFile[0].dataUrl}}" class="thumb">
+                <span class="progress" ng-show="picFile[0].progress >= 0">
+                    <div style="width:{{picFile[0].progress}}%" ng-bind="picFile[0].progress + '%'" class="ng-binding"></div>
+                </span>
+                <span ng-show="picFile[0].result">Upload Successful</span>
+            </fieldset>
+            <br>
+        </form>
 
 		<div ng-if="!(infinitePosts.posts.length)" class="well clearfix" style="background-color:#fff;">
 			<div class="row">

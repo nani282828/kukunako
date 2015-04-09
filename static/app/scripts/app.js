@@ -26,7 +26,9 @@ angular
 		'infinite-scroll',
 		'ngSocket',
 		'ngTagsInput',
-		'cgBusy'
+		'cgBusy',
+		'autocomplete',
+		'angularFileUpload'
 	])
 	.run(["$rootScope", "$location",
 		function($rootScope, $location) {

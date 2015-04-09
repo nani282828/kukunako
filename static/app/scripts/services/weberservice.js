@@ -7,13 +7,13 @@
  * Service in the weberApp.
  */
 angular.module('weberApp')
-	.filter('highlight', function($sce) {
+	/*.filter('highlight', function($sce) {
 		return function(text, phrase) {
 			if (phrase) text = text.replace(new RegExp('(' + phrase + ')', 'gi'),
 				'<span class="highlighted">$1</span>');
 			return $sce.trustAsHtml(text);
 		};
-	})
+	})*/
 
     /*.factory('socket', function(){
         var socket =
@@ -129,6 +129,24 @@ angular.module('weberApp')
 		}*/
 
 	})
+    .service('InstanceSearchHistory', function($http, Restangular) {
+        this.history = [];
+        this.get = function(query) {
+            for (var i in this.history) {
+                if (this.history[i].query == query) {
+                    return this.history[i].result;
+                }
+            }
+            return $http.get('/api/getpeoplenames/'+query);
+        };
+
+        this.pushToHistory = function(historyObject, query){
+            this.history.push({
+                'query':query,
+                'result':historyObject
+            })
+        }
+    })
 	.service('MatchButtonService', function($http, Restangular, CurrentUser1) {
 		this.checkMatchUnMatch = function(post, user) {
 		     //console.log('interestedlist==>', post.interestedPeople.interestedlist,'userid==>', user._id)
