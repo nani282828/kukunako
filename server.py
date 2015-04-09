@@ -40,8 +40,8 @@ app.config.update(
 	MAIL_SERVER='smtp.gmail.com',
 	MAIL_PORT=465,
 	MAIL_USE_SSL=True,
-	MAIL_USERNAME = 'nanisatya282828@gmail.com',
-	MAIL_PASSWORD = 'edk2239EK'
+	MAIL_USERNAME = 'team@theweber.in',
+	MAIL_PASSWORD = 'ashok@weber'
 	)
 mail=Mail(app)
 socketio = SocketIO(app)
@@ -120,11 +120,11 @@ def login():
     accounts = app.data.driver.db['people']
     user = accounts.find_one({'email': request.json['email']})
     if not user:
-        response = jsonify(error='you email does not exist')
+        response = jsonify(error='Your email does not exist')
         response.status_code = 401
         return response
     if not user['email_confirmed'] == True:
-        response = jsonify(error='email is not confirmed')
+        response = jsonify(error='Email is not confirmed')
         response.status_code = 401
         return response
     if not user or not check_password_hash(user['password']['password'], request.json['password']):
@@ -147,7 +147,7 @@ def forgotpassword():
         return response
     else:
         msg = Message('Password Link',
-                      sender='suryachowdary93@gmail.com',
+                      sender='Team@weber.in',
                       recipients=[request.json['email']]
 
             )
@@ -155,12 +155,12 @@ def forgotpassword():
                        "To complete your Weber registration, Follow this link:<br>\
                         <br><p style='color:red;border:1px solid #dcdcdc;padding:10px;" \
                        "width:800px;text-align:center;font-size:14px;'>" \
-                       "<a href='http://127.0.0.1:8000/#/users/"+user_name+"/change_password_link/"+user_randome_string+"'>Click Here</a></p>\
+                       "<a href='http://www.weber.ooo/#/users/"+user_name+"/change_password_link/"+user_randome_string+"'>Click Here</a></p>\
                         <br><br><br><br>\
                         Thanks,<br>The Weber Team\
                         </p>"
         mail.send(msg)
-        return "recovery email link has been sent to providing email"
+        return "Recovery email link has been sent to providing email address"
 
 
 
@@ -280,21 +280,21 @@ def signup():
         user_random_string = str(user['random_string'])
 
         msg = Message('Confirm your Weber account',
-                      sender='nanisatya282828@gmail.com',
+                      sender='Team@theweber.in',
                       recipients=[request.json['email']]
 
             )
         msg.html = '<div style="min-height:100px;border:1px solid #dcdcdc;">' \
                    '<h5>Thanks for registering with us, To complete your Weber registration, Follow this link:</h5>' \
                    '<div style="padding:20px 5px">' \
-                   '<a href="http://127.0.0.1:8000/#/confirm_account/users/'\
+                   '<a href="http://www.weber.ooo/#/confirm_account/users/'\
                    +user_id+'/confirm/'+user_random_string+'">Click Here</a>' \
                                                            '</div>' \
                                                            '</div>'
         mail.send(msg)
         return user_id
     else:
-        response = jsonify(error='Your are already registered with this email')
+        response = jsonify(error='You are already registered with this email, Please try forgot password ')
         response.status_code = 401
         return response
 
