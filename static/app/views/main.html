@@ -81,15 +81,15 @@
 		</div>
 	</div>
 	<div class="col-md-6 colpadding" style="min-height:2000px">
-		<!--<form role="form" class="post-to-timeline panel panel-default panel-body clearfix">
+		<form role="form" class="post-to-timeline panel panel-default panel-body clearfix">
 			<textarea ng-model="new_post" class="form-control"
                       style="height: 70px;margin-bottom: 10px;resize: none;" placeholder="Whats happening?" required></textarea>
 			<div class="row">
 				<div class="col-sm-6">
-                    <span class="btn btn-sm btn-default btn-file">
+                    <!--<span class="btn btn-sm btn-default btn-file">
                         <i class="glyphicon glyphicon-camera" style="color:#4E9258;"></i>
                         <input type="file" id="fileInput" ng-model="fileArea" />
-                    </span>
+                    </span>-->
 				</div>
 				<div class="col-sm-2 pull-right">
                     <button ng-click="submit_post()" type="submit" class="btn btn-primary btn-block btn-sm">
@@ -97,8 +97,8 @@
                     </button>
 				</div>
 			</div>
-		</form>-->
-        <form name="myForm">
+		</form>
+        <!--<form name="myForm">
             <fieldset><legend>Upload on form submit</legend>
                 Username: <input type="text" name="userName" ng-model="username" size="39" required="">
                             <i ng-show="myForm.userName.$error.required">*required</i><br>
@@ -116,7 +116,7 @@
                 <span ng-show="picFile[0].result">Upload Successful</span>
             </fieldset>
             <br>
-        </form>
+        </form>-->
 
 		<div ng-if="!(infinitePosts.posts.length)" class="well clearfix" style="background-color:#fff;">
 			<div class="row">

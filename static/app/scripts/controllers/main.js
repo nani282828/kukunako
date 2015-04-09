@@ -15,19 +15,6 @@ angular.module('weberApp')
         $scope.MatchButtonService = MatchButtonService;
         $scope.sortIListService = sortIListService;
 
-        $scope.$watch('files', function () {
-            $scope.upload($scope.files);
-        });
-
-        $scope.upload = function (files) {
-            if (files && files.length) {
-                for (var i = 0; i < files.length; i++) {
-                    var file = files[i];
-                    console.log(file)
-                }
-            }
-        };
-
 		$http.get('/api/me', {
 			headers: {
 				'Content-Type': 'application/json',
@@ -56,26 +43,26 @@ angular.module('weberApp')
 				$scope.submit_post = function(){
 
 				        //here is the code of selecting the file for uploading an image with post
-                        var handleFileSelect = function(evt) {
+                        /*var handleFileSelect = function(evt) {
                             $rootScope.file = evt.currentTarget.files[0];
                         };
-                        angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+                        angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);*/
 
                         //$rootScope.server_file_path = 'hj'
                         //console.log('file is ' + JSON.stringify($rootScope.file));
-                        if($rootScope.file){
-                            console.log("posted")
-                            var uploadUrl = "/fileUpload";
-                            var get_details = fileUpload.uploadFileToUrl($rootScope.file, uploadUrl)
-                            $rootScope.file = '';
-                            get_details.then(function (response) {
+                        //if($rootScope.file){
+                            //console.log("posted")
+                            //var uploadUrl = "/fileUpload";
+                            //var get_details = fileUpload.uploadFileToUrl($rootScope.file, uploadUrl)
+                            //$rootScope.file = '';
+                            //get_details.then(function (response) {
                                 //console.log("------getting the url for an image-----")
                                 //console.log(response.data)
-                                $rootScope.server_file_path = response.data;
+                                //$rootScope.server_file_path = response.data;
                                 //console.log("=====get server image path=====")
                                 //console.log($rootScope.server_file_path)
-                            })
-                        }
+                            //})
+                        //}
 
 
 
