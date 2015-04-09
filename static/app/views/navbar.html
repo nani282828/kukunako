@@ -38,7 +38,8 @@
                                         <button type="submit" class="btn">Search</button>
                                     </div><!-- /btn-group -->
                                 </div><!-- /input-group -->
-                                <div class="messages-scroll" ng-show="menuOpened"
+                                <!--ng-show="menuOpened"-->
+                                <div class="messages-scroll"
                                      style="width:445px;position:absolute;padding:0px;overflow:auto;">
 
                                     <div  id="scroll123" class="list-group" style="">
@@ -234,18 +235,16 @@
                                         </div>
 
 
-                                        <div ng-repeat="notification in matchnotifications"
-                                         class="row" style="margin-top:7px;border-bottom:1px solid #f2f2f2;padding-bottom:5px;" >
-
+                                        <div ng-repeat="notification in matchnotifications" class="row" style="margin-top:7px;border-bottom:1px solid #f2f2f2;padding-bottom:5px;" >
                                             <div class="col-sm-2">
                                                 <img src=""
                                                      style="width:50px">
                                             </div>
                                             <div class="col-sm-10" >
                                                 <h5>
+                                                    {{ notification }}
+                                                    <!--<a href="#/post/{{ notification.postid }}" ng-if="matchnotifications.length == 1" >
 
-                                                    <a href="#/post/{{ notification.postid }}" ng-if="matchnotifications.length == 1" >
-                                                        <img src="">
                                                         {{UserService.get(notification.interestedperson).name.first}}
                                                         matched with your post
                                                     </a>
@@ -253,7 +252,7 @@
                                                     <a ng-if="matchnotifications.length >= 2" href="#/post/{{ notification.postid }}">
                                                         {{UserService.get(notification.interestedperson).name.first}}
                                                         and {{ matchnotifications.length - 2 }} others matched your post
-                                                    </a>
+                                                    </a>-->
 
                                                 </h5>
                                             </div>

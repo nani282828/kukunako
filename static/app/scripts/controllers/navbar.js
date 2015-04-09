@@ -150,7 +150,7 @@ angular.module('weberApp')
             $scope.matchnotifications = currentuser.matchnotifications
             for(var temp in currentuser.matchnotifications){
                 if(currentuser.matchnotifications[temp].seen == false &&
-                   currentuser.matchnotifications[temp].interestedperson == user._id){
+                   currentuser.matchnotifications[temp].interestedperson != user._id){
                     $scope.unseenMnotific.push(currentuser.matchnotifications[temp])
                 }
             }
