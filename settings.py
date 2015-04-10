@@ -383,9 +383,8 @@ people = {
 
         'accept_notifications': {
             'type': 'list',
+
             'schema': {
-                'type':'dict',
-                'schema':{
                     'accepted_id': {
                         'type': 'objectid',
                         #'unique': True,
@@ -394,12 +393,11 @@ people = {
                             'embeddable': True
                         }
                     },
+
                     'seen': {
                         'type': 'boolean',
                         'default': False
                     }
-                },
-
             },
         },
 

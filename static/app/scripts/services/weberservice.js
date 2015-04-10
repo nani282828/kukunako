@@ -104,30 +104,6 @@ angular.module('weberApp')
 			this.users.push(promise);
 			return promise;
 		};
-
-		/*this.deleteFromIList = function(userId, postId){
-		    var userNotifications = this.get(userId).MatchedPeopleNotifications;
-		    for(var temp in userNotifications){
-		        if(userNotifications[temp].postid == postId &&
-		        userNotifications[temp].interestedList.indexOf(userId) !== -1){
-		            userNotifications[temp].interestedList.splice(userNotifications[temp].interestedList.indexOf(userId),1)
-		        }
-		    }
-		    //console.log('user==>',this.get(userId))
-		}
-
-		this.PushToIList = function(userId, postId){
-		    var userNotifications = this.get(userId).MatchedPeopleNotifications;
-		    for(var temp in userNotifications){
-                //console.log('usenotifications==>', userNotifications[temp])
-		        if(userNotifications[temp].postid == postId &&
-		        userNotifications[temp].interestedList.indexOf(userId) === -1){
-		            userNotifications[temp].interestedList.push(userId);
-		        }
-		    }
-
-		}*/
-
 	})
     .service('InstanceSearchHistory', function($http, Restangular) {
         this.history = [];

@@ -224,22 +224,20 @@ angular.module('weberApp')
                     }
                 }).success(function(user_id) {
                     Restangular.one('people',JSON.parse(user_id)).get({seed: Math.random()}).then(function(user) {
-
-
                             var anotific = [];
                             var reqnotific = [];
                             var k = null;
-
                             for(k in user.accept_notifications){
-                                user.accept_notifications[k].seen = true
-                                anotific.push(user.accept_notifications[k].accepted_id)
+                                user.accept_notifications[k].seen = true;
+                                user.accept_notifications[k].accepted_id = (user.accept_notifications[k].accepted_id).toString();
+                                anotific.push(user.accept_notifications[k].accepted_id);
                             }
 
                             k = null;
 
                             for(k in user.notifications){
-                                user.notifications[k].seen = true
-                                reqnotific.push(user.notifications[k].friend_id)
+                                user.notifications[k].seen = true;
+                                reqnotific.push(user.notifications[k].friend_id);
                             }
 
                             if($scope.tempUnseen.length){
@@ -250,13 +248,14 @@ angular.module('weberApp')
                                 }
                             }
 
+                            console.log('--------->', user.accept_notifications)
                             user.patch({
-                                'all_seen':true,
-                                'accept_notifications':user.accept_notifications,
-                                'notifications': user.notifications,
-                                'matchnotifications': user.matchnotifications
+                                all_seen : true,
+                                accept_notifications : user.accept_notifications,
+                                notifications : user.notifications,
+                                matchnotifications : user.matchnotifications
                             }).then(function(data){
-                                console.log(data)
+                                console.log('------------>',data)
                             });
 
 

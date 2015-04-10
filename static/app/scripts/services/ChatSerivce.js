@@ -32,35 +32,37 @@ angular.module('weberApp')
             }
         };
 
-        ChatActivity.prototype.getConversations = function(){
-
+        /*ChatActivity.prototype.getConversations = function(){
                 if (this.currentuser.conversations.length !== 0) {
-
-                var params = '{"_id": {"$in":["'+(this.currentuser.conversations).join('", "') + '"'+']}}';
+                    var params = '{"_id": {"$in":["'+(this.currentuser.conversations).join('", "') + '"'+']}}';
 
                 Restangular.all('people').getList({where :params})
                     .then(function(data){
                         this.conversations.push.apply(this.conversations, data)
+
                     }.bind(this));
             }
-        };
+
+        };*/
+
 
         ChatActivity.prototype.addToConversations = function(id){
+            if(this.currentuser.conversations.indexOf(id) == -1 &&
+               this.currentuser.friends.indexOf(id) == -1){
 
-            this.currentuser.conversations.push(id);
-
-            Restangular.one('people', this.currentuser._id).patch(
-            {
-               conversations : this.currentuser.conversations
-            },{},{
-                            'Content-Type': 'application/json',
-                            'If-Match': this._etag,
-                            'Authorization': $auth.getToken()
-            }).then(function(data){
-               console.log('successfully inserted into conversations')
-               console.log(data)
-               this._etag = data._etag;
-            });
+               this.currentuser.conversations.push(id);
+               Restangular.one('people', this.currentuser._id).patch({
+                   conversations : this.currentuser.conversations
+               },{},{
+                        'Content-Type': 'application/json',
+                        'If-Match': this._etag,
+                        'Authorization': $auth.getToken()
+               }).then(function(data){
+                   console.log('successfully inserted into conversations')
+                   console.log(data)
+                   this._etag = data._etag;
+               }.bind(this));
+            }
         }
 
         // sending message
