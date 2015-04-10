@@ -121,6 +121,7 @@ angular.module('weberApp')
             Restangular.one('people', JSON.parse(userId)).get().then(function(user) {
             $scope.openchatroom = function(id){
                     console.log('open chat room', id)
+                $rootScope.chatactivity.addToConversations(id);
                 if(!(sessionStorage.getItem(id))){
                     var json = {};
                     Restangular.one('people', id).get({seed: Math.random()})

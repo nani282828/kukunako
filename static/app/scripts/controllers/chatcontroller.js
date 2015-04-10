@@ -1,5 +1,5 @@
 angular.module('weberApp')
-.controller('chatbarcontroller', function($scope, $auth, CurrentUser1,$socket,
+.controller('chatbarcontroller', function($scope, $auth, CurrentUser1,$socket,UserService,
                                           $http,$rootScope,SearchActivity,FriendsNotific,
                                           $document, Restangular,ChatActivity){
 
@@ -9,6 +9,7 @@ angular.module('weberApp')
     //updating the chat div height using below code please put it
     $scope.get_screen_height = window.innerHeight-52;
     $scope.get_inner_div_height = (window.innerHeight-210)/2;
+    $scope.UserService = UserService;
     //console.log($scope.get_screen_height)
     //console.log($scope.get_inner_div_height)
 
@@ -39,15 +40,17 @@ angular.module('weberApp')
             var date = new Date()
             this.userId = userId;
             Restangular.one('people', JSON.parse(userId)).get().then(function(user) {
+
                 $scope.chatdivnotification = [];
+
                 $rootScope.chatactivity = new ChatActivity(user);
                 $rootScope.loadLatestMessages = function(){
                     //console.log('load message')
                     $rootScope.chatactivity.loadLatestMessages();
                 }
-                if(user.conversations.length !== 0){
+                /*if(user.conversations.length !== 0){
                     $rootScope.chatactivity.getConversations();
-                 }
+                 }*/
 
                  if(user.friends.length !== 0){
                     $rootScope.chatactivity.getChatFriends();
@@ -210,9 +213,7 @@ angular.module('weberApp')
 
                  // opens new chat room
                  $scope.openchatroom = function(id){
-
-                    //console.log('open chat room')
-
+                    //$scope.addToConversations(id);
                     if(!(sessionStorage.getItem(id))){
                         // check room alredy open
 
@@ -286,15 +287,17 @@ angular.module('weberApp')
                 }
 
                 $scope.addToConversations = function(id){
-                    if(user.conversations.indexOf(id) == -1 && user.friends.indexOf(id) == -1){
+                        alert('haiii')
+                    //if(user.conversations.indexOf(id) == -1 && user.friends.indexOf(id) == -1){
                         $scope.chatactivity.addToConversations(id);
-                    }else{
+                   // }else{
                         //console.log('alredy added')
-                    }
+                    //}
+
                 }
-                    //display_divs();
-                    loadintodivs();
-                    $scope.MessageNotifcations();
+                //display_divs();
+                loadintodivs();
+                $scope.MessageNotifcations();
         });
     });
 

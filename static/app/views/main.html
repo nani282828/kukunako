@@ -118,7 +118,8 @@
             <br>
         </form>-->
 
-		<div ng-if="!(infinitePosts.posts.length)" class="well clearfix" style="background-color:#fff;">
+		<div ng-if="!(infinitePosts.posts.length)" class="well clearfix"
+             style="background-color:#fff;">
 			<div class="row">
 				<div class="col-sm-12">
 					<h2 class="text-center">
@@ -157,40 +158,6 @@
 					<br>
 				</div>
 				<div class="panel-body" style="margin-bottom:0px;padding-bottom:0px;">
-                    <div ng-if="post.post_image_path" class="row">
-						<div class="col-sm-12" style="padding:0px;">
-							<div class="thumbnail" style="border:0px solid;">
-								<img src="{{ post.post_image_path }}" style="cursor:pointer;"
-                                         data-toggle="modal" data-target="#{{ post._id }}">
-							</div>
-						</div>
-					</div>
-
-                    <div id="{{ post._id }}" class="modal fade bs-example-modal-lg"
-                     style="background-color:rgba(0, 0, 0, 0.81);" tabindex="-1" role="dialog">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4>Image</h4>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <div class="thumbnail" style="border:0px solid;">
-                                                <img src="{{ post.post_image_path }}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-primary">OK</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                     <div class="row" style="padding-bottom:5px;">
                         <div class="col-sm-12">
@@ -209,7 +176,6 @@
                                    style="cursor:pointer" matchbuttondirective>
                                     Match
                                 </a>&nbsp;
-
                                 <a ng-show="MatchButtonService.checkMatchUnMatch(post, user) == true"
                                    ng-click="deleteFromPost(post.author,post._id, user);
                                    MatchDisAgreeDirective('{{ post._id }}','{{ post.author }}', '{{ user }}')"
@@ -219,40 +185,39 @@
                             </h6>
                         </div>
                     </div>
-
                 </div>
-
                 <div class="panel-footer"
                      style="padding-top:5px;background-color:#fff;border:1px solid #FCF8F8;">
                     <div class="row">
                         <div class="col-sm-12">
                             <h6>
-                                <a style="text-decoration:none;cursor:pointer;" alt="Match this post">
-                                    <i class="fa fa-slideshare" style="font-size:14px;"></i>&nbsp;
-                                </a>
-                                <a>
-
-                                       <span ng-repeat="temp in sortIListService.sendList(post.interestedPeople.interestedlist, user._id)">
-                                            <span ng-if="user._id == temp">
-                                                you
-                                            </span>
-
-                                            <span ng-if="user._id != temp">
-                                                {{ UserService.get(temp).name.first }}
-                                            </span>
-
-                                        </span>
+                                <span ng-repeat="temp in sortIListService.sendList(post.interestedPeople.interestedlist, user._id)">
+                                    <a style="text-decoration:none;cursor:pointer;"
+                                       alt="Match this post">
+                                        <i class="fa fa-slideshare" style="font-size:14px;"></i>&nbsp;
+                                    </a>
+                                    <span ng-if="user._id == temp">
+                                        <a href="">
+                                            you
+                                        </a>
                                     </span>
 
-                                </a>
-                                <span ng-if="!(sortIListService.sendList(matchPeople.interestedList).length)">0</span>
-                                 matched with this post
+                                    <span ng-if="user._id != temp">
+                                        <a href="">
+                                            {{ UserService.get(temp).name.first }}
+                                        </a>
+                                    </span>
+                                    matched with this post
+                                </span>
+                                <span ng-if="sortIListService.sendList(matchPeople.interestedList).length">
+                                    {{ sortIListService.sendList(matchPeople.interestedList).length }}
+                                    matched with this post
+                                </span>
+
                             </h6>
                         </div>
                     </div>
                 </div>
-
-
 			</div>
 			<div ng-show='infinitePosts.busy'>Loading data...</div>
 			<div ng-show='infinitePosts.end'>You Reached the end!</div>

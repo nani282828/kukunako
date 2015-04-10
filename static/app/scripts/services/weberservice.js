@@ -104,30 +104,6 @@ angular.module('weberApp')
 			this.users.push(promise);
 			return promise;
 		};
-
-		/*this.deleteFromIList = function(userId, postId){
-		    var userNotifications = this.get(userId).MatchedPeopleNotifications;
-		    for(var temp in userNotifications){
-		        if(userNotifications[temp].postid == postId &&
-		        userNotifications[temp].interestedList.indexOf(userId) !== -1){
-		            userNotifications[temp].interestedList.splice(userNotifications[temp].interestedList.indexOf(userId),1)
-		        }
-		    }
-		    //console.log('user==>',this.get(userId))
-		}
-
-		this.PushToIList = function(userId, postId){
-		    var userNotifications = this.get(userId).MatchedPeopleNotifications;
-		    for(var temp in userNotifications){
-                //console.log('usenotifications==>', userNotifications[temp])
-		        if(userNotifications[temp].postid == postId &&
-		        userNotifications[temp].interestedList.indexOf(userId) === -1){
-		            userNotifications[temp].interestedList.push(userId);
-		        }
-		    }
-
-		}*/
-
 	})
     .service('InstanceSearchHistory', function($http, Restangular) {
         this.history = [];
@@ -148,6 +124,7 @@ angular.module('weberApp')
         }
     })
 	.service('MatchButtonService', function($http, Restangular, CurrentUser1) {
+
 		this.checkMatchUnMatch = function(post, user) {
 		     console.log('at match button service', user._id)
 		     //console.log('interestedlist==>', post.interestedPeople.interestedlist,'userid==>', user._id)
@@ -155,11 +132,14 @@ angular.module('weberApp')
              if(post.interestedPeople.hasOwnProperty('interestedlist')
                             &&
                 post.interestedPeople.interestedlist.indexOf(user._id) !== -1){
+                    console.log('---------->true')
                     return true;
              }else{
+                console.log('------------>false')
                 return false;
              }
 		};
+
 	})
 	.service('PostService', function($http, Restangular) {
 		this.posts = [];
@@ -518,7 +498,8 @@ angular.module('weberApp')
                         content: post.content,
                         _created: post._created,
                         _id: post._id,
-                        _etag: post._etag
+                        _etag: post._etag,
+                         interestedPeople : post.interestedPeople
                     });
                     //console.log(this.posts)
                 }.bind(this));
@@ -542,7 +523,7 @@ angular.module('weberApp')
                     _created: new Date(),
                     _id:data._id,
                     _etag: data._etag,
-                    interestedPeople: {}
+                    interestedPeople : {}
 
 				});
 
