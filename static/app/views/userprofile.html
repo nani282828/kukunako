@@ -146,6 +146,27 @@
                         </div>
                     </div>
                 </div>
+
+                 <div class="row" ng-show="post.author != user._id">
+                        <div class="col-sm-12">
+                            <h6>
+                                <a ng-show="MatchButtonService.checkMatchUnMatch(post, currentuser) == false"
+                                   ng-click=" pushToPost(post.author,post._id, currentuser);
+                                   MatchAgreeDirective('{{ post._id }}','{{ post.author }}','{{ currentuser }}')"
+                                   style="cursor:pointer" matchbuttondirective>
+                                    Match
+                                </a>&nbsp;
+
+                                <a ng-show="MatchButtonService.checkMatchUnMatch(post, currentuser) == true"
+                                   ng-click="deleteFromPost(post.author,post._id, currentuser);
+                                   MatchDisAgreeDirective('{{ post._id }}','{{ post.author }}','{{ currentuser }}')"
+                                   style="cursor:pointer" matchbuttondirective >
+                                    UnMatch
+                                </a>&nbsp;
+                            </h6>
+                        </div>
+                   </div>
+                {{ post.interestedPeople.interestedlist}}
 			</div>
 			<div ng-show='infinitePosts.busy'>Loading data...</div>
 			<div ng-show='infinitePosts.end'>You Reached the end!</div>

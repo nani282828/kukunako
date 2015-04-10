@@ -48,9 +48,6 @@ angular.module('weberApp')
 
 
     /* end of auto complete code and remember factory of this code is there at the bottom of the page*/
-
-
-
     $scope.selectedAddress = '';
       $scope.getAddress = function(viewValue) {
         var params = {address: viewValue, sensor: false};
@@ -59,6 +56,7 @@ angular.module('weberApp')
           return res.data.results;
         });
       };
+
     $scope.instancesearch = new InstanceSearch();
     $scope.testingsearch = function(){
        $scope.instancesearch.getInstancePeoples(this.InstanceSearchQuery)
@@ -176,15 +174,16 @@ angular.module('weberApp')
         }
 
         function getMatchButtonNotific(currentuser){
-
+            console.log('===============>', currentuser)
             $scope.unseenMnotific = []
             $scope.matchnotifications = currentuser.matchnotifications
             for(var temp in currentuser.matchnotifications){
                 if(currentuser.matchnotifications[temp].seen == false &&
-                   currentuser.matchnotifications[temp].interestedperson != user._id){
+                   currentuser.matchnotifications[temp].interestedperson != currentuser._id){
                     $scope.unseenMnotific.push(currentuser.matchnotifications[temp])
                 }
             }
+            console.log('unseen==>', $scope.unseenMnotific)
         }
 
 

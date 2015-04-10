@@ -149,6 +149,7 @@ angular.module('weberApp')
     })
 	.service('MatchButtonService', function($http, Restangular, CurrentUser1) {
 		this.checkMatchUnMatch = function(post, user) {
+		     console.log('at match button service', user._id)
 		     //console.log('interestedlist==>', post.interestedPeople.interestedlist,'userid==>', user._id)
 		     //console.log(post.interestedPeople.hasOwnProperty('interestedlist'))
              if(post.interestedPeople.hasOwnProperty('interestedlist')
@@ -187,11 +188,13 @@ angular.module('weberApp')
 	    }
 
 
-	}).service('sortIListService', function($http, Restangular,CurrentUser1) {
-		this.sendList = function(list){
+	})
+
+	.service('sortIListService', function($http, Restangular,CurrentUser1) {
+		this.sendList = function(list, cuserid){
 		    if(list && list.length){
 		        for(var temp in list){
-    		       if(list[temp] == CurrentUser1.user._id){
+    		       if(list[temp] == cuserid){
                         list.push(list.splice( temp, 1 )[0]);
 	               }
 		        }
@@ -253,14 +256,14 @@ angular.module('weberApp')
            //console.log('-- at match button-----')
            //console.log(postid)
            this.profileuserid = profileuserid,
-           this.user = user,
+           this.user = JSON.parse(user),
            this.postid = postid
 
         }
 
 
         MatchButton.prototype.addToInterested = function(){
-
+            console.log('pushing at service', this.user._id)
            var deferred = $q.defer();
            var self = this;
 
@@ -299,13 +302,17 @@ angular.module('weberApp')
                                     if(check){
                                         //alert('ffffffff')
                                         person.matchnotifications.push({
-                                                'postid':post._id,
-                                                'interestedperson':self.user._id,
-                                                'seen':false
-                                            })
+                                                postid: post._id,
+                                                interestedperson: self.user._id,
+                                                seen: false
+                                            });
+                                            console.log('data of inserting==>',person.matchnotifications)
                                         var data = person.patch({
-                                            'matchnotifications':person.matchnotifications
-                                        });
+                                            'matchnotifications': person.matchnotifications
+                                        }).then(function(data){
+                                            console.log('inserted into match notification first', data)
+
+                                        })
                                         deferred.resolve(data)
                                     }
 
@@ -316,6 +323,10 @@ angular.module('weberApp')
                             post.interestedPeople.interestedlist= [self.user._id]
                             post.interestedPeople.presentupdated = 1;
                             post.interestedPeople.lastupdated = 0;
+
+                            console.log('------------data analysis')
+                            console.log(self.user)
+                            console.log('-----------------------')
                             post.patch({
                                 'interestedPeople':{
                                     'interestedlist': post.interestedPeople.interestedlist,
@@ -337,14 +348,16 @@ angular.module('weberApp')
                                     if(check){
                                         //alert('ddd')
                                         person.matchnotifications.push({
-                                                'postid':post._id,
-                                                'interestedperson':self.user._id,
-                                                'seen':false
+                                                postid: post._id,
+                                                interestedperson: self.user._id,
+                                                seen: false
                                             })
-
+                                        console.log('data of inserting==>', person.matchnotifications)
                                         var data = person.patch({
-                                           'matchnotifications':person.matchnotifications
-                                        });
+                                           'matchnotifications': person.matchnotifications
+                                        }).then(function(data){
+                                            console.log('inserted into match notification ', data)
+                                        })
                                         deferred.resolve(data)
                                     }
                                 })

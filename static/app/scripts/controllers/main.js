@@ -152,22 +152,13 @@ angular.module('weberApp')
             link: function (scope, element, attrs) {},
             controller:function($scope, $http, $route, $element, $attrs, $transclude){
                 $scope.matchbuttonbusy = false;
-
-                $scope.MatchAgreeDirective = function(postid, authorid  ){
-
+                $scope.MatchAgreeDirective = function(postid, authorid, user){
                     if(!($scope.matchbuttonbusy)){
                        $scope.matchbuttonbusy = true;
-
-                       /*var html = '<a ng-click="MatchDisAgreeDirective(\''+postid+'\',\''+authorid+'\');'+
-                                    'deleteFromPost(\''+authorid+'\',\''+postid+'\')"'+
-                                    'style="cursor:pointer" matchbuttondirective >UnMatch</a>';
-                       var e =$compile(html)($scope);
-                       $element.replaceWith(e);*/
-
                        for(var k in $scope.infinitePosts.posts){
                             if($scope.infinitePosts.posts[k].author === authorid &&
                                $scope.infinitePosts.posts[k]._id === postid){
-                               $scope.matchbutton = new MatchButton($scope.user, authorid, postid);
+                               $scope.matchbutton = new MatchButton(user, authorid, postid);
                                //console.log('credentials==>', $scope.user, authorid, postid)
                                $scope.matchbutton.addToInterested().then(function(){
                                   $scope.matchbuttonbusy = false;
@@ -178,18 +169,10 @@ angular.module('weberApp')
                     }
 				}
 
-				$scope.MatchDisAgreeDirective = function(postid, authorid ){
+				$scope.MatchDisAgreeDirective = function(postid, authorid, user ){
                     if(!($scope.matchbuttonbusy)){
                         $scope.matchbuttonbusy = true;
-
-                        /*var html = '<a ng-click="MatchAgreeDirective(\''+postid+'\',\''+authorid+'\');'+
-                                                'pushToPost(\''+authorid+'\',\''+postid+'\')"'+
-                             'style="cursor:pointer" matchbuttondirective >Match</a>';
-
-                        var e =$compile(html)($scope);
-                        $element.replaceWith(e);*/
-
-                        $scope.matchbutton = new MatchButton($scope.user, authorid, postid)
+                        $scope.matchbutton = new MatchButton(user, authorid, postid)
                         $scope.matchbutton.DeleteFromInterested()
                         .then(function(){
                             $scope.matchbuttonbusy = false;
@@ -197,28 +180,32 @@ angular.module('weberApp')
                     }
 				}
 
-				$scope.pushToPost = function(postauthor, postid){
+				$scope.pushToPost = function(postauthor, postid, user){
+                    console.log('push user id', user._id)
 				    for(var temp in $scope.infinitePosts.posts){
-				        console.log($scope.infinitePosts.posts[temp]._id, 'postid==>', postid)
 				        if($scope.infinitePosts.posts[temp]._id == postid){
 				            if($scope.infinitePosts.posts[temp].interestedPeople.hasOwnProperty('interestedlist')){
-				                $scope.infinitePosts.posts[temp].interestedPeople.interestedlist.push($scope.user._id)
-    			                //console.log($scope.user._id)
+				                $scope.infinitePosts.posts[temp].interestedPeople.interestedlist.push(user._id)
+    			                console.log($scope.infinitePosts.posts[temp].interestedPeople.interestedlist)
 				            }else{
-				                $scope.infinitePosts.posts[temp].interestedPeople = { 'interestedlist' : [$scope.user._id] }
-
+				                $scope.infinitePosts.posts[temp].interestedPeople = { 'interestedlist' : [user._id] }
+				                console.log($scope.infinitePosts.posts[temp].interestedPeople.interestedlist)
 				            }
 				        }
 				    }
+
 				}
 
-				$scope.deleteFromPost = function(postauthor, postid){
+				$scope.deleteFromPost = function(postauthor, postid, user){
+                    console.log('delete user id', user._id)
 				    for(var temp in $scope.infinitePosts.posts){
 				        if($scope.infinitePosts.posts[temp]._id == postid){
+				            console.log(user._id)
 				            var ilist = $scope.infinitePosts.posts[temp].interestedPeople.interestedlist;
-				            if(ilist.indexOf($scope.user._id) !== -1){
-				                ilist.splice(ilist.indexOf($scope.user._id), 1)
-    			                //console.log($scope.user._id)
+				            console.log(ilist)
+				            if(ilist.indexOf(user._id) != -1){
+				                ilist.splice(ilist.indexOf(user._id), 1)
+				                console.log('deleted from list==>', ilist)
 				            }
 				        }
 				    }

@@ -204,15 +204,15 @@
                         <div class="col-sm-12">
                             <h6>
                                 <a ng-show="MatchButtonService.checkMatchUnMatch(post, user) == false"
-                                   ng-click=" pushToPost(post.author,post._id);
-                                   MatchAgreeDirective('{{ post._id }}','{{ post.author }}')"
+                                   ng-click=" pushToPost(post.author,post._id, user);
+                                   MatchAgreeDirective('{{ post._id }}','{{ post.author }}','{{ user }}')"
                                    style="cursor:pointer" matchbuttondirective>
                                     Match
                                 </a>&nbsp;
 
                                 <a ng-show="MatchButtonService.checkMatchUnMatch(post, user) == true"
-                                   ng-click="deleteFromPost(post.author,post._id);
-                                   MatchDisAgreeDirective('{{ post._id }}','{{ post.author }}')"
+                                   ng-click="deleteFromPost(post.author,post._id, user);
+                                   MatchDisAgreeDirective('{{ post._id }}','{{ post.author }}', '{{ user }}')"
                                    style="cursor:pointer" matchbuttondirective >
                                     UnMatch
                                 </a>&nbsp;
@@ -232,7 +232,7 @@
                                 </a>
                                 <a>
 
-                                       <span ng-repeat="temp in sortIListService.sendList(post.interestedPeople.interestedlist)">
+                                       <span ng-repeat="temp in sortIListService.sendList(post.interestedPeople.interestedlist, user._id)">
                                             <span ng-if="user._id == temp">
                                                 you
                                             </span>

@@ -413,35 +413,36 @@ people = {
                 }
             }
         },
+
         'matchnotifications': {
             'type': 'list',
             'schema': {
-                'type':'dict',
                 'postid' : {
                     'type': 'objectid',
                         #'unique': True,
                         'data_relation': {
                              'resource': 'posts',
+                             'field': '_id',
                              'embeddable': True
                         }
                 },
+
                 'interestedperson' : {
                     'type': 'objectid',
                         #'unique': True,
                         'data_relation': {
                              'resource': 'people',
+                             'field': '_id',
                              'embeddable': True
                         }
                 },
 
-                'seen': {
-                   'type': 'boolean',
-                   'default': False
+                'seen':{
+                     'type':'boolean',
+                     'default':False
                 }
             }
         }
-
-
     }
 }
 

@@ -182,8 +182,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row" style="margin-top:7px;border-bottom:1px solid #f2f2f2;padding-bottom:5px;"
-                                             ng-repeat="accepted_people in apeoples">
+                                        <div class="row" style="margin-top:7px;border-bottom:1px solid #f2f2f2;padding-bottom:5px;" ng-repeat="accepted_people in apeoples">
                                             <div class="col-sm-2">
                                                 <img src="{{ accepted_people.picture.thumbnail }}"
                                                      style="width:50px">
@@ -200,26 +199,17 @@
 
 
                                         <div ng-repeat="notification in matchnotifications" class="row" style="margin-top:7px;border-bottom:1px solid #f2f2f2;padding-bottom:5px;" >
-                                            <div class="col-sm-2">
+                                            <!--<div class="col-sm-2">
                                                 <img src=""
                                                      style="width:50px">
                                             </div>
                                             <div class="col-sm-10" >
                                                 <h5>
                                                     {{ notification }}
-                                                    <!--<a href="#/post/{{ notification.postid }}" ng-if="matchnotifications.length == 1" >
-
-                                                        {{UserService.get(notification.interestedperson).name.first}}
-                                                        matched with your post
-                                                    </a>
-
-                                                    <a ng-if="matchnotifications.length >= 2" href="#/post/{{ notification.postid }}">
-                                                        {{UserService.get(notification.interestedperson).name.first}}
-                                                        and {{ matchnotifications.length - 2 }} others matched your post
-                                                    </a>-->
-
                                                 </h5>
-                                            </div>
+                                            </div>-->
+                                            <a href="/#/post/{{ notification.postid }}">{{ notification }}</a>
+
                                         </div>
                                     </div>
 

@@ -9,10 +9,11 @@
  */
 angular.module('weberApp')
 	.controller('UserprofileCtrl', function($scope, $routeParams,$templateCache,
-	                                        Restangular, InfinitePosts, UserService,
+	                                        Restangular, InfinitePosts, UserService,MatchButtonService,
 	                                        CurrentUser, FriendsNotific, friendsActivity) {
 
 		$scope.UserService = UserService;
+		$scope.MatchButtonService = MatchButtonService;
         var currentuserobj = new CurrentUser();
          currentuserobj.getUserId()
             .then(function(){
@@ -25,6 +26,7 @@ angular.module('weberApp')
                         var loadPostIds = []
                         loadPostIds.push(profileuser._id)
                         loadPostIds = "[\"" + loadPostIds.join("\",\"") + "\"]";
+
                         $scope.infinitePosts = new InfinitePosts(user_obj, loadPostIds);
                         $scope.infinitePosts.getEarlyPosts();
 
@@ -46,6 +48,8 @@ angular.module('weberApp')
                                 return $scope.relation;
                             }
                         }
+
+
                     });
                 });
            });
