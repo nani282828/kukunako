@@ -14,7 +14,7 @@
                      style="padding:0px;min-height:{{ get_inner_div_height }}px;max-height:{{ get_inner_div_height }}px;">
                     <div class="row">
                         <div class="col-sm-12">
-                            <div  class="media" ng-repeat="chatuser in chatactivity.chatfriends"
+                            <div  class="media" ng-repeat="chatuser in tempfriends = (chatactivity.chatfriends | filter:searchChatConversation)"
                                  ng-click="openchatroom('{{ chatuser._id }}')"
                                  style="border-bottom:1px solid #F5F5F5;cursor:pointer;" >
                               <div class="media-left">
@@ -35,6 +35,9 @@
                                 </h6>
                               </div>
                             </div>
+                            <div ng-if="temp.length == 0">
+                                no friends foundsss
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -49,7 +52,8 @@
                      style="padding:0px;height:{{ get_inner_div_height }}px;max-height:{{ get_inner_div_height }}px;">
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="media" ng-repeat="conversation in chatactivity.conversations"
+
+                            <div class="media" ng-repeat="conversation in tempconversations = (chatactivity.conversations | filter:searchChatConversation)"
                                  ng-click="openchatroom('{{ conversation._id }}')"
 
                                  style="border-bottom:1px solid #F5F5F5;cursor:pointer;" >
@@ -72,6 +76,9 @@
                               </div>
                             </div>
 
+                            <div ng-if="tempconversations.length == 0">
+                                no conversations found
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -82,7 +89,7 @@
                         <div class="col-sm-12">
                             <div class="right-inner-addon">
                                 <i class="fa fa-search" style="opacity:0.70"></i>
-                                <input type="search" class="form-control input-sm"
+                                <input type="search" class="form-control input-sm" ng-model="searchChatConversation"
                                        placeholder="Search Online Friends" />
                             </div>
                         </div>
