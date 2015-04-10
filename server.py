@@ -289,9 +289,8 @@ def signup():
 
         }
 
-        data = accounts.insert(user)
+        accounts.insert(user)
         user_id = str(user['_id'])
-        user_random_string = str(user['random_string'])
 
         msg = Message('Confirm your Weber account',
                       sender='Team@theweber.in',
@@ -301,8 +300,8 @@ def signup():
         msg.html = '<div style="min-height:100px;border:1px solid #dcdcdc;">' \
                    '<h5>Thanks for registering with us, To complete your Weber registration, Follow this link:</h5>' \
                    '<div style="padding:20px 5px">' \
-                   '<a href="http://www.weber.ooo/#/confirm_account/users/'\
-                   +user_id+'/confirm/'+user_random_string+'">Click Here</a>' \
+                   '<a href="http://127.0.0.1:8000/#/confirm_account/users/'\
+                   +user_id+'/confirm">Click Here</a>' \
                                                            '</div>' \
                                                            '</div>'
         mail.send(msg)
@@ -362,13 +361,6 @@ def makeMessagesSeen():
 
 def id_generator(size=60, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
-
-from random import randint
-
-"""def random_with_N_digits(n):
-    range_start = 10**(n-1)
-    range_end = (10**n)-1
-    return randint(range_start, range_end)"""
 
 
 #end of confirm validation

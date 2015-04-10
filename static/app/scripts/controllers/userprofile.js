@@ -8,12 +8,13 @@
  * Controller of the weberApp
  */
 angular.module('weberApp')
-	.controller('UserprofileCtrl', function($scope, $routeParams,$templateCache,
+	.controller('UserprofileCtrl', function($scope, $routeParams,$templateCache,sortIListService,
 	                                        Restangular, InfinitePosts, UserService,MatchButtonService,
 	                                        CurrentUser, FriendsNotific, friendsActivity) {
 
 		$scope.UserService = UserService;
 		$scope.MatchButtonService = MatchButtonService;
+		$scope.sortIListService = sortIListService;
         var currentuserobj = new CurrentUser();
          currentuserobj.getUserId()
             .then(function(){
