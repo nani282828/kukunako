@@ -14,8 +14,7 @@ angular.module('weberApp')
               console.log('objectid', $routeParams.objectId)
               console.log('user', user)
               $scope.user = user;
-              alert('hai')
-              if($routeParams.random_string == $scope.user.random_string){
+              if($routeParams.rand_string == $scope.user.random_string){
                 console.log('random stirng==>', $scope.user.random_string)
                 if($scope.user.email_confirmed == true){
                     console.log('iner true===>', $scope.user.email_confirmed)
