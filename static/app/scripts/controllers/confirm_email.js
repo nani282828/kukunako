@@ -10,11 +10,11 @@
 angular.module('weberApp')
 	.controller('EmailCtrl', function($http, Restangular, $scope, $auth, $alert, $location, $routeParams) {
 
-        Restangular.one('people',$routeParams.objectId).get().then(function(user) {
+        Restangular.one('people',$routeParams.objectId).get({seed:Math.random()}).then(function(user) {
               $scope.user = user;
 
               if($routeParams.random_string == $scope.user.random_string){
-                if($scope.user.email_confirmed==true){
+                if($scope.user.email_confirmed == true){
                     $scope.user_email_confirmed = "your email is already activated"
                     return;
                 }
