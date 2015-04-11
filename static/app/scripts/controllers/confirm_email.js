@@ -11,6 +11,8 @@ angular.module('weberApp')
 	.controller('EmailCtrl', function($http, Restangular, $scope, $auth, $alert, $location, $routeParams) {
 
         Restangular.one('people',$routeParams.objectId).get({seed:Math.random()}).then(function(user) {
+              console.log('objectid', $routeParams.objectId)
+              console.log('user', user)
               $scope.user = user;
 
               if($routeParams.random_string == $scope.user.random_string){
