@@ -10,35 +10,19 @@
 angular.module('weberApp')
 	.controller('EmailCtrl', function($http, Restangular, $scope, $auth, $alert, $location, $routeParams) {
 
-        var object_id = $routeParams.objectId;
-
-          var em = Restangular.one('people',object_id).get().then(function(user) {
+        Restangular.one('people',$routeParams.objectId).get().then(function(user) {
               $scope.user = user;
-              console.log($scope.user.random_string);
-
-              if(element == $scope.user.random_string){
+              if($routeParams.random_string == $scope.user.random_string){
                 if($scope.user.email_confirmed==true){
                     $scope.user_email_confirmed = "your email is already activated"
+                    return;
                 }
-                else{
-                    $scope.user.patch({
+                $scope.user.patch({
                         'email_confirmed':true
-                    }).then(function(response){
+                }).then(function(response){
                         console.log(response);
                         //$location.path('/login');
-                    });
-                }
-
+                });
               }
-              else{
-                console.log("------------")
-                console.log("not valid")
-              }
-
-            });
-
-
-
-
-
-	});
+        });
+    });
