@@ -15,12 +15,8 @@ angular.module('weberApp')
 
         $scope.searched = false;
 	 	$scope.searchBusy = false;
-
-
-
-
-
 		$scope.UserService = UserService;
+
 		$http.get('/api/me', {
 			headers: {
 				'Content-Type': 'application/json',
@@ -107,9 +103,6 @@ angular.module('weberApp')
                     $scope.user.picture.large = $scope.imageDataURI;
                     $scope.user.picture.medium = $scope.resImageDataURI;
                     $scope.user.picture.thumbnail = $scope.resImageDataURI;
-
-                    console.log("=========before patch of upload========")
-
                     $scope.user.patch({
                         'picture':{
                             'large':$scope.imageDataURI,
@@ -118,22 +111,14 @@ angular.module('weberApp')
                         }
                     }).then(function(response){
                         $route.reload();
-
-                        console.log("=====after patch========")
-                        console.log(response)
                     });
                 });
-
             }
 
-
-
             $scope.updateUsername = function() {
-
-                var Get_User_details = Restangular.one('people', $scope.user._id).get({seed:Math.random()});
+                    var Get_User_details = Restangular.one('people', $scope.user._id).get({seed:Math.random()});
                     Get_User_details.then(function(response){
                     $scope.user = response;
-
                     $scope.user.username = $scope.u_username;
                     console.log("-------checking user object------")
                     console.log($scope.user)
@@ -157,19 +142,15 @@ angular.module('weberApp')
 			    var Get_first_last_details = Restangular.one('people', $scope.user._id).get({seed:Math.random()});
                     Get_first_last_details.then(function(response){
                     $scope.user = response;
-
                     $scope.user.name.first = $scope.edit_first_name;
                     $scope.user.name.last = $scope.edit_last_name;
-
                     console.log("=========before patch========")
-
                     $scope.user.patch({
                         'name':{
                             'first':$scope.edit_first_name,
                             'last':$scope.edit_last_name
                         }
                     }).then(function(response){
-
                         console.log("=====after patch========")
                         console.log(response)
                     });
@@ -177,18 +158,14 @@ angular.module('weberApp')
 			};
 
 			$scope.updateEmail = function() {
-
 			    var Get_first_last_details = Restangular.one('people', $scope.user._id).get({seed:Math.random()});
                     Get_first_last_details.then(function(response){
                     $scope.user = response;
-
                     $scope.user.username = $scope.u_username;
                     console.log("=========before patch========")
-
                     $scope.user.patch({
                         'email':$scope.u_email
                     }).then(function(response){
-
                         console.log("=====after patch========")
                         console.log(response)
                     });
@@ -263,22 +240,25 @@ angular.module('weberApp')
                     Get_interests_details.then(function(response){
                     $scope.user = response;
                     console.log("=========before patch========")
-
                     var interests = []
                     var querystring = "";
+
                     for(var temp in $scope.tags){
+
                         interests.push($scope.tags[temp].text.toString())
                         querystring = querystring+$scope.tags[temp].text+" ";
                     }
+                    console.log('Before interests', interests)
                     $scope.user.interests = interests;
-                    $scope.user.patch({
+                    console.log('After interests', $scope.user.interests)
+                    /*$scope.user.patch({
                         'interests':interests
                     }).then(function(response){
 
                         console.log("===after interests patch=====");
                         console.log(response);
 
-                    });
+                    });*/
                 });
 			};
 

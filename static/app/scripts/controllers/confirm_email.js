@@ -25,7 +25,7 @@ angular.module('weberApp')
                         'email_confirmed':true
                     }).then(function(response){
                         console.log(response);
-                        $location.path('/login');
+                        //$location.path('/login');
                     });
                 }
 
