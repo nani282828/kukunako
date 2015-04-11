@@ -372,6 +372,11 @@ people = {
                     },
                     'timestamp':{
                         'type':'integer'
+                    },
+                    'seen':{
+                        'type':'boolean',
+                        'default':False
+
                     }
                 }
 
@@ -380,8 +385,9 @@ people = {
 
         'accept_notifications': {
             'type': 'list',
-
-            'schema': {
+            'schema':{
+                'type':'dict',
+                'schema': {
                     'accepted_id': {
                         'type': 'objectid',
                         #'unique': True,
@@ -390,9 +396,13 @@ people = {
                             'embeddable': True
                         }
                     },
+                    'seen':{
+                        'type':'boolean',
+                        'default': False
 
-
-            },
+                    }
+                }
+            }
         },
 
         'friends': {
@@ -408,8 +418,8 @@ people = {
 
         'matchnotifications': {
             'type': 'list',
-
             'schema':{
+
                 'type':'dict',
                 'schema': {
 
@@ -431,6 +441,11 @@ people = {
                              'field': '_id',
                              'embeddable': True
                         }
+                    },
+
+                    'seen':{
+                        'type':'boolean',
+                        'default': False
                     }
 
 
