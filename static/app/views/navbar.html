@@ -38,6 +38,7 @@
                         </div><!-- /.row -->
                     </form>
                 </div>
+                <span style="color:white">{{ testing }}</span>
                 <ul class="nav navbar-nav pull-right" ng-if="!isAuthenticated()">
                     <li data-match-route="/login"><a href="#/login">Login</a>
                     </li>
@@ -58,10 +59,12 @@
                             <i class="glyphicon glyphicon-envelope"
                                style="font-size:17px;opacity:0.55;">
                             </i>
+
                             {{ chatactivity.messageNotific.length }}
                             <label class="label label-danger" ng-if="chatactivity.messageNotifc.length"
                                    style="position:absolute;font-size:10px;top: 5px;right:-8px;">
                                     {{ chatactivity.messageNotifc.length }}
+
                             </label>
                         </a>
                         <div class="dropdown-menu" style="padding:0px;width:350px;">

@@ -169,7 +169,7 @@ def forgotpassword():
                        "To complete your Weber registration, Follow this link:<br>\
                         <br><p style='color:red;border:1px solid #dcdcdc;padding:10px;" \
                        "width:800px;text-align:center;font-size:14px;'>" \
-                       "<a href='http://www.weber.ooo/#/users/"+user_name+"/change_password_link/"+user_randome_string+"'>Click Here</a></p>\
+                       "<a href='http://127.0.0.1:8000/#/users/"+user_name+"/change_password_link/"+user_randome_string+"'>Click Here</a></p>\
                         <br><br><br><br>\
                         Thanks,<br>The Weber Team\
                         </p>"
@@ -301,7 +301,7 @@ def signup():
         msg.html = '<div style="min-height:100px;border:1px solid #dcdcdc;">' \
                    '<h5>Thanks for registering with us, To complete your Weber registration, Follow this link:</h5>' \
                    '<div style="padding:20px 5px">' \
-                   '<a href="http://www.weber.ooo/#/confirm_account/users/'\
+                   '<a href="http://127.0.0.1:8000/#/confirm_account/users/'\
                    +user_id+'/confirm/'+user_random_string+'">Click Here</a>' \
                                                            '</div>' \
                                                            '</div>'

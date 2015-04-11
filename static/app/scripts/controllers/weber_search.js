@@ -8,7 +8,7 @@
  * Controller of the weberApp
  */
 angular.module('weberApp')
-    .controller('WeberSearchCtrl', function($scope, $auth, Restangular,
+    .controller('WeberSearchCtrl', function($scope, $auth, Restangular,$route,$window,
 	 										InfinitePosts, $alert, $http,$location,$socket,
 	 										CurrentUser, UserService,CurrentUser1,$rootScope,
 	 										SearchActivity, $routeParams, MatchMeResults) {
@@ -46,7 +46,11 @@ angular.module('weberApp')
 			}).then(function(response) {
 				$auth.setToken(response.data.token);
 				$rootScope.isloggin = true;
-				$location.path('/home');
+				$window.location.reload();
+
+
+				//$location.path('/search');
+				//$route.reload();
 			}, function(error) {
                 console.log(error.data.error)
 				$scope.loginError = error;

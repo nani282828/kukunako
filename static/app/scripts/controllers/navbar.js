@@ -24,7 +24,6 @@ angular.module('weberApp')
 
     /* testing of auto complete code for search results in weber*/
         $scope.instanceSearchHistory = {};
-
         $scope.doSomething = function(typedthings){
             if(typedthings){
                 $scope.movies = [];
@@ -58,6 +57,7 @@ angular.module('weberApp')
       };
 
     $scope.instancesearch = new InstanceSearch();
+
     $scope.testingsearch = function(){
        $scope.instancesearch.getInstancePeoples(this.InstanceSearchQuery)
     }
@@ -92,6 +92,8 @@ angular.module('weberApp')
     }).success(function(user_id) {
 
         Restangular.one('people',JSON.parse(user_id)).get({seed: Math.random()}).then(function(user) {
+
+            $scope.testing = 'ddddddddddd';
 
             $socket.emit('connecting', {id:user._id});
             $socket.on('joiningstatus', function(data) {
@@ -297,6 +299,7 @@ angular.module('weberApp')
                     sessionStorage.setItem(id, JSON.stringify(json));
                     $socket.emit('connect', {data:id});
                     $rootScope.chatactivity.loadMessages(user._id, id, json);
+
                 });
             }
         }
