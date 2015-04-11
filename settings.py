@@ -413,33 +413,8 @@ people = {
         },
 
         'matchnotifications': {
-            'type': 'list',
-            'schema': {
-                'postid' : {
-                    'type': 'objectid',
-                        #'unique': True,
-                        'data_relation': {
-                             'resource': 'posts',
-                             'field': '_id',
-                             'embeddable': True
-                        }
-                },
+            'type': 'list'
 
-                'interestedperson' : {
-                    'type': 'objectid',
-                        #'unique': True,
-                        'data_relation': {
-                             'resource': 'people',
-                             'field': '_id',
-                             'embeddable': True
-                        }
-                },
-
-                'seen':{
-                     'type':'boolean',
-                     'default':False
-                }
-            }
         }
     }
 }
