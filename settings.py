@@ -382,23 +382,9 @@ people = {
         },
 
         'accept_notifications': {
-            'type': 'list',
+            'type': 'list'
 
-            'schema': {
-                    'accepted_id': {
-                        'type': 'objectid',
-                        #'unique': True,
-                        'data_relation': {
-                            'resource': 'people',
-                            'embeddable': True
-                        }
-                    },
 
-                    'seen': {
-                        'type': 'boolean',
-                        'default': False
-                    }
-            },
         },
 
         'friends': {
