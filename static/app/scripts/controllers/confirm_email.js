@@ -10,7 +10,6 @@
 angular.module('weberApp')
 	.controller('EmailCtrl', function($http, Restangular, $scope, $auth, $alert, $location, $routeParams) {
 
-        var element = $routeParams.user_random_string;
         var object_id = $routeParams.objectId;
 
           var em = Restangular.one('people',object_id).get().then(function(user) {

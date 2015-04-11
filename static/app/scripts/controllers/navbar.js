@@ -18,12 +18,14 @@ angular.module('weberApp')
   }
 })
     .controller('navbarcontroller',function($scope, $auth, CurrentUser, $alert,$rootScope,$timeout,InstanceSearch,
-                                            InstanceSearchHistory,
+                                            InstanceSearchHistory, PostService,
                                             $location, $http, Restangular,ChatActivity, $window,UserService,
                                             CurrentUser1,SearchActivity,FriendsNotific,friendsActivity,$socket) {
 
     /* testing of auto complete code for search results in weber*/
         $scope.instanceSearchHistory = {};
+        $scope.PostService = PostService;
+        $scope.UserService = UserService;
         $scope.doSomething = function(typedthings){
             if(typedthings){
                 $scope.movies = [];
@@ -99,39 +101,6 @@ angular.module('weberApp')
             $socket.on('joiningstatus', function(data) {
                 console.log(data)
             });
-
-        // popup notifications code
-            $scope.menuOpened = false;
-            $scope.notificationOpened = false;
-            $scope.notificationMenu = function(event) {
-                $scope.notificationOpened = !($scope.notificationOpened);
-                event.stopPropagation();
-            };
-
-            $scope.menuMenu = function(event) {
-                $scope.menuOpened = !($scope.menuOpened);
-                event.stopPropagation();
-            };
-            //console.log($window)
-
-            $window.onclick = function() {
-                if ($scope.menuOpened) {
-                  $scope.menuOpened = false;
-                  //console.log("------------------------------------------------")
-
-                // You should let angular know about the update that you have made, so that it can refresh the UI
-                  $scope.$apply();
-                }
-
-                if ($scope.notificationOpened) {
-                  $scope.notificationOpened = false;
-
-                // You should let angular know about the update that you have made, so that it can refresh the UI
-                  $scope.$apply();
-                }
-
-            };
-        // end of popup notifications
 
         $scope.searchActivity = new SearchActivity($scope.currentUser)
         $scope.loadSearchHistory = function(){

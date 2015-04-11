@@ -130,7 +130,7 @@
 						<span am-time-ago="post._created"></span></small>
 					<br>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body" style="margin-bottom:0px;padding-bottom:0px;">
                     <div ng-if="post.post_image_path" class="row">
 						<div class="col-sm-12" style="padding:0px;">
 							<div class="thumbnail" style="border:0px solid;">
@@ -145,9 +145,7 @@
                             </p>
                         </div>
                     </div>
-                </div>
-
-                 <div class="row" ng-show="post.author != user._id">
+                    <div class="row" ng-show="post.author != user._id">
                         <div class="col-sm-12">
                             <h6>
                                 <a ng-show="MatchButtonService.checkMatchUnMatch(post, currentuser) == false"
@@ -165,8 +163,40 @@
                                 </a>&nbsp;
                             </h6>
                         </div>
-                   </div>
-                {{ post.interestedPeople.interestedlist}}
+                    </div>
+                </div>
+                <div class="panel-footer"
+                     style="padding-top:5px;background-color:#fff;border:1px solid #FCF8F8;">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h6>
+                                <span ng-repeat="temp in sortIListService.sendList(post.interestedPeople.interestedlist, user._id)">
+                                    <a style="text-decoration:none;cursor:pointer;"
+                                       alt="Match this post">
+                                        <i class="fa fa-slideshare" style="font-size:14px;"></i>&nbsp;
+                                    </a>
+                                    <span ng-if="user._id == temp">
+                                        <a href="">
+                                            you
+                                        </a>
+                                    </span>
+
+                                    <span ng-if="user._id != temp">
+                                        <a href="">
+                                            {{ UserService.get(temp).name.first }}
+                                        </a>
+                                    </span>
+                                    matched with this post
+                                </span>
+                                <span ng-if="sortIListService.sendList(matchPeople.interestedList).length">
+                                    {{ sortIListService.sendList(matchPeople.interestedList).length }}
+                                    matched with this post
+                                </span>
+
+                            </h6>
+                        </div>
+                    </div>
+                </div>
 			</div>
 			<div ng-show='infinitePosts.busy'>Loading data...</div>
 			<div ng-show='infinitePosts.end'>You Reached the end!</div>

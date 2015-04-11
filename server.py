@@ -169,7 +169,7 @@ def forgotpassword():
                        "To complete your Weber registration, Follow this link:<br>\
                         <br><p style='color:red;border:1px solid #dcdcdc;padding:10px;" \
                        "width:800px;text-align:center;font-size:14px;'>" \
-                       "<a href='http://127.0.0.1:8000/#/users/"+user_name+"/change_password_link/"+user_randome_string+"'>Click Here</a></p>\
+                       "<a href='http://www.weber.ooo/#/users/"+user_name+"/change_password_link/"+user_randome_string+"'>Click Here</a></p>\
                         <br><br><br><br>\
                         Thanks,<br>The Weber Team\
                         </p>"
@@ -214,7 +214,7 @@ def get_new_hash_password():
         return response
 
 
-@app.route('/getsearch')
+"""@app.route('/getsearch')
 def getSearchResults():
     extract_words = []
     extract_words = create_tokens(request.args.get("searchtext"))
@@ -224,7 +224,7 @@ def getSearchResults():
         r = requests.get(data)
         return r.data
     else:
-        return "none"
+        return "none"""
 
 @app.route('/api/similarwords')
 def getSimilarWords():
@@ -289,7 +289,7 @@ def signup():
 
         }
 
-        data = accounts.insert(user)
+        accounts.insert(user)
         user_id = str(user['_id'])
         user_random_string = str(user['random_string'])
 
@@ -301,10 +301,7 @@ def signup():
         msg.html = '<div style="min-height:100px;border:1px solid #dcdcdc;">' \
                    '<h5>Thanks for registering with us, To complete your Weber registration, Follow this link:</h5>' \
                    '<div style="padding:20px 5px">' \
-                   '<a href="http://127.0.0.1:8000/#/confirm_account/users/'\
-                   +user_id+'/confirm/'+user_random_string+'">Click Here</a>' \
-                                                           '</div>' \
-                                                           '</div>'
+                   '<a href="http://www.weber.ooo/#/confirm_account/users/'+user_id+'/confirm/'+user_random_string+'">Click Here</a></div></div>'
         mail.send(msg)
         return user_id
     else:
@@ -362,13 +359,6 @@ def makeMessagesSeen():
 
 def id_generator(size=60, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
-
-from random import randint
-
-"""def random_with_N_digits(n):
-    range_start = 10**(n-1)
-    range_end = (10**n)-1
-    return randint(range_start, range_end)"""
 
 
 #end of confirm validation

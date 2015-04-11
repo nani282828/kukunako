@@ -1,48 +1,62 @@
-<div class="container" style="padding:0px;">
-    <div class="row" ng-if="!(isAuthenticated())">
-        <div class="col-lg-12" style="padding-right:2px;">
-            <a href="" class="pull-left" style="text-decoration:none;">
-                <h1 style="font-family: 'open sans',arial,sans-serif;color:#fff;font-weight:300;font-size:40px;margin-top:10px;">
-                    <i class="fa fa-at" style="color:#fff;font-weight:300;"></i>&nbsp;
-                    Weber
-                </h1>
+<div ng-if="!(isAuthenticated())" class="navbar navbar-default header-start-search navbar-fixed-top" style="background-color:#F8F8F8;">
+    <div class="container" style="padding:10px;">
+        <div class="navbar-header">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/#/search" style="color:#333;font-size:30px;">
+                <!--<img style="width:37px;" src="https://pbs.twimg.com/profile_images/2451242971/WinchPharma_Group_W_logo_bigger.png">-->
+                weber
             </a>
-            <form class="navbar-form pull-right" style="padding:0px;"
-                  role="form" ng-submit="login()" name="myForm1">
-                <div class="form-group" style="height:50px;">
-                    <input type="email" style="padding: 5px 6px;" autocomplete="off"
-                       class="form-control input-sm"
-                       name="email" ng-model="login_email"
-                       placeholder="Enter valid Email" required/>
-                </div>
-                <div class="form-group" style="height:50px;">
-                    <input type="password" class="form-control input-sm" style="padding: 5px 6px;"
-                       placeholder="Enter Password"
-                       name="password" ng-model="login_password" required  /><br>
-                    <span class="">
-                        <a href="/#/forgotpassword" style="font-size:12px;color:#FFF;;">
-                            Forgot Password?
-                        </a>
-                    </span>
-                </div>
-                <div class="form-group" style="height:50px;">
-                    <button type="submit" ng-disabled="!myForm1.$valid"
-                            class="btn btn-default btn-sm" ng-click="submitLogin()">
-                        Sign in
-                    </button>
-                </div>
-            </form>
         </div>
+        <center>
+            <div class="navbar-collapse collapse" id="navbar-main">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <form class="navbar-form" role="form" ng-submit="login()" name="myForm1">
+                            <div class="form-group" style="height:50px;">
+                                <input type="email"
+                                   class="form-control input-sm"
+                                   name="email" ng-model="login_email"
+                                   placeholder="Enter Email" required/>
+                            </div>
+                            <div class="form-group" style="height:50px;">
+                                <input type="password" class="form-control input-sm"
+                                   placeholder="Enter Password"
+                                   name="password" ng-model="login_password" required  /><br>
+                                <span class="pull-right">
+                                    <a href="/#/forgotpassword" style="font-size:12px;color:#000;">
+                                        Forgot Password?
+                                    </a>
+                                </span>
+                            </div>
+                            <div class="form-group" style="height:50px;">
+                                <button type="submit" ng-disabled="!myForm1.$valid"
+                                        class="btn btn-warning btn-sm" ng-click="submitLogin()">
+                                    Sign in
+                                </button>
+                            </div>
+                        </form>
+                        <div ng-if="loginError" class="panel-body" style="padding-top:2px;color:red;position:absolute;top:50px;">
+                            <span style="color:red;">
+                                {{ loginError.data.error }}
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </center>
     </div>
-    <div class="row" style="padding-top:60px;">
+</div>
+<div class="container" style="padding-top:120px;">
+    <div class="row">
         <div class="col-lg-7">
             <div class="row" ng-if="!(isAuthenticated())">
                 <div class="col-sm-12">
-                    <h1 style="font-family: 'open sans',arial,sans-serif;color:#fff;font-weight:300;font-size:40px;">
-                        Wonder what weber can do,
-                    </h1>
-                    <h3 style="font-family: 'open sans',arial,sans-serif;color:#fff;font-weight:300;line-height:1.4em;">
-                        Instant updates from your friends, Industry experts, favorite celebrities, and what happening around the world..
+                    <h3 style="font-family: 'open sans',arial,sans-serif;color:#3E4349;font-weight:300;line-height: 1.5em;">
+                        Weber is a medium to search and find people, based on their activities and interests.
                     </h3>
                 </div>
             </div>
@@ -66,7 +80,7 @@
             <div class="row" ng-if="matchResults.suggestpeople">
                 <div class="col-lg-12">
                     <h5>
-                        <label style="color:#FFF;">
+                        <label style="color:;">
                             no results found but these peoples can help you...
                         </label>
                     </h5>
@@ -132,7 +146,7 @@
                          ng-show="!(matchResults.mresults.length) && searched">
                         <div class="col-lg-10">
                             <h5>
-                                <label style="color:#FFF;">
+                                <label style="color:;">
                                     No results found
                                 </label>
                             </h5>
@@ -143,52 +157,42 @@
                     </div>
                     <div class="row" ng-if="!searched" style="margin-top:20px;">
                         <div class="col-lg-12">
-                            <div class="panel panel-default">
+                            <div class="panel panel-default" style="border-top:1px solid #dcdcdc!important;">
                                 <div class="panel-body">
                                     <h5 style="color:;">
                                         How to use in weber in simple 3 steps
                                     </h5>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-lg-1" style="margin-right:10px;">
+                                    <div class="row" style="padding-bottom:20px;">
+                                        <div class="col-lg-4" style="padding:0px 0px 0px 15px;">
                                             <i class="fa fa-search"
                                                style="padding:17px;font-size:18px;background-color:#3090C7;color:#FFF;border-radius:50%;">
 
-                                            </i>&nbsp;
+                                            </i>
+                                            <label style="margin-top:3px;">
+                                                Search
+                                            </label>
                                         </div>
-                                        <div class="col-lg-10">
-                                            <label style="margin-top:3px;">Search</label><br />
-                                            Ex:I am going to grab a cup of coffee whose with me ?
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-1" style="margin-right:10px;">
+                                        <div class="col-lg-4" style="padding:0px 0px 0px 10px;">
                                             <i class="fa fa-user"
                                                style="padding:17px;font-size:18px;background-color:#4E9258;color:#FFF;border-radius:50%;">
 
-                                            </i>&nbsp;
-                                        </div>
-                                        <div class="col-lg-10">
+                                            </i>
                                             <label style="margin-top:3px;">
                                                 Find a person
-                                            </label><br />
-                                            Ex:I am going to grab a cup of coffee whose with me ?
+                                            </label>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-1" style="margin-right:10px;">
+                                        <div class="col-lg-4" style="padding:0px;">
                                             <i class="fa fa-check-circle"
-                                                style="padding:17px;font-size:18px;background-color:#FFA62F;color:#FFF;border-radius:50%;"></i>
-                                        </div>
-                                        <div class="col-lg-10">
+                                                style="padding:17px;text-align:center;font-size:18px;background-color:#FFA62F;color:#FFF;border-radius:50%;">
+
+                                            </i>
                                             <label style="margin-top:3px;">
                                                 Connect & Enjoy
-                                            </label><br />
-                                            Connect, Chat, Enjoy..
+                                            </label>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -200,7 +204,7 @@
             <div class="row">
                 <div class="col-lg-12 colpadding">
                     <h4>
-                        <label style="font-family: 'open sans',arial,sans-serif;color:#fff;font-weight:400;">
+                        <label style="font-family: 'open sans',arial,sans-serif;color:;font-weight:400;">
                             Register with Weber.. It's free
                         </label>
                     </h4>
@@ -265,11 +269,11 @@
                                 </tags-input>
                             </div>
                             <div class="form-group" style="">
-                                <label class="radio-inline" style="color:#FFF;">
+                                <label class="radio-inline" style="color:;">
                                   <input type="radio" ng-change="gendererror = false" ng-model="formData.gender" value="male">
                                   Male
                                 </label>
-                                <label class="radio-inline" style="color:#FFF;">
+                                <label class="radio-inline" style="color:;">
                                   <input type="radio" ng-change="gendererror = false" ng-model="formData.gender" value="female">
                                   Female
                                 </label>
@@ -291,14 +295,3 @@
     </div>
 </div>
 
-
-<style ng-if="!(isAuthenticated())">
-    body{
-        background: url(static/app/images/bg-start.jpg) no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-        padding-top:30px;
-    }
-</style>

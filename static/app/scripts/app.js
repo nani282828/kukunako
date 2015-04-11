@@ -181,7 +181,7 @@ angular
 			.when('/users/:user_name/change_password_link/:password_random_string', {
 				templateUrl:'/static/app/views/change_password.html'
 			})
-			.when('/confirm_account/users/:objectId/confirm/:user_random_string', {
+			.when('/confirm_account/users/:objectId/confirm', {
 				templateUrl:'/static/app/views/confirm_email.html',
 				controller:'EmailCtrl'
 			})

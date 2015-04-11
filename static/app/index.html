@@ -34,7 +34,6 @@
 
 <body ng-app="weberApp" ng-controller="indexCtrl">
 
-
 <!--  ng-if="isloggin" -->
     <div  navbardirective></div>
 	<!--[if lt IE 7]>
@@ -145,6 +144,18 @@
 	<!--<script type="text/javascript" src="/static/app/scripts/autocomplete.js"></script>
 	<script type="text/javascript" src="/static/app/scripts/autocomplete_ap.js"></script>-->
 	<!-- endbuild -->
+
+<style ng-if="!(isAuthenticated())">
+    body{
+        /*background: url(static/app/images/bg-start.jpg) no-repeat center center fixed;*/
+        background-color:#fff;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        padding-top:0px;
+    }
+</style>
 </body>
 
 </html>
