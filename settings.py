@@ -355,13 +355,44 @@ people = {
 
         'notifications': {
             'type': 'list',
-            
+            'schema': {
+                'type':'dict',
+                'schema':{
+                    'friend_id': {
+                        'type': 'objectid',
+                        #'unique': True,
+                        'data_relation': {
+                            'resource': 'people',
+                            'embeddable': True
+                        }
+                    },
+
+                    'daterequest':{
+                        'type':'string'
+                    },
+                    'timestamp':{
+                        'type':'integer'
+                    }
+                }
+
+            }
         },
 
         'accept_notifications': {
-            'type': 'list'
+            'type': 'list',
+
+            'schema': {
+                    'accepted_id': {
+                        'type': 'objectid',
+                        #'unique': True,
+                        'data_relation': {
+                            'resource': 'people',
+                            'embeddable': True
+                        }
+                    },
 
 
+            },
         },
 
         'friends': {
@@ -376,8 +407,30 @@ people = {
         },
 
         'matchnotifications': {
-            'type': 'list'
+            'type': 'list',
+            'schema': {
+                'postid' : {
+                    'type': 'objectid',
+                        #'unique': True,
+                        'data_relation': {
+                             'resource': 'posts',
+                             'field': '_id',
+                             'embeddable': True
+                        }
+                },
 
+                'interestedperson' : {
+                    'type': 'objectid',
+                        #'unique': True,
+                        'data_relation': {
+                             'resource': 'people',
+                             'field': '_id',
+                             'embeddable': True
+                        }
+                },
+
+
+            }
         }
     }
 }
