@@ -16,7 +16,9 @@ angular.module('weberApp')
               $scope.user = user;
 
               if($routeParams.random_string == $scope.user.random_string){
+                console.log('random stirng==>', $scope.user.random_string)
                 if($scope.user.email_confirmed == true){
+                    console.log('iner true===>', $scope.user.email_confirmed)
                     $scope.user_email_confirmed = "your email is already activated"
                     return;
                 }
