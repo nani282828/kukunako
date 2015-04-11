@@ -366,7 +366,7 @@ people = {
                             'embeddable': True
                         }
                     },
-
+                   
                     'daterequest':{
                         'type':'string'
                     },
@@ -408,28 +408,31 @@ people = {
 
         'matchnotifications': {
             'type': 'list',
-            'schema': {
-                'postid' : {
-                    'type': 'objectid',
-                        #'unique': True,
-                        'data_relation': {
-                             'resource': 'posts',
-                             'field': '_id',
-                             'embeddable': True
-                        }
-                },
+            'schema':{
+                'type':'dict',
+                'schema': {
+                    'postid' : {
+                        'type': 'objectid',
+                            #'unique': True,
+                            'data_relation': {
+                                 'resource': 'posts',
+                                 'field': '_id',
+                                 'embeddable': True
+                            }
+                    },
 
-                'interestedperson' : {
-                    'type': 'objectid',
-                        #'unique': True,
-                        'data_relation': {
-                             'resource': 'people',
-                             'field': '_id',
-                             'embeddable': True
-                        }
-                },
+                    'interestedperson' : {
+                        'type': 'objectid',
+                            #'unique': True,
+                            'data_relation': {
+                                 'resource': 'people',
+                                 'field': '_id',
+                                 'embeddable': True
+                            }
+                    }
 
 
+                }
             }
         }
     }
