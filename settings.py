@@ -366,7 +366,7 @@ people = {
                             'embeddable': True
                         }
                     },
-                   
+
                     'daterequest':{
                         'type':'string'
                     },
@@ -408,9 +408,11 @@ people = {
 
         'matchnotifications': {
             'type': 'list',
+
             'schema':{
                 'type':'dict',
                 'schema': {
+
                     'postid' : {
                         'type': 'objectid',
                             #'unique': True,
@@ -424,11 +426,11 @@ people = {
                     'interestedperson' : {
                         'type': 'objectid',
                             #'unique': True,
-                            'data_relation': {
-                                 'resource': 'people',
-                                 'field': '_id',
-                                 'embeddable': True
-                            }
+                        'data_relation': {
+                             'resource': 'people',
+                             'field': '_id',
+                             'embeddable': True
+                        }
                     }
 
 

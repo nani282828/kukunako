@@ -23,7 +23,7 @@ angular.module('weberApp')
                 }
                 console.log('email confirmed-->',$scope.user.email_confirmed)
                 $scope.user.patch({
-                        'email_confirmed':true
+                        email_confirmed : true
                 }).then(function(response){
                         console.log('---------->', response);
                         //$location.path('/login');
