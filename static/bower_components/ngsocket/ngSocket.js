@@ -12,7 +12,11 @@
 
 (function () {
   'use strict';
+<<<<<<< HEAD
 // hja
+=======
+
+>>>>>>> 864af5044fcff8e289af1bf2287ade54f93f664d
   angular.module('ngSocket', [])
     .provider('$socket', socketProvider);
 
@@ -40,7 +44,12 @@
         once: addListenerOnce,
         removeListener: removeListener,
         removeAllListeners: removeAllListeners,
+<<<<<<< HEAD
         emit: emit
+=======
+        emit: emit,
+        getSocket: getSocket
+>>>>>>> 864af5044fcff8e289af1bf2287ade54f93f664d
       };
 
       return service;
@@ -104,6 +113,13 @@
         initializeSocket();
         socket.emit(name, data, angularCallback(callback));
       }
+<<<<<<< HEAD
+=======
+      
+      function getSocket() {
+        return socket;
+      }
+>>>>>>> 864af5044fcff8e289af1bf2287ade54f93f664d
     }
   }
 
