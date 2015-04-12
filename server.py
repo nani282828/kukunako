@@ -270,7 +270,7 @@ def signup():
               'graduate': ""
             },
             'random_string': id_generator(),
-            'accept_notifications':[],
+            #'accept_notifications':[],
             'born' : "",
             'gender' : request.json['gender'],
             'lastmessageseen' : dt.strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -280,8 +280,8 @@ def signup():
                 'street' : ""
             },
             'friends' : [],
-            'matchnotifications':[],
-            'notifications':[],
+            #'matchnotifications':[],
+            #'notifications':[],
             'interests': request.json['interests'],
             'interestsimilarwords': request.json['interestsimilarwords'],
             'conversations':[]
