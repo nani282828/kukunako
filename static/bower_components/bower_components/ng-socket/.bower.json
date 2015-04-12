@@ -1,0 +1,35 @@
+{
+  "name": "ng-socket",
+  "main": "ngSocket.js",
+  "version": "0.1.2",
+  "authors": [
+    "Christopher EnyTC <chris.enytc@gmail.com>",
+    "David Prothero <david@prothero.com>"
+  ],
+  "description": "Angular Module for Socket.io",
+  "keywords": [
+    "angular",
+    "socket.io",
+    "i18n"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/chrisenytc/ng-socket",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "lib",
+    "test",
+    "tests"
+  ],
+  "_release": "0.1.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.2",
+    "commit": "7f8febc09f714a406ed870a03fe945f3ac51a250"
+  },
+  "_source": "git://github.com/chrisenytc/ng-socket.git",
+  "_target": "~0.1.2",
+  "_originalSource": "ng-socket",
+  "_direct": true
+}
