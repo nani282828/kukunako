@@ -242,10 +242,14 @@ def getSimilarWords():
 import time
 @app.route('/auth/signup', methods=['POST'])
 def signup():
+
+
     accounts = app.data.driver.db['people']
     user_email = accounts.find_one({'email': request.json['email']})
     if not user_email:
         dt = datetime.now()
+
+        data = requests.get('http://127.0.0.1:8000/api/similarwords?querystring='+' '.join(request.json['interests']))
         user = {
             'email' :request.json['email'],
             'username':request.json['username'],
@@ -284,7 +288,7 @@ def signup():
             'matchnotifications':[],
             'notifications':[],
             'interests': request.json['interests'],
-            'interestsimilarwords': request.json['interestsimilarwords'],
+            'interestsimilarwords': list(data),
             'conversations':[]
 
         }
@@ -303,11 +307,12 @@ def signup():
                    '<div style="padding:20px 5px">' \
                    '<a href="http://www.weber.ooo/#/confirm_account/users/'+user_id+'/confirm/'+user_random_string+'">Click Here</a></div></div>'
         mail.send(msg)
-        return user_id
+
     else:
         response = jsonify(error='You are already registered with this email, Please try forgot password ')
         response.status_code = 401
         return response
+    return 'hai'
 
 
 @app.route('/api/chat/sendmessage', methods=['POST'])

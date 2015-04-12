@@ -78,38 +78,31 @@ angular.module('weberApp')
                     interests.push($scope.tags[temp].text.toString())
                     querystring = querystring+$scope.tags[temp].text+" ";
                 }
-                console.log('querystring==>', querystring)
 
-                 $http.get('/api/similarwords',
-                    {
-                        headers:{'Content-Type':'application/json'},
-                        params : {querystring: querystring.toString() }
-                    }).success(function(interestsSimilarWords) {
-                        console.log('successdata', interestsSimilarWords)
-                        var data = ['d','i','dd']
-                        $scope.signupBusy = $auth.signup({
-                            email: self.formData.email,
-                            password: self.formData.password,
-                            firstname: self.formData.firstname,
-                            lastname: self.formData.lastname,
-                            username: self.formData.firstname + self.formData.lastname,
-                            gender: self.formData.gender,
-                            interests: interests,
-                            interestsimilarwords: interestsSimilarWords
-                        }).then(function (response) {
-                            console.log('response data', response.data);
-                            $location.path('/email_details/' + self.formData.email);
-                        }, function (signuperror) {
-                            $scope.signUpError = signuperror;
-                            $alert({
-                                title: 'Registration Failed:',
-                                content: signuperror.data.error,
-                                placement: 'top',
-                                type: 'danger',
-                                show: true
-                            });
-                        });
+                //console.log('successdata', interestsSimilarWords)
+                var data = ['d','i','dd']
+                $scope.signupBusy = $auth.signup({
+                    email: self.formData.email,
+                    password: self.formData.password,
+                    firstname: self.formData.firstname,
+                    lastname: self.formData.lastname,
+                    username: self.formData.firstname + self.formData.lastname,
+                    gender: self.formData.gender,
+                    interests: interests
+                }).then(function (response) {
+                    console.log('response data', response.data);
+                    $location.path('/email_details/' + self.formData.email);
+                }, function (signuperror) {
+                    $scope.signUpError = signuperror;
+                    $alert({
+                        title: 'Registration Failed:',
+                        content: signuperror.data.error,
+                        placement: 'top',
+                        type: 'danger',
+                        show: true
                     });
+                });
+
             }else{
                     $scope.gendererror = true;
                 }

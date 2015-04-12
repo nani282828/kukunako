@@ -422,7 +422,8 @@ people = {
             'schema':{
 
                 'type':'dict',
-                'allow_unknown': True,
+                #'allow_unknown': True,
+
                 'schema': {
 
                     'postid' : {
