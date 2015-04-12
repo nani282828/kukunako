@@ -265,7 +265,6 @@ def signup():
                 'thumbnail' : "static/app/images/w-logo.jpg"
             },
             'phone': "",
-            'interests': [],
             'study': {
               'intermediate':"",
               'graduate': ""
