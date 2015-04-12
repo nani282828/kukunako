@@ -212,6 +212,7 @@ messages = {
 people = {
     # 'title' tag used in item links.
     'item_title': 'person',
+    'allow_unknown': False,
     # by default the standard item entry point is defined as
     # '/people/<ObjectId>/'. We leave it untouched, and we also enable an
     # additional read-only entry point. This way consumers can also perform GET
