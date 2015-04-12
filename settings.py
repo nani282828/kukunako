@@ -387,6 +387,7 @@ people = {
             'type': 'list',
             'schema':{
                 'type':'dict',
+
                 'schema': {
                     'accepted_id': {
                         'type': 'objectid',
@@ -421,6 +422,7 @@ people = {
             'schema':{
 
                 'type':'dict',
+                'allow_unknown': True,
                 'schema': {
 
                     'postid' : {
