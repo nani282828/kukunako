@@ -141,7 +141,7 @@ angular.module('weberApp')
         friendsActivity.prototype.AddFriend = function(){
             var d = new Date();
             var total_time = d.getDate()+d.getDay()+d.getFullYear()+d.getHours()+d.getMilliseconds()+d.getMinutes()+d.getMonth()+d.getSeconds()+d.getTime();
-            var new_request = {friendid:this.currentuser._id, daterequest:d, timestamp:total_time,  seen:false}
+            var new_request = {friendid:this.currentuser._id, seen:false}
             this.profileuser.notifications.push(new_request);
             var data = this.profileuser.patch({
                 'notifications': this.profileuser.notifications

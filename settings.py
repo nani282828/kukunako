@@ -367,13 +367,6 @@ people = {
                             'embeddable': True
                         }
                     },
-
-                    'daterequest':{
-                        'type':'string'
-                    },
-                    'timestamp':{
-                        'type':'integer'
-                    },
                     'seen':{
                         'type':'boolean',
                         'default':False
