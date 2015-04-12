@@ -96,7 +96,7 @@
                     <div class="panel panel-body" style="border:1px solid #dcdcdc;" ng-repeat="rs in matchResults.mresults" >
                         <div class="media">
                           <div class="media-left">
-                            <a href="#" class="pull-left" style="padding: 0px 7px;" href="">
+                            <a href="#/profile/{{rs.author._id }}" class="pull-left" style="padding: 0px 7px;" href="">
                               <img class="media-object" style="width:50px;border-radius:4px;" data-placement="top-right" style="width:87px"
                                  data-content="{{rs.author.location.city}} {{rs.author.location.state}}"
                                  title="{{rs.author.name.first}}, {{rs.author.name.last}}"
@@ -105,7 +105,9 @@
                           </div>
                           <div class="media-body">
                             <h5 class="media-heading" style="font-family: 'Open sans',Arial,sans-serif;">
-                                <strong>{{rs.author.name.first}} {{rs.author.name.last}}</strong>
+                                <a href="#/profile/{{rs.author._id}}">
+                                    <strong>{{rs.author.name.first}} {{rs.author.name.last}}</strong>
+                                </a>
                                 <span class="pull-right">
                                     <!-- if post from you -->
                                     <a style="font-size:14px;" name="{{rs.author._id}}"
