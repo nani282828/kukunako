@@ -363,6 +363,7 @@ people = {
                         #'unique': True,
                         'data_relation': {
                             'resource': 'people',
+                             'field': '_id',
                             'embeddable': True
                         }
                     },
