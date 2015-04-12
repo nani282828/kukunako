@@ -280,11 +280,11 @@ def signup():
                 'street' : ""
             },
             'friends' : [],
-            'matchnotifications':[],
-            'notifications':[],
+            'matchnotifications':[{}],
+            'notifications':[{}],
             'interests': request.json['interests'],
             'interestsimilarwords': request.json['interestsimilarwords'],
-            'conversations':[]
+            'conversations':[{}]
 
         }
 
