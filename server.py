@@ -281,7 +281,7 @@ def signup():
                 'street' : ""
             },
             'friends' : [],
-            'matchnotifications':[{}],
+            'matchnotifications':[],
             'notifications':[],
             'interests': request.json['interests'],
             'interestsimilarwords': request.json['interestsimilarwords'],
