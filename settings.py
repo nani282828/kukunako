@@ -358,7 +358,7 @@ people = {
                 'type':'dict',
 
                 'schema':{
-                    'friend_id': {
+                    'friendid': {
                         'type': 'objectid',
                         #'unique': True,
                         'data_relation': {
