@@ -356,6 +356,7 @@ people = {
             'type': 'list',
             'schema': {
                 'type':'dict',
+
                 'schema':{
                     'friend_id': {
                         'type': 'objectid',
