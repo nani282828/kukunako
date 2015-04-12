@@ -366,10 +366,7 @@ people = {
                             'embeddable': True
                         }
                     },
-                    'seen': {
-                        'type': 'boolean',
-                        'default': False
-                    },
+
                     'daterequest':{
                         'type':'string'
                     },
@@ -394,10 +391,7 @@ people = {
                         }
                     },
 
-                    'seen': {
-                        'type': 'boolean',
-                        'default': False
-                    }
+
             },
         },
 
@@ -413,8 +407,30 @@ people = {
         },
 
         'matchnotifications': {
-            'type': 'list'
+            'type': 'list',
+            'schema': {
+                'postid' : {
+                    'type': 'objectid',
+                        #'unique': True,
+                        'data_relation': {
+                             'resource': 'posts',
+                             'field': '_id',
+                             'embeddable': True
+                        }
+                },
 
+                'interestedperson' : {
+                    'type': 'objectid',
+                        #'unique': True,
+                        'data_relation': {
+                             'resource': 'people',
+                             'field': '_id',
+                             'embeddable': True
+                        }
+                },
+
+
+            }
         }
     }
 }
