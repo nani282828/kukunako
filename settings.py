@@ -372,6 +372,11 @@ people = {
                     },
                     'timestamp':{
                         'type':'integer'
+                    },
+                    'seen':{
+                        'type':'boolean',
+                        'default':False
+
                     }
                 }
 
@@ -380,8 +385,9 @@ people = {
 
         'accept_notifications': {
             'type': 'list',
-
-            'schema': {
+            'schema':{
+                'type':'dict',
+                'schema': {
                     'accepted_id': {
                         'type': 'objectid',
                         #'unique': True,
@@ -390,9 +396,13 @@ people = {
                             'embeddable': True
                         }
                     },
+                    'seen':{
+                        'type':'boolean',
+                        'default': False
 
-
-            },
+                    }
+                }
+            }
         },
 
         'friends': {
@@ -408,28 +418,38 @@ people = {
 
         'matchnotifications': {
             'type': 'list',
-            'schema': {
-                'postid' : {
-                    'type': 'objectid',
-                        #'unique': True,
-                        'data_relation': {
-                             'resource': 'posts',
-                             'field': '_id',
-                             'embeddable': True
-                        }
-                },
+            'schema':{
 
-                'interestedperson' : {
-                    'type': 'objectid',
-                        #'unique': True,
+                'type':'dict',
+                'schema': {
+
+                    'postid' : {
+                        'type': 'objectid',
+                            #'unique': True,
+                            'data_relation': {
+                                 'resource': 'posts',
+                                 'field': '_id',
+                                 'embeddable': True
+                            }
+                    },
+
+                    'interestedperson' : {
+                        'type': 'objectid',
+                            #'unique': True,
                         'data_relation': {
                              'resource': 'people',
                              'field': '_id',
                              'embeddable': True
                         }
-                },
+                    },
+
+                    'seen':{
+                        'type':'boolean',
+                        'default': False
+                    }
 
 
+                }
             }
         }
     }

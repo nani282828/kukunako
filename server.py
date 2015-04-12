@@ -265,7 +265,6 @@ def signup():
                 'thumbnail' : "static/app/images/w-logo.jpg"
             },
             'phone': "",
-            'interests': [],
             'study': {
               'intermediate':"",
               'graduate': ""
@@ -281,11 +280,11 @@ def signup():
                 'street' : ""
             },
             'friends' : [],
-            'matchnotifications':[],
-            'notifications':[],
+            'matchnotifications':[{}],
+            'notifications':[{}],
             'interests': request.json['interests'],
             'interestsimilarwords': request.json['interestsimilarwords'],
-            'conversations':[]
+            'conversations':[{}]
 
         }
 

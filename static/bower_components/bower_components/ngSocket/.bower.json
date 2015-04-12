@@ -1,0 +1,11 @@
+{
+  "name": "ngSocket",
+  "_cacheHeaders": {
+    "Content-Type": "text/html; charset=utf-8"
+  },
+  "main": "index.js",
+  "_source": "https://github.com/chrisenytc/ng-socket/blob/master/ngSocket.js",
+  "_target": "*",
+  "_originalSource": "https://github.com/chrisenytc/ng-socket/blob/master/ngSocket.js",
+  "_direct": true
+}
