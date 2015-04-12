@@ -249,7 +249,7 @@ def signup():
     if not user_email:
         dt = datetime.now()
 
-        data = requests.get('http://127.0.0.1:8000/api/similarwords?querystring='+' '.join(request.json['interests']))
+        data = requests.get('http://weber.ooo/api/similarwords?querystring='+' '.join(request.json['interests']))
         user = {
             'email' :request.json['email'],
             'username':request.json['username'],
