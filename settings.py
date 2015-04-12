@@ -358,7 +358,9 @@ people = {
                 'type':'dict',
 
                 'schema':{
+
                     'friendid': {
+
                         'type': 'objectid',
                         #'unique': True,
                         'data_relation': {
@@ -367,6 +369,7 @@ people = {
                             'embeddable': True
                         }
                     },
+
                     'seen':{
                         'type':'boolean',
                         'default':False
