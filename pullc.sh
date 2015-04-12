@@ -1,5 +1,4 @@
-echo 'enter remote repo name:'
-read repo_name
-git pull "$repo_name" master
+git add -A
+git commit -m 'testing'
+git pull origin  master
 service weber restart
-
