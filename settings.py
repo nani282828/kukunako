@@ -212,7 +212,6 @@ messages = {
 people = {
     # 'title' tag used in item links.
     'item_title': 'person',
-    #'allow_unknown': True,
     # by default the standard item entry point is defined as
     # '/people/<ObjectId>/'. We leave it untouched, and we also enable an
     # additional read-only entry point. This way consumers can also perform GET
@@ -420,12 +419,8 @@ people = {
         'matchnotifications': {
             'type': 'list',
             'schema':{
-
                 'type':'dict',
-                #'allow_unknown': True,
-
                 'schema': {
-
                     'postid' : {
                         'type': 'objectid',
                             #'unique': True,
