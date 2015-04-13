@@ -18,7 +18,6 @@ else:
 
 
 URL_PREFIX = 'api'
-ALLOW_UNKNOWN = False
 
 TOKEN_SECRET = os.environ.get('SECRET_KEY') or 'JWT Token Secret String'
 
@@ -213,7 +212,7 @@ messages = {
 
 people = {
     # 'title' tag used in item links.
-    'item_title': 'person',
+    'item_title': 'people',
     # by default the standard item entry point is defined as
     # '/people/<ObjectId>/'. We leave it untouched, and we also enable an
     # additional read-only entry point. This way consumers can also perform GET
