@@ -146,10 +146,10 @@ angular.module('weberApp')
 
             var data = this.profileuser.patch({
                 "notifications": [{
-                    friendid:this.currentuser._id,
+                    friendidd:this.currentuser._id,
                     seen : false,
-                    timestamp : 120,
-                    daterequest: 'hai'
+                    timestampd : 120,
+                    daterequestd: 'hai'
                 }]
                 //'all_seen':false
             });
