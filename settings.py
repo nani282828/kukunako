@@ -365,14 +365,16 @@ people = {
         'notifications': {
             'type': 'list',
 
-            #'schema': {
-            #    'type':'dict',
+            'schema': {
+                'type':'dict',
 
                 'schema':{
                     'friendid': {
+
                         'type': 'objectid',
                         'data_relation': {
                             'resource': 'people',
+                             'field': '_id',
                             'embeddable': True
                         }
                     },
@@ -389,7 +391,7 @@ people = {
                     }
                 }
 
-            #}
+            }
         },
 
         'accept_notifications': {
