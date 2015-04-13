@@ -365,8 +365,8 @@ people = {
         'notifications': {
             'type': 'list',
 
-            'schema': {
-                'type':'dict',
+            #'schema': {
+            #    'type':'dict',
 
                 'schema':{
                     'friendid': {
@@ -389,7 +389,7 @@ people = {
                     }
                 }
 
-            }
+            #}
         },
 
         'accept_notifications': {
