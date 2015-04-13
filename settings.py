@@ -368,7 +368,7 @@ people = {
             'schema': {
                 'type':'dict',
 
-                'items':{
+                'schema':{
                     'friendid': {
                         'type': 'objectid',
                         'data_relation': {
@@ -429,11 +429,10 @@ people = {
         'matchnotifications': {
 
             'type': 'list',
-
             'schema':{
                 'type':'dict',
-
                 'schema': {
+
                     'postid' : {
                         'type': 'objectid',
                             #'unique': True,
