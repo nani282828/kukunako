@@ -368,7 +368,7 @@ people = {
             'schema': {
                 'type':'dict',
 
-                'schema':{
+                'items':{
                     'friendid': {
                         'type': 'objectid',
                         'data_relation': {
@@ -382,7 +382,7 @@ people = {
                         'default':False
                     },
                     'timestamp':{
-                        'type':'string',
+                        'type': 'integer',
                     },
                     'daterequest':{
                         'type':'string'

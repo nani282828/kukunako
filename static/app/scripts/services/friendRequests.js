@@ -145,7 +145,7 @@ angular.module('weberApp')
             this.profileuser.notifications.push(new_request);
 
             var data = this.profileuser.patch({
-                "notifications": [{seen:false}]
+                "notifications": this.profileuser.notifications
                 //'all_seen':false
             });
             return data;
