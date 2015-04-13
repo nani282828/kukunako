@@ -365,33 +365,12 @@ people = {
 
         'notifications': {
             'type': 'list',
-
-            'schema': {
-                'type':'dict',
-
-                'schema':{
-                    'friendid': {
-
-                        'type': 'objectid',
-                        'data_relation': {
-                            'resource': 'people',
-                             'embeddable': True
-                        }
-                    },
-
-                    'seen':{
-                        'type':'boolean',
-                        'default':False
-                    },
-                    'timestamp':{
-                        'type': 'integer',
-                    },
-                    'daterequest':{
-                        'type':'string'
-                    }
-                }
-
+            'schema':{
+                'type':'integer'
             }
+
+           
+
         },
 
         'accept_notifications': {
