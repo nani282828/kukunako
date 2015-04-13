@@ -224,6 +224,7 @@ people = {
     # Schema definition, based on Cerberus grammar. Check the Cerberus project
     # (https://github.com/nicolaiarocci/cerberus) for details.
     'schema': {
+
         'name': {
             'type': 'dict',
             'schema': {
@@ -268,6 +269,7 @@ people = {
             'maxlength': 25,
             'unique': True,
         },
+
         'password': {
             'type': 'dict',
             'schema': {
@@ -276,24 +278,30 @@ people = {
                 'password_updated': {'type': 'string'}
             },
         },
+
         'lastmessageseen': {
             'type': 'integer'
         },
+
         'role': {
             'type': 'string',
             'default': 'normal',
             'allowed': ["admin", "normal", "test"],
         },
+
         'gender': {
             'type': 'string',
         },
+
         'email_confirmed':{
             'type':'boolean'
         },
+
         'random_string':{
             'type':'string',
             'unique':True
         },
+
         'location': {
             'type': 'dict',
             'schema': {
@@ -303,6 +311,7 @@ people = {
                 'zip': {'type': 'string'}
             },
         },
+
         'picture': {
             'type': 'dict',
             'schema': {
@@ -311,6 +320,7 @@ people = {
                 'thumbnail': {'type': 'string'}
             },
         },
+
         'born': {
             'type': 'string',
         },
@@ -354,13 +364,12 @@ people = {
 
         'notifications': {
             'type': 'list',
+
             'schema': {
                 'type':'dict',
 
                 'schema':{
-
                     'friendid': {
-
                         'type': 'objectid',
                         'data_relation': {
                             'resource': 'people',
@@ -371,7 +380,12 @@ people = {
                     'seen':{
                         'type':'boolean',
                         'default':False
-
+                    },
+                    'timestamp':{
+                        'type':'string',
+                    },
+                    'daterequest':{
+                        'type':'string'
                     }
                 }
 
@@ -413,9 +427,12 @@ people = {
         },
 
         'matchnotifications': {
+
             'type': 'list',
+
             'schema':{
                 'type':'dict',
+
                 'schema': {
                     'postid' : {
                         'type': 'objectid',
@@ -429,7 +446,6 @@ people = {
 
                     'interestedperson' : {
                         'type': 'objectid',
-                            #'unique': True,
                         'data_relation': {
                              'resource': 'people',
                              'field': '_id',
