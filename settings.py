@@ -18,6 +18,8 @@ else:
 
 
 URL_PREFIX = 'api'
+ALLOW_UNKNOWN = False
+
 TOKEN_SECRET = os.environ.get('SECRET_KEY') or 'JWT Token Secret String'
 
 
