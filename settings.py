@@ -365,10 +365,10 @@ people = {
 
         'notifications': {
             'type': 'list',
-
+            'allow_unknown': True,
             'schema': {
                 'type':'dict',
-                'allow_unknown': True,
+
                 'schema':{
                     'friendid': {
 
