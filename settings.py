@@ -499,7 +499,7 @@ people_posts = {
 }
 
 
-items = {
+"""items = {
         'schema': {
             'uri': {'type': 'string', 'unique': True},
             'name': {'type': 'string'},
@@ -515,11 +515,11 @@ items = {
             'default_sort': [('firstcreated', -1)]
         }
 }
-
+"""
 # The DOMAIN dict explains which resources will be available and how they will
 # be accessible to the API consumer.
 DOMAIN = {
-    'items':items,
+    #'items':items,
     'people': people,
     'posts': posts,
     'peopleInterests': interests,
