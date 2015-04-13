@@ -369,7 +369,7 @@ people = {
                 'type':'dict',
 
                 'items':{
-                    'friendidd': {
+                    'friendid': {
                         'type': 'objectid',
                         'data_relation': {
                             'resource': 'people',
@@ -381,10 +381,10 @@ people = {
                         'type':'boolean',
                         'default':False
                     },
-                    'timestampd':{
+                    'timestamp':{
                         'type': 'integer',
                     },
-                    'daterequestd':{
+                    'daterequest':{
                         'type':'string'
                     }
                 }
