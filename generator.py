@@ -38,7 +38,7 @@ for raw_user in users:
     }
     user['password'] = {
         'password':generate_password_hash('111'),
-        'password_test':111,
+        'password_test': '111',
         'password_updated':dt
     }
     user['movies'] = []
