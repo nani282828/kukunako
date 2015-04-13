@@ -365,7 +365,6 @@ people = {
 
         'notifications': {
             'type': 'list',
-            'allow_unknown': True,
             'schema': {
                 'type':'dict',
 
