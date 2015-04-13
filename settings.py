@@ -374,8 +374,7 @@ people = {
                         'type': 'objectid',
                         'data_relation': {
                             'resource': 'people',
-                             'field': '_id',
-                            'embeddable': True
+                             'embeddable': True
                         }
                     },
 
@@ -440,7 +439,6 @@ people = {
                             #'unique': True,
                             'data_relation': {
                                  'resource': 'posts',
-                                 'field': '_id',
                                  'embeddable': True
                             }
                     },
@@ -449,7 +447,6 @@ people = {
                         'type': 'objectid',
                         'data_relation': {
                              'resource': 'people',
-                             'field': '_id',
                              'embeddable': True
                         }
                     },
