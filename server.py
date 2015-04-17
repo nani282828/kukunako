@@ -23,6 +23,7 @@ from flask_mail import Mail, Message
 from bson import json_util
 import string
 import random
+from friendRequests import Friends, Notifications, MatchUnmatch
 
 
 
@@ -56,6 +57,106 @@ def create_token(user):
 
     token = jwt.encode(payload, TOKEN_SECRET)
     return token.decode('unicode_escape')
+
+
+# adding friend request
+@app.route('/api/addfriend', methods=['POST', 'GET'])
+def addfriend():
+    print '---------data-----------'
+    cuserid = request.args.get('cuserid')
+    puserid = request.args.get('puserid')
+
+    friends = Friends(cuserid, puserid, app)
+    result = friends.addFriend()
+    print '--------result---> return'
+    print result
+    if result:
+        socketio.emit('FMnotific',{'data':{'FMnotific': True}}, room = str(puserid))
+    return jsonify({'data': result})
+
+# cancel request
+@app.route('/api/cancelfriend', methods=['POST', 'GET'])
+def cancelfriend():
+    print '---------data-----------'
+    cuserid = request.args.get('cuserid')
+    puserid = request.args.get('puserid')
+
+    friends = Friends(cuserid, puserid, app)
+    result = friends.cancelFriend()
+    print '--------result---> return'
+    print result
+    return jsonify({'data':result})
+
+@app.route('/api/acceptfriend', methods=['POST', 'GET'])
+def acceptfriend():
+    print '--------------------'
+    cuserid = request.args.get('cuserid')
+    puserid = request.args.get('puserid')
+
+    friends = Friends(cuserid, puserid, app)
+    result = friends.acceptFriend()
+    print '--------result---> return'
+    print result
+    if result:
+        socketio.emit('FMnotific',{'data':{'FMnotific': True}}, room = str(puserid))
+    return jsonify({'data':result})
+
+@app.route('/api/rejectfriend', methods=['POST', 'GET'])
+def rejectfriend():
+    print '---------data-----------'
+    cuserid = request.args.get('cuserid')
+    puserid = request.args.get('puserid')
+
+    friends = Friends(cuserid, puserid, app)
+    result = friends.rejectFriend()
+    print '--------result---> return'
+    print result
+    return jsonify({'data':result})
+
+@app.route('/api/unfriend', methods=['POST', 'GET'])
+def unfriend():
+    print '---------data-----------'
+    cuserid = request.args.get('cuserid')
+    puserid = request.args.get('puserid')
+
+    friends = Friends(cuserid, puserid, app)
+    result = friends.unFriend()
+    print '--------result---> return'
+    print result
+    return jsonify({'data':result})
+
+@app.route('/api/makeseen', methods=['POST', 'GET'])
+def makeseen():
+    print '---------make seen-----------'
+    cuserid = request.args.get('cuserid')
+    operations = Notifications(cuserid, app)
+    result = operations.makeSeen()
+    print '--------make seen result-----'
+    print result
+    return jsonify({'data':result})
+
+@app.route('/api/match', methods=['POST', 'GET'])
+def match():
+    print '---------match-----------'
+    data = (request.args.to_dict())
+    matchunmatch = MatchUnmatch(data, app)
+    result = matchunmatch.match()
+    print '--------match click result-----'
+    print result
+    if result:
+        socketio.emit('FMnotific',{'data':{'FMnotific': True}}, room = str(data['authorid']))
+    return jsonify({'data':result})
+
+@app.route('/api/unmatch', methods=['POST', 'GET'])
+def unmatch():
+    print '---------match-----------'
+    data = (request.args.to_dict())
+    matchunmatch = MatchUnmatch(data, app)
+    result = matchunmatch.unMatch()
+    print '-------unmatch result-----'
+    print result
+    return jsonify({'data':result})
+
 
 def parse_token(req):
     token = req.headers.get('Authorization').split()[1]
@@ -185,6 +286,7 @@ def changepassword():
     if user:
         password = generate_password_hash(request.json['password'])
         return password
+
 
 @login_required
 @app.route('/check_user_current_password', methods=['POST', 'GET'])
@@ -408,13 +510,14 @@ def after_post_inserted(items):
                                            'postid':post_id})
 
 
-def after_friend_notification_get(updates, original):
+"""def after_friend_notification_get(updates, original):
     for attrbute,value in original.iteritems():
         if(attrbute == '_id'):
             socketio.emit('FMnotific',{'data':{'FMnotific': True}}, room = str(value))
             #key = 'friend_'+str(value)
             #pipe.set(key,'friend_notific')
     #pipe.execute()
+"""
 
 # match button notifications
 def postNotific(updates, original):
@@ -426,7 +529,7 @@ def postNotific(updates, original):
 
 
 app.on_inserted_people_posts+= after_post_inserted
-app.on_updated_people+= after_friend_notification_get
+#app.on_updated_people+= after_friend_notification_get
 app.on_updated_posts = postNotific
 
 
@@ -524,9 +627,10 @@ def join_into_room(id):
     return data
 
 
-
 app.threaded=True
 socketio.run(app, host='127.0.0.1', port=8000)
+
+
 
 # server sent events section
 """from redis import Redis

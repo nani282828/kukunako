@@ -123,24 +123,40 @@ angular.module('weberApp')
             })
         }
     })
+
 	.service('MatchButtonService', function($http, Restangular, CurrentUser1) {
 
 		this.checkMatchUnMatch = function(post, user) {
-		     console.log('at match button service', user._id)
-		     //console.log('interestedlist==>', post.interestedPeople.interestedlist,'userid==>', user._id)
-		     //console.log(post.interestedPeople.hasOwnProperty('interestedlist'))
-             if(post.interestedPeople.hasOwnProperty('interestedlist')
-                            &&
-                post.interestedPeople.interestedlist.indexOf(user._id) !== -1){
-                    console.log('---------->true')
-                    return true;
-             }else{
-                console.log('------------>false')
-                return false;
-             }
+		     for(var i in post.interestedPeople){
+		        if(post.interestedPeople[i].interested_person == user._id){
+		            return true;
+		        }
+		     }
+		     return false;
+		};
+
+		this.match = function(authorid, postid, cuserid){
+
+
+		    return Restangular.one('match').get({
+		        cuserid : cuserid,
+		        authorid : authorid,
+		        postid: postid,
+		        seed:Math.random()
+		    });
+		};
+
+		this.unmatch = function(authorid, postid, cuserid){
+                return Restangular.one('unmatch').get({
+		        cuserid : cuserid,
+		        authorid : authorid,
+		        postid: postid,
+		        seed:Math.random()
+		    });
 		};
 
 	})
+
 	.service('PostService', function($http, Restangular) {
 		this.posts = [];
         var param1 = '{"author":1}';
@@ -230,7 +246,7 @@ angular.module('weberApp')
             return CurrentUser;
     })
 
-    .factory('MatchButton', function($http,$auth,$q, Restangular,PostService) {
+    /*.factory('MatchButton', function($http,$auth,$q, Restangular,PostService) {
 
         var MatchButton = function(user,profileuserid, postid) {
            //console.log('-- at match button-----')
@@ -406,7 +422,7 @@ angular.module('weberApp')
            return deferred.promise;
         };
         return MatchButton;
-    })
+    })*/
 
 
     .service('ESClient', function(esFactory) {
@@ -513,7 +529,7 @@ angular.module('weberApp')
 				content: content,
 				keywords: similar_keywords,
 				post_image_path : imagePath,
-				interestedPeople: {}
+				interestedPeople: []
 			}).then(function(data) {
 
                 this.posts.unshift({
@@ -523,7 +539,7 @@ angular.module('weberApp')
                     _created: new Date(),
                     _id:data._id,
                     _etag: data._etag,
-                    interestedPeople : {}
+                    interestedPeople : []
 
 				});
 

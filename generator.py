@@ -42,10 +42,8 @@ for raw_user in users:
         'password_updated':dt
     }
     user['movies'] = []
-    user['matchnotifications'] = []
     user['friends'] = []
     user['notifications'] = []
-    user['accept_notifications'] = []
     user['conversations'] = []
     user['role'] = "test"
 
@@ -76,7 +74,7 @@ for user in processed_users:
         post['type'] = 'text'
         post['author'] = user['id']
         post['content'] = generate_paragraph()[2]
-        post['interestedPeople'] = {}
+        post['interestedPeople'] = []
         r = requests.post(url + '/' + user['id'] + '/posts', data=json.dumps(post), headers={'content-type': 'application/json'})
         print r.content
 		

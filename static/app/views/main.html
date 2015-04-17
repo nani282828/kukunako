@@ -72,10 +72,11 @@
 			</div>
 
             <div class="panel-body" style="padding:1px;">
-                <a ng-repeat="friend in friends " href="#/profile/{{friend._id}}">
+                <a ng-repeat="friend in user.friends " href="#/profile/{{ friend }}">
                     <img data-placement="top-right" style="width:87px"
-                         data-content="{{friend.location.city}}, {{friend.location.state}}"
-                         title="{{friend.name.first}} {{friend.name.last}}" data-trigger="hover" bs-popover src="{{friend.picture.thumbnail}}">
+                         data-content="{{ UserService.get(friend).location.city }}, {{UserService.get(friend).location.state}}"
+                         title="{{UserService.get(friend).name.first}} {{UserService.get(friend).name.last}}"
+                         data-trigger="hover" bs-popover src="{{UserService.get(friend).picture.thumbnail}}">
                 </a>
             </div>
 		</div>
@@ -131,12 +132,14 @@
 				</div>
 			</div>
 		</div>
+
 		<div id='userposts' infinite-scroll='infinitePosts.nextPage()' infinite-scroll-disabled='infinitePosts.busy'
              infinite-scroll-distance='0' infinite-scroll-container="'#userposts'">
 
 			<div class="media panel panel-default" ng-repeat="post in infinitePosts.posts">
 
 				<div class="panel-heading post-div" style="background-color:#fff;border-bottom:1px solid #F2F2F2;">
+
 					<a class="pull-left" style="padding: 5px;" href="#/profile/{{UserService.get(post.author)._id}}">
 						<img style="width:35px" class="media-object img-circle" src="{{UserService.get(post.author).picture.thumbnail}}" alt="">
 					</a>
@@ -171,15 +174,13 @@
                         <div class="col-sm-12">
                             <h6>
                                 <a ng-show="MatchButtonService.checkMatchUnMatch(post, user) == false"
-                                   ng-click=" pushToPost(post.author,post._id, user);
-                                   MatchAgreeDirective('{{ post._id }}','{{ post.author }}','{{ user }}')"
-                                   style="cursor:pointer" matchbuttondirective>
+                                   ng-click=" pushToPost(post.author,post._id)"
+                                   style="cursor:pointer" >
                                     Match
                                 </a>&nbsp;
                                 <a ng-show="MatchButtonService.checkMatchUnMatch(post, user) == true"
-                                   ng-click="deleteFromPost(post.author,post._id, user);
-                                   MatchDisAgreeDirective('{{ post._id }}','{{ post.author }}', '{{ user }}')"
-                                   style="cursor:pointer" matchbuttondirective >
+                                   ng-click="deleteFromPost(post.author,post._id)"
+                                   style="cursor:pointer" >
                                     UnMatch
                                 </a>&nbsp;
                             </h6>

@@ -79,24 +79,25 @@ posts_schema = {
         },
 
 	   	'interestedPeople':{
-	   		'type':'dict',
+	   		'type':'list',
+
 	   		'schema':{
-	   			'interestedlist':{
-	   				'type':'list',
-	   				'schema':{
-	   					'type': 'objectid',
+                'type':'dict',
+
+                'schema':{
+
+                    'interested_person':{
+                        'type': 'objectid',
                         'data_relation': {
                             'resource': 'people',
                             'embeddable': True
                         }
-                     }
-	   			},
-	   			'presentupdated':{
-	   				'type':'integer'
-	   			},
-	   			'lastupdated':{
-	   				'type':'integer'
-	   			}
+                    },
+
+                    'match_date':{
+                        'type':'integer'
+                    },
+                }
 	   		}
 	   	}
     }
@@ -363,12 +364,13 @@ people = {
             },
         },
 
-        'notifications': {
+        """'notifications': {
             'type': 'list',
             'schema': {
                 'type':'dict',
 
                 'schema':{
+
                     'friendid': {
 
                         'type': 'objectid',
@@ -386,35 +388,24 @@ people = {
                         'type': 'integer',
                     },
                     'daterequest':{
-                        'type':'string'
-                    }
-                }
-
-            }
-        },
-
-        'accept_notifications': {
-            'type': 'list',
-            'schema':{
-                'type':'dict',
-
-                'schema': {
-                    'accepted_id': {
-                        'type': 'objectid',
-                        #'unique': True,
-                        'data_relation': {
-                            'resource': 'people',
-                            'embeddable': True
-                        }
+                        'type':'datetime'
                     },
-                    'seen':{
-                        'type':'boolean',
-                        'default': False
+                    'notific_type':{
+                        'type': 'integer'
+                    },
 
-                    }
+                    'postid' : {
+                        'type': 'objectid',
+                            #'unique': True,
+                            'data_relation': {
+                                 'resource': 'posts',
+                                 'embeddable': True
+                            }
+                    },
                 }
+
             }
-        },
+        },"""
 
         'friends': {
             'type': 'list',
@@ -426,40 +417,6 @@ people = {
                 }
             }
         },
-
-        'matchnotifications': {
-
-            'type': 'list',
-            'schema':{
-                'type':'dict',
-                'schema': {
-
-                    'postid' : {
-                        'type': 'objectid',
-                            #'unique': True,
-                            'data_relation': {
-                                 'resource': 'posts',
-                                 'embeddable': True
-                            }
-                    },
-
-                    'interestedperson' : {
-                        'type': 'objectid',
-                        'data_relation': {
-                             'resource': 'people',
-                             'embeddable': True
-                        }
-                    },
-
-                    'seen':{
-                        'type':'boolean',
-                        'default': False
-                    }
-
-
-                }
-            }
-        }
     }
 }
 

@@ -56,7 +56,7 @@ angular.module('weberApp')
 })
 
 
-.directive('cancelrequest', function ($compile, CurrentUser, Restangular, $routeParams, $route,friendsActivity) {
+.directive('cancelrequest', function ($compile, CurrentUser, Restangular, $routeParams, $route,friendsActivity, Friends) {
     return {
         restrict: 'E',
         replace: true,
@@ -70,60 +70,23 @@ angular.module('weberApp')
                 $element.html(html);
                 $compile($element.contents())($scope);
 
+                var data = Friends.addFriend($scope.currentuser._id, $scope.profileuser._id);
 
-                var currentuserobj = new CurrentUser();
-                currentuserobj.getUserId().then(function(){
-                currentuserobj.getCUserDetails(currentuserobj.userId).then(function(user){
-                        var user_obj = Restangular.one('people', id);
-                        user_obj.get({ seed : Math.random() }).then(function(profileuser) {
+                console.log('data----------->', data)
+                data.then(function(data){
+                    console.log('data123--------->', data)
+                    if(data.data){
+                         var html ='<addfriend><button ng-click="frndcancelrequest(\''+id+'\')"  class="btn btn-primary">cancel request</button></addfriend>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
 
-                            //console.log('-----------check in friends user--------')
-                            $scope.friendsactivity = new friendsActivity(user, profileuser)
-                            f_status = $scope.friendsactivity.checkInFriends()
-
-                            if(f_status.pf_status && f_status.cf_status){
-                                var html ='<b>alredy friends please reload page</b>';
-                                e =$compile(html)($scope);
-                                $element.replaceWith(e);
-
-                            }else if((!(f_status.pf_status)&& f_status.cf_status)
-                                                    ||
-                                    (!(f_status.cf_status) && f_status.pf_status)){
-
-                                    $scope.friendsactivity.removeFriends('addfriend').then(function(){
-                                        console.log('remove friends add request sent')
-                                        var html ='<addfriend><button ng-click="frndcancelrequest(\''+id+'\')" class="btn btn-primary" >cancel request</button></addfriend>';
-                                        e =$compile(html)($scope);
-                                        $element.replaceWith(e);
-
-                                    });
-                            }else if(!(f_status.pf_status && f_status.cf_status )){
-
-                                n_status = $scope.friendsactivity.checkInNotifcations()
-                                    if(n_status.pn_status){
-                                        var html ='<b>alredy reqeust sent please reload page</b>';
-                                        e =$compile(html)($scope);
-                                        $element.replaceWith(e);
-                                    }else if(n_status.cn_status){
-                                        var html ='<b>accept request first please reload page </b>';
-                                        e =$compile(html)($scope);
-                                        $element.replaceWith(e);
-                                    }else{
-                                        $scope.temps = $scope.friendsactivity.AddFriend();
-                                        $scope.temps.then(function(data){
-                                            var html ='<addfriend><button ng-click="frndcancelrequest(\''+id+'\')"  class="btn btn-primary">cancel request</button></addfriend>';
-                                            e =$compile(html)($scope);
-                                            $element.replaceWith(e);
-                                        });
-
-                                    }
-
-
-
-                            }else
-                                console.log('nothing to done in add friend request')
-                        });
-                   });
+                    }else{
+                         var html ='<b>unable to process</b>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }
                 });
             }
          }
@@ -131,7 +94,8 @@ angular.module('weberApp')
     };
 })
 
-.directive('addfriend', function ($compile, CurrentUser, Restangular, $routeParams, friendsActivity, $route) {
+.directive('addfriend', function ($compile, CurrentUser, Restangular,$route, $routeParams, friendsActivity, Friends,$route) {
+
     return {
         restrict: 'E',
         replace: true,
@@ -143,209 +107,112 @@ angular.module('weberApp')
                 $element.html(html);
                 $compile($element.contents())($scope);
 
-               var currentuserobj = new CurrentUser();
-               currentuserobj.getUserId().then(function(){
-                   currentuserobj.getCUserDetails(currentuserobj.userId).then(function(user){
-                        var user_obj = Restangular.one('people', id);
-		                user_obj.get({ seed : Math.random() }).then(function(profileuser) {
+                var data = Friends.cancelRequest($scope.currentuser._id, $scope.profileuser._id);
+                console.log('data----------->', data)
+                data.then(function(data){
+                    console.log('data123--------->', data)
+                    if(data.data){
+                         var html ='<cancelrequest><button  ng-click="frndaddrequest(\''+id+'\')"  class="btn btn-primary">AddFriend</button></cancelrequest>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }else{
+                         var html ='<b>unable to process</b>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }
+                });
 
-                         $scope.friendsactivity = new friendsActivity(user, profileuser)
-
-		                 var n_status = $scope.friendsactivity.checkInNotifcations();
-                         $scope.currentuser = user;
-
-                         if(n_status.cn_status && n_status.pn_status){
-                             $scope.friendsactivity.removeCnotifcations();
-                             $scope.friendsactivity.then(function(response){
-                                    console.log('remove notifcations at profile user')
-                                    html ='<cancelrequest><button  ng-click="frndaddrequest(\''+id+'\')"  class="btn btn-primary">AddFriend</button></cancelrequest>';
-                                    e =$compile(html)($scope);
-                                    $element.replaceWith(e);
-                             });
-
-                         }else if(n_status.pn_status){
-                                var data = $scope.friendsactivity.removePnotifcations();
-                                data.then(function(response){
-                                    console.log('remove notifcations at profile user')
-                                    html ='<cancelrequest><button  ng-click="frndaddrequest(\''+id+'\')"  class="btn btn-primary">AddFriend</button></cancelrequest>';
-                                    e =$compile(html)($scope);
-                                    $element.replaceWith(e);
-                                });
-
-                            }else if(n_status.cn_status){
-                                var data = $scope.friendsactivity.removeCnotifcations();
-                                data.then(function(response){
-                                    console.log('remove notifcations at current user')
-                                    html ='<cancelrequest><button ng-click="frndaddrequest(\''+id+'\')"  class="btn btn-primary">AddFriend</button></cancelrequest>';
-                                    e =$compile(html)($scope);
-                                    $element.replaceWith(e);
-                                });
-                            }
-
-                           else {
-                                var html ='<b>bad request please reload page</b>';
-                                e =$compile(html)($scope);
-                                $element.replaceWith(e);
-                            }
-		                });
-                   });
-               });
                }
-
-            }
+         }
     };
 })
-.directive('acceptreject', function ($compile, CurrentUser, Restangular, $routeParams, friendsActivity) {
+
+.directive('acceptreject', function ($compile, CurrentUser, Restangular,$route, $routeParams,Friends, friendsActivity) {
     return {
         restrict: 'E',
         replace: true,
         link: function (scope, element, attrs) {},
         controller:function($scope, $element, $attrs, $transclude){
 
-            $scope.acceptrequest = function(id,view){
+            $scope.acceptrequest = function(cuserid, puserid){
 
-                if(view == 'navbarview')
-                    $routeParams.username = id;
-
-
-                html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
-                $element.html(html);
-                $compile($element.contents())($scope);
-
-                var currentuserobj = new CurrentUser();
-                    currentuserobj.getUserId().then(function(){
-                    currentuserobj.getCUserDetails(currentuserobj.userId)
-                        .then(function(user){
-                            $scope.currentuser = user;
-                             var user_obj = Restangular.one('people', $routeParams.username);
-                             user_obj.get({ seed : Math.random() }).then(function(profileuser) {
-
-                                $scope.friendsactivity = new friendsActivity(user, profileuser)
-                                var n_status = $scope.friendsactivity.checkInNotifcations()
-
-                                if(n_status.cn_status){
-
-                                    var data = $scope.friendsactivity.accept_request();
-                                    data.then(function(response){
-                                        if(view == 'navbarview'){
-                                            html ='<b>friends</b>';
-                                            e =$compile(html)($scope);
-                                            $element.replaceWith(e);
-                                        }else{
-                                            html ='<unaddfriend><button ng-click="friendunfriend(\''+id+'\')" class="btn btn-primary">unfriend</button></unaddfriend>';
-                                            e =$compile(html)($scope);
-                                            $element.replaceWith(e);
-                                        }
-                                    });
-
-                                }else{
-                                    html ='<b>send request cancelled by your friend</b>';
-                                    e =$compile(html)($scope);
-                                    $element.replaceWith(e);
-                                }
-
-                            });
-                        });
-                    });
-            }
-
-            $scope.rejectrequest = function(id, view){
-
-                if(view == 'navbarview'){
-                    console.log('yes in nav bar view')
-                    $routeParams.username = id;
+                var navbar_request = false;
+                if(typeof cuserid === 'undefined' || typeof puserid === 'undefined'){
+                    cuserid = $scope.currentuser._id;
+                    puserid = $scope.profileuser._id;
+                }else{
+                    navbar_request = true;
                 }
 
                 html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
                 $element.html(html);
                 $compile($element.contents())($scope);
-                var currentuserobj = new CurrentUser();
-                    currentuserobj.getUserId().then(function(){
-                    currentuserobj.getCUserDetails(currentuserobj.userId)
-                        .then(function(user){
 
-                         var user_obj = Restangular.one('people', $routeParams.username);
-                             user_obj.get({ seed : Math.random() }).then(function(profileuser) {
+                 var data = Friends.acceptRequest(cuserid, puserid);
+                console.log('data----------->', data)
+                data.then(function(data){
+                    console.log('data123--------->', data)
+                    if(data.data){
+                         if(navbar_request){
+                            html = '<b> friends </b>'
+                         }else{
+                            html ='<unaddfriend><button ng-click="friendunfriend()" class="btn btn-primary">unfriend</button></unaddfriend>';
+                         }
 
-                            $scope.friendsactivity = new friendsActivity(user, profileuser)
-                            var n_status = $scope.friendsactivity.checkInNotifcations();
-                            $scope.currentuser = user;
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }else{
+                         var html ='<b>unable to process</b>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }
+                });
+            }
 
-                            if(n_status.cn_status && n_status.pn_status){
+            $scope.rejectrequest = function(cuserid, puserid){
+                var navbar_request = false;
+                if(typeof cuserid === 'undefined' || typeof puserid === 'undefined'){
+                    cuserid = $scope.currentuser._id;
+                    puserid = $scope.profileuser._id;
+                }else{
+                    navbar_request = true;
+                }
 
-                                $scope.friendsactivity.removeCnotifcations();
+                var html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
+                $element.html(html);
+                $compile($element.contents())($scope);
 
-                                var data = $scope.friendsactivity.removePnotifcations();
-                                data.then(function(response){
-                                    if(view == 'navbarview'){
-                                        console.log('navbarview')
-                                        html ='<b>rejected</b>';
-                                        e =$compile(html)($scope);
-                                        $element.replaceWith(e);
+                var data = Friends.rejectRequest(cuserid, puserid);
+                console.log('data----------->', data)
+                data.then(function(data){
+                    console.log('data123--------->', data)
+                    if(data.data){
+                        if(navbar_request){
+                            html = '<b>rejected</b>'
+                        }else{
+                            html ='<cancelrequest><button ng-click="frndaddrequest()" class="btn btn-primary">AddFriend</button></cancelrequest>';
+                        }
 
-                                    }else{
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }else{
+                         html ='<b>unable to process</b>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }
+                });
 
-                                        console.log('userprofileview')
-                                        html ='<cancelrequest><button ng-click="frndaddrequest(\''+id+'\')" class="btn btn-primary">AddFriend</button></cancelrequest>';
-                                        e =$compile(html)($scope);
-                                        $element.replaceWith(e);
-                                    }
-                                });
-
-
-                            }
-                            else if(n_status.cn_status){
-                                var data = $scope.friendsactivity.removeCnotifcations();
-                                data.then(function(response){
-                                    if(view == 'navbarview'){
-                                        console.log('navbarview')
-                                        html ='<b>rejected</b>';
-                                        e =$compile(html)($scope);
-                                        $element.replaceWith(e);
-
-                                    }else{
-
-                                        console.log('userprofileview')
-                                        html ='<cancelrequest><button ng-click="AddFriend()" class="btn btn-primary">AddFriend</button></cancelrequest>';
-                                        e =$compile(html)($scope);
-                                        $element.replaceWith(e);
-                                    }
-                                });
-                            }
-
-                            else if(n_status.pn_status){
-                                $scope.rf = friendsactivity.removePnotifcations();
-                                $scope.rf.then(function(response){
-                                    if(view == 'navbarview'){
-                                    console.log('navbarview')
-                                    html ='<b>rejected</b>';
-                                    e =$compile(html)($scope);
-                                    $element.replaceWith(e);
-
-                                }else{
-
-                                    console.log('userprofileview')
-                                    html ='<cancelrequest><button ng-click="AddFriend()" class="btn btn-primary">AddFriend</button></cancelrequest>';
-                                    e =$compile(html)($scope);
-                                    $element.replaceWith(e);
-                                }
-                                });
-                            }else {
-                                html ='<b>sent request cancelled by your friend</b>';
-                                e =$compile(html)($scope);
-                                $element.replaceWith(e);
-
-                            }
-
-                         });
-
-                        });
-                    });
             }
         }
     };
 })
-.directive('unaddfriend', function ($compile, CurrentUser, Restangular, $routeParams, friendsActivity,$route) {
+.directive('unaddfriend', function ($compile, CurrentUser, Restangular, $routeParams, Friends, friendsActivity,$route) {
     return {
         restrict: 'E',
         replace: true,
@@ -354,60 +221,28 @@ angular.module('weberApp')
 
         $scope.friendunfriend = function(id){
 
-                html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
+                var html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
                 $element.html(html);
                 $compile($element.contents())($scope);
 
-               var currentuserobj = new CurrentUser();
-               currentuserobj.getUserId().then(function(){
-
-                   currentuserobj.getCUserDetails(currentuserobj.userId).then(function(user){
-                        var user_obj = Restangular.one('people', id);
-
-		                user_obj.get({ seed : Math.random() }).then(function(profileuser) {
-                            $scope.friendsactivity = new friendsActivity(user, profileuser)
-                            var f_status = $scope.friendsactivity.checkInFriends();
-                            console.log(f_status)
-
-                            if(f_status.pf_status && f_status.cf_status){
-
-                                var data = $scope.friendsactivity.unfriend();
-                                data.then(function(data){
-                                    html ='<cancelrequest><button ng-click="frndaddrequest(\''+id+'\')" class="btn btn-primary">AddFriend</button></cancelrequest>';
-                                    e =$compile(html)($scope);
-                                    $element.replaceWith(e);
-                                });
-                            }else if(f_status.pf_status){
-                                var data = $scope.friendsactivity.remove_pfriends();
-                                data.then(function(data){
-                                    html ='<cancelrequest><button ng-click="frndaddrequest(\''+id+'\')" class="btn btn-primary">AddFriend</button></cancelrequest>';
-                                    e =$compile(html)($scope);
-                                    $element.replaceWith(e);
-                                });
-
-                            }else if(f_status.cf_status){
-                                var data = $scope.friendsactivity.remove_cfriends();
-                                data.then(function(data){
-                                    html ='<cancelrequest><button ng-click="frndcancelrequest(\''+id+'\')" class="btn btn-primary">AddFriend</button></cancelrequest>';
-                                    e =$compile(html)($scope);
-                                    $element.replaceWith(e);
-                                });
-
-                            }else{
-                                var html ='<b>bad request please reload page</b>';
-                                e =$compile(html)($scope);
-                                $element.replaceWith(e);
-                            }
-
-		                });
-                   });
-               });
+                var data = Friends.unFreind($scope.currentuser._id, $scope.profileuser._id);
+                console.log('data----------->', data)
+                data.then(function(data){
+                    console.log('data123--------->', data)
+                    if(data.data){
+                         html ='<cancelrequest><button ng-click="frndaddrequest(\''+id+'\')" class="btn btn-primary">AddFriend</button></cancelrequest>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }else{
+                         html ='<b>unable to process</b>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }
+                });
                }
             }
-
-
-
-
     };
 })
 .directive('matchmeunfriend', function ($compile, CurrentUser, Restangular, $routeParams, friendsActivity,$route) {
@@ -416,9 +251,6 @@ angular.module('weberApp')
         replace: true,
         link: function ($scope, element, attrs) {},
         controller:function($scope, $element, $attrs, $transclude){
-
-
-
         $scope.matchmeunfriend = function(id) {
 
                html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';

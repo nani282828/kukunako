@@ -10,17 +10,20 @@
 angular.module('weberApp')
 	.controller('UserprofileCtrl', function($scope, $routeParams,$templateCache,sortIListService,
 	                                        Restangular, InfinitePosts, UserService,MatchButtonService,
-	                                        CurrentUser, FriendsNotific, friendsActivity) {
+	                                        CurrentUser , friendsActivity) {
 
 		$scope.UserService = UserService;
 		$scope.MatchButtonService = MatchButtonService;
 		$scope.sortIListService = sortIListService;
+
         var currentuserobj = new CurrentUser();
          currentuserobj.getUserId()
             .then(function(){
                 currentuserobj.getCUserDetails(currentuserobj.userId).then(function(user){
+
                     var user_obj = Restangular.one('people', $routeParams.username);
 		            user_obj.get({ seed : Math.random() }).then(function(profileuser) {
+		                //console.log('profile user')
 		                $scope.profileuser = profileuser;
                         $scope.currentuser = user;
 

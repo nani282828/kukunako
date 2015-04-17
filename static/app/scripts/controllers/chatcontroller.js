@@ -1,6 +1,6 @@
 angular.module('weberApp')
 .controller('chatbarcontroller', function($scope, $auth, CurrentUser1,$socket,UserService,
-                                          $http,$rootScope,SearchActivity,FriendsNotific,
+                                          $http,$rootScope,SearchActivity,
                                           $document, Restangular,ChatActivity){
 
 
@@ -9,12 +9,7 @@ angular.module('weberApp')
     //updating the chat div height using below code please put it
     $scope.get_screen_height = window.innerHeight-52;
     $scope.get_inner_div_height = (window.innerHeight-210)/2;
-    $scope.UserService = UserService;
-    //console.log($scope.get_screen_height)
-    //console.log($scope.get_inner_div_height)
 
-    // -----nav bar methods-----
-    // nav search bar methods
      $http.get('/api/me', {
             headers: {
                 'Content-Type': 'application/json'
@@ -44,6 +39,7 @@ angular.module('weberApp')
                 $scope.chatdivnotification = [];
 
                 $rootScope.chatactivity = new ChatActivity(user);
+
                 $rootScope.loadLatestMessages = function(){
                     //console.log('load message')
                     $rootScope.chatactivity.loadLatestMessages();
@@ -169,12 +165,6 @@ angular.module('weberApp')
                     }else{
                         return false;
                     }
-
-
-
-
-                    //document.getElementById("send_"+Recept).value="";
-
                 }
 
                 var getValue = function(){
@@ -182,9 +172,6 @@ angular.module('weberApp')
                 }
 
                 var getData = function(){
-                  console.log('---------session data--------')
-                  console.log(sessionStorage)
-
                   var json = [];
 
                   $.each(sessionStorage, function(i, v){
@@ -193,8 +180,6 @@ angular.module('weberApp')
                         json.push(angular.fromJson(v));
                      }
                   });
-
-                  console.log(json)
                   return json;
                 }
 
@@ -204,7 +189,6 @@ angular.module('weberApp')
 
                     console.log('chat room opened previously', chatrooms)
                     for(k in  chatrooms){
-                        //console.log(chatrooms[k])
                         $rootScope.chatactivity.loadMessages(user._id, chatrooms[k].id, chatrooms[k]);
                    }
 
@@ -213,7 +197,6 @@ angular.module('weberApp')
 
                  // opens new chat room
                  $scope.openchatroom = function(id){
-                    //$scope.addToConversations(id);
                     if(!(sessionStorage.getItem(id))){
                         // check room alredy open
 

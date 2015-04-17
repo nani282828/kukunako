@@ -105,12 +105,12 @@
                     </li>
                     <li class="dropdown" style="">
                         <a class="dropdown-toggle" style="cursor:pointer;" data-toggle="dropdown"
-                           ng-click="getNewNotifcations()" style="cursor:pointer">
+                           ng-click="getNewNotifcations();makeSeen()" style="cursor:pointer">
                             <i class="glyphicon glyphicon-globe" style="font-size:17px;opacity:0.55;">
                             </i>
-                            <label class="label label-danger" ng-show ="unseenMnotific.length + newnotific"
-                                   style="position:absolute;font-size:10px;top: 5px;right: 0px;">
-                                    {{ unseenMnotific.length + newnotific}}
+                            <label class="label label-danger"
+                                   style="position:absolute;font-size:10px;top: 5px;right: 0px;" ng-if="notifications_count">
+                                    {{ notifications_count }}
                             </label>
                         </a>
                         <div class="dropdown-menu" style="padding:0px;width:350px;">
@@ -129,7 +129,9 @@
                                         </div>
                                     </div>
                                     <div class="panel-body" style="height:200px;">
-                                        <div class="row" style="margin-top:7px" ng-repeat="requestedPeople in rpeoples">
+                                        <div class="row" style="margin-top:7px"
+                                             ng-repeat="request_notific in currentUser.notifications"
+                                             ng-if='request_notific.notific_type === 1'   >
                                             <div class="col-sm-2">
                                                 <a href="#/profile/{{ requestedPeople.username }}">
                                                     <img src="{{ requestedPeople.picture.thumbnail }}"
@@ -137,19 +139,22 @@
                                                 </a>
                                             </div>
                                             <div class="col-sm-5">
-                                                <a href="#/profile/{{ requestedPeople.username }}">
+                                                <a href="#/profile/{{ UserService.get(request_notific.friendid).username }}">
                                                     <h5>
-                                                        {{ requestedPeople.name.first }} {{ requestedPeople.name.last }}
+                                                        {{ UserService.get(request_notific.friendid).name.first }}
+                                                          {{ request_notific.notific_type }}
                                                     </h5>
                                                 </a>
                                             </div>
                                             <div class="col-sm-5">
+
                                                 <acceptreject>
-                                                    <button ng-click="acceptrequest('{{requestedPeople._id}}','navbarview')"
+                                                    <button ng-click="acceptrequest('{{ currentUser._id }}','{{ request_notific.friendid }}')"
                                                             class="btn btn-sm btn-primary">accept</button>
-                                                    <button ng-click="rejectrequest('{{requestedPeople._id}}','navbarview')"
+                                                    <button ng-click="rejectrequest('{{ currentUser._id }}','{{ request_notific.friendid }}')"
                                                             class="btn btn-primary btn-sm pull-right">reject</button>
                                                 </acceptreject>
+
                                             </div>
                                         </div>
                                     </div>
@@ -172,41 +177,33 @@
                                             </div>
                                         </div>-->
 
-                                        <div class="row" style="margin-top:7px;border-bottom:1px solid #f2f2f2;padding-bottom:5px;" ng-repeat="accepted_people in apeoples">
-                                            <div class="col-sm-2">
-                                                <img src="{{ accepted_people.picture.thumbnail }}"
+                                        <div class="row" style="margin-top:7px;border-bottom:1px solid #f2f2f2;padding-bottom:5px;" ng-repeat="request_notific in currentUser.notifications"
+                                                ng-if="request_notific.notific_type === 2 || request_notific.notific_type === 3" >
+                                            <div class="col-sm-2" >
+
+                                                <img src="{{ UserService.get(request_notific.friendid).picture.large}}"
                                                      style="width:50px">
+                                                
                                             </div>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-10" >
                                                 <h5>
-                                                    <a href="">
-                                                        {{ accepted_people.name.first }}
+                                                    <a href="#/profile/{{ UserService.get(request_notific.friendid).username }}">
+                                                        {{ UserService.get(request_notific.friendid).name.first }}
+
                                                     </a>
-                                                    Accepted your friend request
+                                                    <div ng-if="request_notific.notific_type === 2 ">
+                                                        Accepted your friend request
+                                                    </div>
+                                                    <a ng-if="request_notific.notific_type === 3"
+                                                       href="#/post/{{ request_notific.postid }}">your post
+                                                    </a>
+
                                                 </h5>
                                             </div>
-                                        </div>
-                                        <div ng-repeat="notification in matchnotifications" class="row"
-                                             style="margin-top:7px;border-bottom:1px solid #f2f2f2;padding-bottom:5px;" >
-                                            <a href="/#/post/{{ notification.postid }}">
-                                                <div class="col-sm-2 colpadding">
 
-                                                    <img src="{{ UserService.get(notification.interestedperson).picture.medium }}"
-                                                         style="width:50px;">
-                                                </div>
-                                                <div class="col-sm-9 colpadding" >
-                                                    <h5 style="margin-bottom:2px;margin-top:3px;">
-                                                       <label style="color:#000;cursor:pointer;">
-                                                           {{ UserService.get(notification.interestedperson).name.first }}
-                                                           {{ UserService.get(notification.interestedperson).name.last }}
-                                                       </label>
-                                                    </h5>
-                                                    <h5 style="margin-top:3px;">
-                                                        {{ PostService.get(notification.postid).content }}
-                                                    </h5>
-                                                </div>
-                                            </a>
                                         </div>
+
+
                                     </div>
                                 </div>
                             </form>

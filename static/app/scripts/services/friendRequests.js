@@ -22,7 +22,7 @@ angular.module('weberApp')
         }
 
 
-        friendsActivity.prototype.checkInFriends = function(){
+        /*friendsActivity.prototype.checkInFriends = function(){
 
             var pf_status = false;
             var cf_status = false;
@@ -104,7 +104,7 @@ angular.module('weberApp')
 
             }
             return ({cn_status:cn_status, pn_status:pn_status});
-        }
+        }*/
 
         friendsActivity.prototype.getRelation = function(){
 
@@ -117,7 +117,8 @@ angular.module('weberApp')
                 if(this.status === null){
                     var k = '';
                     for (k in this.profileuser.notifications){
-                        if(this.profileuser.notifications[k].friend_id == (this.currentuser._id)){
+                        if((this.profileuser.notifications[k].friendid == (this.currentuser._id)) &&
+                          (this.profileuser.notifications[k].notific_type == 1)){
                             this.status = 'cancelrequest';
                         }
                     }
@@ -126,7 +127,9 @@ angular.module('weberApp')
                 if(this.status === null){
                     var k = ''
                     for (k in this.currentuser.notifications){
-                        if(this.currentuser.notifications[k].friend_id == (this.profileuser._id)){
+                        if((this.currentuser.notifications[k].friendid == (this.profileuser._id)) &&
+                           (this.currentuser.notifications[k].notific_type == 1))
+                        {
                             this.status = 'reject_accept';
                         }
                     }
@@ -138,7 +141,8 @@ angular.module('weberApp')
             return (this.status)
         }
 
-        friendsActivity.prototype.AddFriend = function(){
+        /*friendsActivity.prototype.AddFriend = function(){
+
             var d = new Date();
             var total_time = d.getDate()+d.getDay()+d.getFullYear()+d.getHours()+d.getMilliseconds()+d.getMinutes()+d.getMonth()+d.getSeconds()+d.getTime();
             var new_request = {'friendid':this.currentuser._id,'seen':false,'timestamp':total_time,'daterequest':d}
@@ -318,6 +322,57 @@ angular.module('weberApp')
                 });
 
              }
-        }
+        }*/
          return friendsActivity
+	})
+	.service('Friends', function($http, Restangular) {
+
+		this.addFriend = function(cuserid, puserid) {
+		    return Restangular.one('addfriend').get({
+		        cuserid : cuserid,
+		        puserid : puserid,
+		        seed:Math.random()
+		    });
+		}
+
+		this.cancelRequest = function(cuserid, puserid){
+		    return Restangular.one('cancelfriend').get({
+		        cuserid : cuserid,
+		        puserid : puserid,
+		        seed:Math.random()
+		    });
+
+		}
+
+		this.acceptRequest = function(cuserid, puserid){
+		    return Restangular.one('acceptfriend').get({
+		        cuserid : cuserid,
+		        puserid : puserid,
+		        seed:Math.random()
+		    });
+
+		}
+
+		this.rejectRequest = function(cuserid, puserid){
+		    return Restangular.one('rejectfriend').get({
+		        cuserid : cuserid,
+		        puserid : puserid,
+		        seed : Math.random()
+		    });
+		}
+
+		this.unFreind = function(cuserid, puserid){
+		    return Restangular.one('unfriend').get({
+		        cuserid : cuserid,
+		        puserid : puserid,
+		        seed : Math.random()
+		    })
+		}
+
+		this.makeSeen = function(cuserid){
+		    return Restangular.one('makeseen').get({
+		        cuserid : cuserid,
+		        seed : Math.random()
+		    })
+		}
 	});

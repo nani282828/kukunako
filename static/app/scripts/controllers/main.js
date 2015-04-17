@@ -9,7 +9,7 @@
 angular.module('weberApp')
 	.controller('MainCtrl', function($scope, $auth, $rootScope, $socket, Restangular, InfinitePosts,
 	                                $alert, $http, CurrentUser,sortIListService,
-	                                UserService, fileUpload, MatchButton, MatchButtonService, $upload) {
+	                                UserService, fileUpload, MatchButtonService, $upload) {
 
 		$scope.UserService = UserService;
         $scope.MatchButtonService = MatchButtonService;
@@ -31,41 +31,16 @@ angular.module('weberApp')
                 $scope.infinitePosts = new InfinitePosts(user, loadPostIds);
                 $scope.infinitePosts.getEarlyPosts();
 
-                if (user.friends.length !== 0) {
+                /*if (user.friends.length !== 0) {
 
 				    var params = '{"_id": {"$in":["'+($scope.user.friends).join('", "') + '"'+']}}';
 
 					Restangular.all('people').getList({where :params}).then(function(friend) {
 						$scope.friends = friend;
 					});
-				}
+				}*/
 
 				$scope.submit_post = function(){
-
-				        //here is the code of selecting the file for uploading an image with post
-                        /*var handleFileSelect = function(evt) {
-                            $rootScope.file = evt.currentTarget.files[0];
-                        };
-                        angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);*/
-
-                        //$rootScope.server_file_path = 'hj'
-                        //console.log('file is ' + JSON.stringify($rootScope.file));
-                        //if($rootScope.file){
-                            //console.log("posted")
-                            //var uploadUrl = "/fileUpload";
-                            //var get_details = fileUpload.uploadFileToUrl($rootScope.file, uploadUrl)
-                            //$rootScope.file = '';
-                            //get_details.then(function (response) {
-                                //console.log("------getting the url for an image-----")
-                                //console.log(response.data)
-                                //$rootScope.server_file_path = response.data;
-                                //console.log("=====get server image path=====")
-                                //console.log($rootScope.server_file_path)
-                            //})
-                        //}
-
-
-
                      if($scope.new_post) {
                         $http({
                             url: '/api/similarwords',
@@ -85,7 +60,6 @@ angular.module('weberApp')
                 $socket.on('postNotifications', function(data){
 
                     if(data.data.postnotific){
-
                         if(user.friends.indexOf(data.author) == -1){
                             console.log('no a friend')
                         }else if(user.friends.indexOf(data.author != -1) && data.postid != 'undefined'){
@@ -95,6 +69,54 @@ angular.module('weberApp')
                         }
                     }
                 });
+
+                $scope.pushToPost = function(postauthor, postid){
+                    console.log('match user id', user._id)
+                    var index = null;
+                    var posts = $scope.infinitePosts.posts;
+				    for(var temp in posts){
+				        if(posts[temp]._id == postid){
+                            index = temp;
+				            postauthor = posts[temp].author;
+				            postid = posts[temp]._id;
+
+				            var iPeople = posts[temp].interestedPeople;
+				            for(var i in iPeople){
+				                if(iPeople[i].interested_person == user._id){
+				                    return true;
+				                }
+                            }
+                            iPeople.push({'interested_person': user._id, 'match_date': new Date()});
+                            //console.log('post author-->', postauthor)
+                            MatchButtonService.match(postauthor, postid , user._id).then(function(data){
+                                console.log('match agree succesfully-->', data);
+                            });
+
+                        }
+                    }
+	            }
+
+				$scope.deleteFromPost = function(postauthor, postid){
+
+				    console.log('unmatch user id', user._id)
+                    var posts = $scope.infinitePosts.posts;
+
+				    for(var temp in posts){
+				        // if post contains with post id
+				        if(posts[temp]._id == postid){
+				            var iPeople = posts[temp].interestedPeople;
+				            for(var i in iPeople){
+				                if(iPeople[i].interested_person == user._id){
+				                   iPeople.splice(i,1);
+				                   MatchButtonService.unmatch(postauthor, postid, user._id).then(function(data){
+                                        console.log('unmatch disagree succesfully-->', data);
+                                   });
+				                }
+                            }
+
+                        }
+                    }
+				}
 
 
 			});
@@ -144,7 +166,40 @@ angular.module('weberApp')
             }
         }
     })
-    .directive('matchbuttondirective', function ($compile, CurrentUser, Restangular,
+    /*.directive('match', function ($compile, CurrentUser, Restangular, $routeParams, Friends, friendsActivity,$route) {
+    return {
+        restrict: 'E',
+        replace: true,
+        link: function ($scope, element, attrs) {},
+        controller:function($scope, $element, $attrs, $transclude){
+
+        $scope.friendunfriend = function(id){
+
+                var html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
+                $element.html(html);
+                $compile($element.contents())($scope);
+
+                var data = Friends.unFreind($scope.currentuser._id, $scope.profileuser._id);
+                console.log('data----------->', data)
+                data.then(function(data){
+                    console.log('data123--------->', data)
+                    if(data.data){
+                         html ='<cancelrequest><button ng-click="frndaddrequest(\''+id+'\')" class="btn btn-primary">AddFriend</button></cancelrequest>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }else{
+                         html ='<b>unable to process</b>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }
+                });
+               }
+            }
+    };
+});*/
+    /*.directive('matchdirective', function ($compile, CurrentUser, Restangular,
      $routeParams,MatchButton, friendsActivity) {
         return {
             restrict: 'A',
@@ -152,7 +207,8 @@ angular.module('weberApp')
             link: function (scope, element, attrs) {},
             controller:function($scope, $http, $route, $element, $attrs, $transclude){
                 $scope.matchbuttonbusy = false;
-                $scope.MatchAgreeDirective = function(postid, authorid, user){
+
+                $scope.match = function(postid, authorid, cuserid){
                     if(!($scope.matchbuttonbusy)){
                        $scope.matchbuttonbusy = true;
                        for(var k in $scope.infinitePosts.posts){
@@ -212,4 +268,4 @@ angular.module('weberApp')
 				}
             }
         }
-    });
+    });*/

@@ -18,11 +18,12 @@ angular.module('weberApp')
   }
 })
     .controller('navbarcontroller',function($scope, $auth, CurrentUser, $alert,$rootScope,$timeout,InstanceSearch,
-                                            InstanceSearchHistory, PostService,
+                                            InstanceSearchHistory, PostService, Friends,
                                             $location, $http, Restangular,ChatActivity, $window,UserService,
-                                            CurrentUser1,SearchActivity,FriendsNotific,friendsActivity,$socket) {
+                                            CurrentUser1,SearchActivity, friendsActivity,$socket) {
 
     /* testing of auto complete code for search results in weber*/
+        $scope.notifications_count = 0;
         $scope.instanceSearchHistory = {};
         $scope.PostService = PostService;
         $scope.UserService = UserService;
@@ -96,66 +97,34 @@ angular.module('weberApp')
         Restangular.one('people',JSON.parse(user_id)).get({seed: Math.random()}).then(function(user) {
 
             $scope.testing = 'ddddddddddd';
+            $scope.currentUser = user;
 
             $socket.emit('connecting', {id:user._id});
+
             $socket.on('joiningstatus', function(data) {
                 console.log(data)
             });
 
         $scope.searchActivity = new SearchActivity($scope.currentUser)
+
         $scope.loadSearchHistory = function(){
             $scope.searchActivity.getMysearches();
         }
 
-        var requested_peoples = [];
-        var accepted_peoples = [];
+        function get_friend_notifications(user){
 
-        function get_friend_notifications(currentUser){
-
-            var notific = new FriendsNotific(currentUser);
-            notific.then(function(data){
-
-                    accepted_peoples = [];
-                    var currentuser = data
-                    var k = null;
-                    for (k in currentuser.notifications){
-                        if(currentuser.notifications[k].seen == false){
-                            requested_peoples.push(currentuser.notifications[k].friend_id)
-                        }
-                    }
-
-                    k= null;
-                    for (k in currentuser.accept_notifications){
-                        if(currentuser.accept_notifications[k].seen == false){
-                            accepted_peoples.push(currentuser.accept_notifications[k].accepted_id)
-                        }
-                    }
-
-
-                    if(requested_peoples.length+accepted_peoples.length > 0){
-                        if(!(currentUser.all_seen)){
-                            $scope.newnotific = requested_peoples.length+accepted_peoples.length
-                        }else{
-                            $scope.newnotific = null;
-                        }
-                    }else{
-                        $scope.newnotific = null;
-                    }
-            });
-        }
-
-        function getMatchButtonNotific(currentuser){
-            console.log('===============>', currentuser)
-            $scope.unseenMnotific = []
-            $scope.matchnotifications = currentuser.matchnotifications
-            for(var temp in currentuser.matchnotifications){
-                if(currentuser.matchnotifications[temp].seen == false &&
-                   currentuser.matchnotifications[temp].interestedperson != currentuser._id){
-                    $scope.unseenMnotific.push(currentuser.matchnotifications[temp])
+            for(var k in user.notifications){
+                console.log(user.notifications[k])
+                console.log(user.notifications[k].seen,'-->', user._id)
+                if(user.notifications[k].seen == false){
+                    $scope.notifications_count += 1;
+                    console.log('count of notfication', $scope.notifications_count)
                 }
+                //return true;
             }
-            console.log('unseen==>', $scope.unseenMnotific)
         }
+
+
 
 
         $socket.on('FMnotific', function(data){
@@ -168,8 +137,9 @@ angular.module('weberApp')
                 }).success(function(user_id) {
                     Restangular.one('people',JSON.parse(user_id)).get({seed: Math.random()})
                     .then(function(user) {
+                            $scope.currentUser = user;
+                            console.log('getting notifications==>')
                             get_friend_notifications(user);
-                            getMatchButtonNotific(user);
                     });
                 });
             }
@@ -177,80 +147,26 @@ angular.module('weberApp')
 
 
         get_friend_notifications(user);
-        getMatchButtonNotific(user);
 
-        $scope.getNewNotifcations = function(){
-            //$scope.MatchButtonNotific = null;
-            if($scope.newnotific || $scope.unseenMnotific.length ){
-
-                $scope.tempUnseen = $scope.unseenMnotific;
-                $scope.unseenMnotific = [];
-
-                $scope.newnotific = null;
-                $scope.MatchButtonNotific = null;
-                $http.get('/api/me', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': $auth.getToken()
+        $scope.makeSeen = function(){
+             console.log('--------called make seen-------------')
+             if($scope.notifications_count){
+                $scope.notifications_count = 0;
+                for(var k in $scope.currentUser.notifications){
+                    if($scope.currentUser.notifications[k].seen == false){
+                        $scope.currentUser.notifications[k].seen = true;
                     }
-                }).success(function(user_id) {
-                    Restangular.one('people',JSON.parse(user_id)).get({seed: Math.random()}).then(function(user) {
-                            var anotific = [];
-                            var reqnotific = [];
-                            var k = null;
-                            for(k in user.accept_notifications){
-                                user.accept_notifications[k].seen = true;
-                                user.accept_notifications[k].accepted_id = (user.accept_notifications[k].accepted_id).toString();
-                                anotific.push(user.accept_notifications[k].accepted_id);
-                            }
 
-                            k = null;
-
-                            for(k in user.notifications){
-                                user.notifications[k].seen = true;
-                                reqnotific.push(user.notifications[k].friend_id);
-                            }
-
-                            if($scope.tempUnseen.length){
-                                for(var k in user.matchnotifications){
-                                    if(user.matchnotifications[k].seen == false){
-                                        user.matchnotifications[k].seen = true;
-                                    }
-                                }
-                            }
-
-                            console.log('--------->', user.accept_notifications)
-                            user.patch({
-                                all_seen : true,
-                                accept_notifications : user.accept_notifications,
-                                notifications : user.notifications,
-                                matchnotifications : user.matchnotifications
-                            }).then(function(data){
-                                console.log('------------>',data)
-                            });
-
-
-                            var params = '{"_id": {"$in":["'+(reqnotific).join('", "') + '"'+']}}'
-                            Restangular.all('people').getList({
-                                where : params,
-                                seed: Math.random()
-                            }).then(function(response){
-                                $scope.rpeoples = response;
-                            });
-
-                            var params = '{"_id": {"$in":["'+(anotific).join('", "') + '"'+']}}'
-                            Restangular.all('people').getList({
-                                where : params,
-                                seed: Math.random()
-                            }).then(function(resposne){
-                                $scope.apeoples = resposne;
-                            });
-                        });
+                    Friends.makeSeen($scope.currentUser._id).then(function(data){
+                        console.log('make seen data==>', data);
+                        return true;
                     });
-               }
-         }
+                   //return true;
+                }
+             }
+        }
 
-         $scope.openchatroom = function(id){
+        $scope.openchatroom = function(id){
             if(!(sessionStorage.getItem(id))){
                 var json = {};
                 Restangular.one('people', id).get({seed: Math.random()})
@@ -272,6 +188,7 @@ angular.module('weberApp')
                 });
             }
         }
+
     });
 });
 })
