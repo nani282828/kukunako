@@ -10,7 +10,8 @@ angular.module('weberApp')
             $scope.chatroomdiv = function(id){
                 if($element[0].offsetHeight == 364){+
 
-                    console.log('clicked element==>',$element)
+
+                    //console.log('clicked element==>',$element)
 
                     $element.css('height', '40px')
 
@@ -72,9 +73,9 @@ angular.module('weberApp')
 
                 var data = Friends.addFriend($scope.user._id, $scope.profileuser._id);
 
-                console.log('data----------->', data)
+                //console.log('data----------->', data)
                 data.then(function(data){
-                    console.log('data123--------->', data)
+                   // console.log('data123--------->', data)
                     if(data.data){
                          var html ='<addfriend><button ng-click="frndcancelrequest(\''+id+'\')"  class="btn btn-primary">cancel request</button></addfriend>';
                          e =$compile(html)($scope);
@@ -108,9 +109,9 @@ angular.module('weberApp')
                 $compile($element.contents())($scope);
 
                 var data = Friends.cancelRequest($scope.user._id, $scope.profileuser._id);
-                console.log('data----------->', data)
+                //console.log('data----------->', data)
                 data.then(function(data){
-                    console.log('data123--------->', data)
+                    //console.log('data123--------->', data)
                     if(data.data){
                          var html ='<cancelrequest><button  ng-click="frndaddrequest(\''+id+'\')"  class="btn btn-primary">AddFriend</button></cancelrequest>';
                          e =$compile(html)($scope);
@@ -151,9 +152,9 @@ angular.module('weberApp')
                 $compile($element.contents())($scope);
 
                  var data = Friends.acceptRequest(cuserid, puserid);
-                console.log('data----------->', data)
+                //console.log('data----------->', data)
                 data.then(function(data){
-                    console.log('data123--------->', data)
+                    //console.log('data123--------->', data)
                     if(data.data){
                          if(navbar_request){
                             html = '<b> friends </b>'
@@ -187,9 +188,9 @@ angular.module('weberApp')
                 $compile($element.contents())($scope);
 
                 var data = Friends.rejectRequest(cuserid, puserid);
-                console.log('data----------->', data)
+                //console.log('data----------->', data)
                 data.then(function(data){
-                    console.log('data123--------->', data)
+                   // console.log('data123--------->', data)
                     if(data.data){
                         if(navbar_request){
                             html = '<b>rejected</b>'
@@ -226,9 +227,9 @@ angular.module('weberApp')
                 $compile($element.contents())($scope);
 
                 var data = Friends.unFreind($scope.user._id, $scope.profileuser._id);
-                console.log('data----------->', data)
+                //console.log('data----------->', data)
                 data.then(function(data){
-                    console.log('data123--------->', data)
+                    //console.log('data123--------->', data)
                     if(data.data){
                          html ='<cancelrequest><button ng-click="frndaddrequest(\''+id+'\')" class="btn btn-primary">AddFriend</button></cancelrequest>';
                          e =$compile(html)($scope);

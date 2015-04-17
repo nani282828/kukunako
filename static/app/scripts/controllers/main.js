@@ -61,7 +61,7 @@ angular.module('weberApp')
 
                     if(data.data.postnotific){
                         if(user.friends.indexOf(data.author) == -1){
-                            console.log('no a friend')
+                            //console.log('no a friend')
                         }else if(user.friends.indexOf(data.author != -1) && data.postid != 'undefined'){
                             $scope.infinitePosts.loadNotificPost(data.postid, data.author)
                         }else{
@@ -71,7 +71,7 @@ angular.module('weberApp')
                 });
 
                 $scope.pushToPost = function(postauthor, postid){
-                    console.log('match user id', user._id)
+                    //console.log('match user id', user._id)
                     var index = null;
                     var posts = $scope.infinitePosts.posts;
 				    for(var temp in posts){
@@ -98,7 +98,7 @@ angular.module('weberApp')
 
 				$scope.deleteFromPost = function(postauthor, postid){
 
-				    console.log('unmatch user id', user._id)
+				    //console.log('unmatch user id', user._id)
                     var posts = $scope.infinitePosts.posts;
 
 				    for(var temp in posts){

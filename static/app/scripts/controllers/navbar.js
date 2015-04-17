@@ -33,7 +33,7 @@ angular.module('weberApp')
                 var data = InstanceSearchHistory.get(typedthings);
                 if (typeof data.then !== 'undefined') {
                     data.then(function(data){
-                    console.log('if part')
+                    //console.log('if part')
                     $scope.movies = data.data;
                     InstanceSearchHistory.pushToHistory(data.data, typedthings)
                     })
@@ -44,7 +44,7 @@ angular.module('weberApp')
         }
 
         $scope.doSomethingElse = function(suggestion){
-            console.log("Suggestion selected: ", suggestion._id);
+            //console.log("Suggestion selected: ", suggestion._id);
             $location.path('profile/'+suggestion._id.$oid)
         }
 
@@ -114,8 +114,8 @@ angular.module('weberApp')
         function get_friend_notifications(user){
 
             for(var k in user.notifications){
-                console.log(user.notifications[k])
-                console.log(user.notifications[k].seen,'-->', user._id)
+                //console.log(user.notifications[k])
+                //console.log(user.notifications[k].seen,'-->', user._id)
                 if(user.notifications[k].seen == false){
                     $scope.notifications_count += 1;
                     console.log('count of notfication', $scope.notifications_count)
@@ -149,7 +149,7 @@ angular.module('weberApp')
         get_friend_notifications(user);
 
         $scope.makeSeen = function(){
-             console.log('--------called make seen-------------')
+             //console.log('--------called make seen-------------')
              if($scope.notifications_count){
                 $scope.notifications_count = 0;
                 for(var k in $scope.currentUser.notifications){
@@ -158,7 +158,7 @@ angular.module('weberApp')
                     }
 
                     Friends.makeSeen($scope.currentUser._id).then(function(data){
-                        console.log('make seen data==>', data);
+                        //console.log('make seen data==>', data);
                         return true;
                     });
                    //return true;

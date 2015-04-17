@@ -134,7 +134,6 @@ angular.module('weberApp')
 		        }
 		     }
 		     return false;
-
 		};
 
 		this.match = function(authorid, postid, cuserid){
@@ -167,7 +166,7 @@ angular.module('weberApp')
 			this.loadPostIds = authorIds;
 			this.end = false;
             this.params = '{"author": {"$in":'+this.loadPostIds+'}}';
-            console.log('author params===>', this.params)
+            //console.log('author params===>', this.params)
         }
 
         InfinitePosts.prototype.getEarlyPosts = function(){
@@ -201,8 +200,8 @@ angular.module('weberApp')
                     '_etag': data._etag,
                     'interestedPeople': data.interestedPeople,
                 });
-                console.log('posts--------->', this.posts);
-                console.log('ddata--------->', data);
+                //console.log('posts--------->', this.posts);
+               // console.log('ddata--------->', data);
             }.bind(this));
 
         }
@@ -281,7 +280,7 @@ angular.module('weberApp')
 		};
 
 		InfinitePosts.prototype.deletePost = function(post, user) {
-            console.log('delete post details', post.author)
+            //console.log('delete post details', post.author)
 			Restangular.one('posts', post._id).remove({},{
 			    'If-Match': (post._etag).toString()
 			}).then(function(data) {
@@ -289,7 +288,7 @@ angular.module('weberApp')
 			        if(this.posts[k]._id == post._id){
 			            this.posts.splice(k,1)
 			            this.SpecificPost = {};
-			            console.log("successfully deleted")
+			            //console.log("successfully deleted")
 			        }
 			    }
 			}.bind(this));
@@ -300,7 +299,7 @@ angular.module('weberApp')
 
     		       user.patch({'matchnotifications':post.author.matchnotifications})
     		       .then(function(data){
-    		            console.log('delete notification==>', data)
+    		           /// console.log('delete notification==>', data)
     		       })
 			    }
 			}
@@ -312,7 +311,7 @@ angular.module('weberApp')
         var param1 = '{"author":1}';
 
 		this.get = function(postid) {
-		    console.log('postid==>', postid)
+		    //console.log('postid==>', postid)
 
 			for (var i in this.posts) {
 				if (this.posts[i]._id == postid) {

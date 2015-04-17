@@ -23,8 +23,6 @@ angular.module('weberApp')
 
                     var user_obj = Restangular.one('people', $routeParams.username);
 		            user_obj.get({ seed : Math.random() }).then(function(profileuser) {
-		                console.log('profile user==>', profileuser)
-
 		                $scope.profileuser = profileuser;
                         $scope.user = user;
 
@@ -48,7 +46,7 @@ angular.module('weberApp')
 
                         if($scope.user._id !== $scope.profileuser._id){
                             var friendsactivity = new friendsActivity($scope.user, $scope.profileuser)
-                            console.log(friendsactivity)
+                            //console.log(friendsactivity)
                             $scope.check_relation = function(){
                                 $scope.relation = friendsactivity.getRelation();
                                 return $scope.relation;
@@ -56,7 +54,7 @@ angular.module('weberApp')
                         }
 
                         $scope.pushToPost = function(postauthor, postid){
-                            console.log('match user id', user._id)
+                            //console.log('match user id', user._id)
                             var posts = $scope.infinitePosts.posts;
                             for(var temp in posts){
                                 if(posts[temp]._id == postid){
@@ -81,7 +79,7 @@ angular.module('weberApp')
 
                         $scope.deleteFromPost = function(postauthor, postid){
 
-                            console.log('unmatch user id', user._id)
+                            //console.log('unmatch user id', user._id)
                             var posts = $scope.infinitePosts.posts;
 
                             for(var temp in posts){
