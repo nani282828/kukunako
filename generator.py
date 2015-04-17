@@ -65,7 +65,7 @@ for user in processed_users:
 		#friends_dict['friends'] = []
 		print friends_dict
 		print headers
-		r = requests.patch(url + '/' + user['id'], data=json.dumps(friends_dict), headers=headers)
+		#r = requests.patch(url + '/' + user['id'], data=json.dumps(friends_dict), headers=headers)
 		print r.content
 print '---------------------------------Adding posts to users-----------------------'
 for user in processed_users:

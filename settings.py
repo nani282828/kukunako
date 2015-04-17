@@ -364,7 +364,7 @@ people = {
             },
         },
 
-        """'notifications': {
+        'notifications': {
             'type': 'list',
             'schema': {
                 'type':'dict',
@@ -405,7 +405,7 @@ people = {
                 }
 
             }
-        },"""
+        },
 
         'friends': {
             'type': 'list',

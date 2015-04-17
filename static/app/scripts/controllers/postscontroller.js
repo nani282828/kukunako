@@ -8,9 +8,10 @@
  */
 angular.module('weberApp')
 	.controller('PostLoadController', function($http, $auth, Restangular, $scope,
-	                                           $routeParams, PostService, InfinitePosts) {
+	                                           $routeParams, PostService, InfinitePosts,MatchButtonService) {
 
 	    $scope.postid = $routeParams.postid;
+	    $scope.MatchButtonService = MatchButtonService;
 	    $http.get('/api/me', {
 			headers: {
 				'Content-Type': 'application/json',
@@ -37,6 +38,53 @@ angular.module('weberApp')
                 $scope.confirm_delete = function(){
                     $scope.infinitePosts.deletePost($scope.infinitePosts.posts[0], user);
                 }
+
+                $scope.pushToPost = function(postauthor, postid){
+                    var posts = $scope.infinitePosts.posts;
+
+                    for(var temp in posts){
+                        if(posts[temp]._id == postid){
+                            var iPeople = posts[temp].interestedPeople;
+                            for(var i in iPeople){
+                                if(iPeople[i].interested_person == user._id){
+                                    return true;
+                                }
+                            }
+                            iPeople.push({'interested_person': user._id, 'match_date': new Date()});
+                            //console.log('post author-->', postauthor)
+                            console.log('postauthor-->', postauthor)
+                            console.log('postid -->', postid)
+                            console.log('user id-->', user._id)
+                            MatchButtonService.match(postauthor, postid , user._id).then(function(data){
+                                console.log('match agree succesfully-->', data);
+                            });
+
+                        }
+                    }
+	            }
+
+                $scope.deleteFromPost = function(postauthor, postid){
+
+                    console.log('unmatch user id', user._id)
+                    var posts = $scope.infinitePosts.posts;
+
+                    for(var temp in posts){
+                        // if post contains with post id
+                        if(posts[temp]._id == postid){
+                            var iPeople = posts[temp].interestedPeople;
+                            for(var i in iPeople){
+                                if(iPeople[i].interested_person == user._id){
+                                   iPeople.splice(i,1);
+                                   MatchButtonService.unmatch(postauthor, postid, user._id).then(function(data){
+                                        console.log('unmatch disagree succesfully-->', data);
+                                   });
+                                }
+                            }
+
+                        }
+                    }
+                }
+
 
 			});
 		});

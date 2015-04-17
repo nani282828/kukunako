@@ -86,12 +86,6 @@
 			<textarea ng-model="new_post" class="form-control"
                       style="height: 70px;margin-bottom: 10px;resize: none;" placeholder="Whats happening?" required></textarea>
 			<div class="row">
-				<div class="col-sm-6">
-                    <!--<span class="btn btn-sm btn-default btn-file">
-                        <i class="glyphicon glyphicon-camera" style="color:#4E9258;"></i>
-                        <input type="file" id="fileInput" ng-model="fileArea" />
-                    </span>-->
-				</div>
 				<div class="col-sm-2 pull-right">
                     <button ng-click="submit_post()" type="submit" class="btn btn-primary btn-block btn-sm">
                         Post
@@ -99,25 +93,6 @@
 				</div>
 			</div>
 		</form>
-        <!--<form name="myForm">
-            <fieldset><legend>Upload on form submit</legend>
-                Username: <input type="text" name="userName" ng-model="username" size="39" required="">
-                            <i ng-show="myForm.userName.$error.required">*required</i><br>
-                Profile Picture: <input type="file" ng-file-select="" ng-model="picFile" name="file" accept="image/*"
-                                        ng-file-change="generateThumb(picFile[0], $files)" required="">
-            <i ng-show="myForm.file.$error.required">*required</i>
-                <br>
-                {{ picFile[0] }}
-
-                <button ng-disabled="!myForm.$valid" ng-click="upload(picFile)">Submit</button>
-                <img ng-show="picFile[0].dataUrl != null" ng-src="{{picFile[0].dataUrl}}" class="thumb">
-                <span class="progress" ng-show="picFile[0].progress >= 0">
-                    <div style="width:{{picFile[0].progress}}%" ng-bind="picFile[0].progress + '%'" class="ng-binding"></div>
-                </span>
-                <span ng-show="picFile[0].result">Upload Successful</span>
-            </fieldset>
-            <br>
-        </form>-->
 
 		<div ng-if="!(infinitePosts.posts.length)" class="well clearfix"
              style="background-color:#fff;">
@@ -192,7 +167,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <h6>
-                                <span ng-repeat="temp in sortIListService.sendList(post.interestedPeople.interestedlist, user._id)">
+                                <!--<span ng-repeat="temp in sortIListService.sendList(post.interestedPeople.interestedlist, user._id)">
                                     <a style="text-decoration:none;cursor:pointer;"
                                        alt="Match this post">
                                         <i class="fa fa-slideshare" style="font-size:14px;"></i>&nbsp;
@@ -213,7 +188,7 @@
                                 <span ng-if="sortIListService.sendList(matchPeople.interestedList).length">
                                     {{ sortIListService.sendList(matchPeople.interestedList).length }}
                                     matched with this post
-                                </span>
+                                </span>-->
 
                             </h6>
                         </div>

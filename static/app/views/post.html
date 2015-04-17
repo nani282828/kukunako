@@ -82,64 +82,59 @@
 		</div>
 	</div>
 	<div class="col-md-6 colpadding" style="min-height:2000px">
-		<div id='userposts' ng-show="infinitePosts.posts.length">
+		<div id='userposts' ng-show="infinitePosts.posts.length" ng-repeat="post in infinitePosts.posts">
 
 			<div class="media panel panel-default">
 
 				<div class="panel-heading post-div" style="background-color:#fff;border-bottom:1px solid #F2F2F2;">
 					<a class="pull-left" style="padding: 5px;" href="#/profile/{{PostService.author._id}}">
-						<img style="width:35px" class="media-object img-circle" src="{{infinitePosts.posts[0].author.picture.thumbnail}}" alt="">
+						<img style="width:35px" class="media-object img-circle" src="{{post.author.picture.thumbnail}}" alt="">
 					</a>
 					<strong>
 						<a href="#/profile/{{infinitePosts.posts[0].author._id}}" style="color:#133444">
-							{{infinitePosts.posts[0].author.name.first}} {{infinitePosts.posts[0].author.name.last}}
+							{{post.author.name.first}} {{post.author.name.last}}
 						</a>
 					</strong>&nbsp;wrote on his story.
 
                     <confirmdelete>
-                        <a class="pull-right delete-div" ng-if="user._id == infinitePosts.posts[0].author._id"
-                           ng-click="deletediv(infinitePosts.posts[0]._id)" style="cursor:pointer;font-size:12px">
+                        <a class="pull-right delete-div" ng-if="user._id == post.author._id"
+                           ng-click="deletediv(post._id)" style="cursor:pointer;font-size:12px">
                             Delete
                         </a>
                     </confirmdelete>
 					<br>
 					<small class="text-muted">
                         <span class="glyphicon glyphicon-time" style="color:#2F5168"></span>
-						<span am-time-ago="infinitePosts.posts[0].author._created"></span></small>
+						<span am-time-ago="post.author._created"></span></small>
 					<br>
 				</div>
 				<div class="panel-body" style="margin-bottom:0px;padding-bottom:0px;">
                     <div ng-if="post.post_image_path" class="row">
 						<div class="col-sm-12" style="padding:0px;">
 							<div class="thumbnail" style="border:0px solid;">
-								<img src="{{ infinitePosts.posts[0].post_image_path }}">
+								<img src="{{ post.post_image_path }}">
 							</div>
 						</div>
 					</div>
                     <div class="row" style="padding-bottom:5px;">
                         <div class="col-sm-12">
                             <p>
-                                {{ infinitePosts.posts[0].content }}
+                                {{ post.content }}
 
                             </p>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" ng-if="post.author._id != user._id">
                         <div class="col-sm-12">
                              <h6>
-
-                                <a ng-if="MatchButtonService.checkMatchUnMatch(infinitePosts.posts[0], user) == false"
-                                   ng-click=" pushToPost(infinitePosts.posts[0].author,infinitePosts.posts[0]._id);
-                                   MatchAgreeDirective('{{ infinitePosts.posts[0]._id }}','{{ infinitePosts.posts[0].author }}')"
-                                   style="cursor:pointer" matchbuttondirective>
+                                <a ng-show="MatchButtonService.checkMatchUnMatch(post, user) == false"
+                                   ng-click=" pushToPost(post.author._id, post._id)"
+                                   style="cursor:pointer" >
                                     Match
                                 </a>&nbsp;
-
-                                <a
-                                        ng-if="MatchButtonService.checkMatchUnMatch(infinitePosts.posts[0], user) == true"
-                                   ng-click="deleteFromPost(infinitePosts.posts[0].author,infinitePosts.posts[0]._id);
-                                   MatchDisAgreeDirective('{{ infinitePosts.posts[0]._id }}','{{ infinitePosts.posts[0].author }}')"
-                                   style="cursor:pointer" matchbuttondirective >
+                                <a ng-show="MatchButtonService.checkMatchUnMatch(post, user) == true"
+                                   ng-click="deleteFromPost(post.author._id,post._id)"
+                                   style="cursor:pointer" >
                                     UnMatch
                                 </a>&nbsp;
                             </h6>
@@ -150,16 +145,14 @@
                      style="padding-top:5px;background-color:#fff;border:1px solid #FCF8F8;">
                     <div class="row">
                         <div class="col-sm-12">
-                            {{ infinitePosts.posts[0].interestedPeople.interestedlist }}
-                            <h6>
+
+                            <!--<h6>
                                 <a style="text-decoration:none;cursor:pointer;" alt="Match this post">
                                     <i class="fa fa-slideshare" style="font-size:14px;"></i>&nbsp;
                                 </a>
                                 <a href="" ng-repeat="matchPeople in UserService.get(post.author).MatchedPeopleNotifications">
 
                                     <span ng-if="matchPeople.postid == post._id ">
-                                         <!--{{ $index }}<br/>
-                                         {{ matchPeople }} === {{ post._id }}-->
 
                                         <span ng-repeat="temp in sortIListService.sendList(matchPeople.interestedList)">
                                             <span ng-if="user._id == temp">
@@ -175,7 +168,7 @@
                                 <span ng-if="!(sortIListService.sendList(matchPeople.interestedList).length)">0</span>
                                  matched with this post
 
-                            </h6>
+                            </h6>-->
                         </div>
                     </div>
                 </div>

@@ -148,17 +148,14 @@
                     <div class="row" ng-show="post.author != user._id">
                         <div class="col-sm-12">
                             <h6>
-                                <a ng-show="MatchButtonService.checkMatchUnMatch(post, currentuser) == false"
-                                   ng-click=" pushToPost(post.author,post._id, currentuser);
-                                   MatchAgreeDirective('{{ post._id }}','{{ post.author }}','{{ currentuser }}')"
-                                   style="cursor:pointer" matchbuttondirective>
+                                <a ng-show="MatchButtonService.checkMatchUnMatch(post, user) == false"
+                                   ng-click=" pushToPost(post.author,post._id)"
+                                   style="cursor:pointer" >
                                     Match
                                 </a>&nbsp;
-
-                                <a ng-show="MatchButtonService.checkMatchUnMatch(post, currentuser) == true"
-                                   ng-click="deleteFromPost(post.author,post._id, currentuser);
-                                   MatchDisAgreeDirective('{{ post._id }}','{{ post.author }}','{{ currentuser }}')"
-                                   style="cursor:pointer" matchbuttondirective >
+                                <a ng-show="MatchButtonService.checkMatchUnMatch(post, user) == true"
+                                   ng-click="deleteFromPost(post.author,post._id)"
+                                   style="cursor:pointer" >
                                     UnMatch
                                 </a>&nbsp;
                             </h6>
@@ -170,7 +167,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <h6>
-                                <span ng-repeat="temp in sortIListService.sendList(post.interestedPeople.interestedlist, user._id)">
+                                <!--<span ng-repeat="temp in sortIListService.sendList(post.interestedPeople.interestedlist, user._id)">
                                     <a style="text-decoration:none;cursor:pointer;"
                                        alt="Match this post">
                                         <i class="fa fa-slideshare" style="font-size:14px;"></i>&nbsp;
@@ -191,7 +188,7 @@
                                 <span ng-if="sortIListService.sendList(matchPeople.interestedList).length">
                                     {{ sortIListService.sendList(matchPeople.interestedList).length }}
                                     matched with this post
-                                </span>
+                                </span>-->
 
                             </h6>
                         </div>

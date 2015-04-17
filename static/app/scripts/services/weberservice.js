@@ -127,12 +127,14 @@ angular.module('weberApp')
 	.service('MatchButtonService', function($http, Restangular, CurrentUser1) {
 
 		this.checkMatchUnMatch = function(post, user) {
-		     for(var i in post.interestedPeople){
+             //console.log('weber service post', post.interestedPeople)
+             for(var i in post.interestedPeople){
 		        if(post.interestedPeople[i].interested_person == user._id){
 		            return true;
 		        }
 		     }
 		     return false;
+
 		};
 
 		this.match = function(authorid, postid, cuserid){
@@ -156,7 +158,157 @@ angular.module('weberApp')
 		};
 
 	})
+    	.factory('InfinitePosts', function($http, Restangular, $alert, $timeout) {
 
+		var InfinitePosts = function(user_obj,authorIds) {
+			this.posts = [];
+			this.SpecificPost = {},
+			this.user_obj = user_obj;
+			this.busy = true;
+			this.page = 1;
+			this.loadPostIds = authorIds;
+			this.end = false;
+            this.params = '{"author": {"$in":'+this.loadPostIds+'}}';
+            console.log('author params===>', this.params)
+        }
+
+        InfinitePosts.prototype.getEarlyPosts = function(){
+                Restangular.all('posts').getList({
+                    where : this.params,
+                    max_results: 10,
+                    page: this.page,
+                    sort: '[("_created",-1)]',
+                    seed:Math.random()
+                }).then(function(posts) {
+                    //console.log('loadposts')
+                    if (posts.length < 10) {
+                        this.end = true;
+                    }
+                    this.posts.push.apply(this.posts, posts);
+                    this.page = this.page + 1;
+                    this.busy = false;
+
+                }.bind(this));
+		};
+
+        InfinitePosts.prototype.getSpecificPost = function(postid){
+            var embedded = '{"author":1}';
+            Restangular.one('posts', postid.postid).get({embedded:embedded, seed:Math.random()})
+            .then(function(data){
+                this.posts.push({
+                    '_id':data._id,
+                    'author':data.author,
+                    'content':data.content,
+                    '_created': data._created,
+                    '_etag': data._etag,
+                    'interestedPeople': data.interestedPeople,
+                });
+                console.log('posts--------->', this.posts);
+                console.log('ddata--------->', data);
+            }.bind(this));
+
+        }
+
+		InfinitePosts.prototype.nextPage = function() {
+		    //console.log('nextpage')
+			if (this.busy | this.end) return;
+			this.busy = true;
+
+			Restangular.all('posts').getList({
+			    where : this.params,
+				max_results: 10,
+				page: this.page,
+				sort: '[("_created",-1)]',
+				seed:Math.random()
+			}).then(function(posts) {
+				if (posts.length === 0) {
+					this.end = true;
+				}
+				this.posts.push.apply(this.posts, posts);
+				this.page = this.page + 1;
+				this.busy = false;
+			}.bind(this));
+		};
+
+		InfinitePosts.prototype.loadNotificPost = function(postid, author){
+            //console.log(postid, author)
+            if(this.user_obj._id !== author){
+                Restangular.one('posts', postid).get().then(function(post) {
+                    //console.log(post)
+                    this.posts.unshift({
+                        author: post.author,
+                        content: post.content,
+                        _created: post._created,
+                        _id: post._id,
+                        _etag: post._etag,
+                         interestedPeople : post.interestedPeople
+                    });
+                    //console.log(this.posts)
+                }.bind(this));
+            }
+		}
+
+		InfinitePosts.prototype.addPost = function(content, similar_keywords, imagePath) {
+
+			this.user_obj.all('posts').post({
+				author: this.user_obj._id,
+				content: content,
+				keywords: similar_keywords,
+				post_image_path : imagePath,
+				interestedPeople: []
+			}).then(function(data) {
+
+                this.posts.unshift({
+                    author: this.user_obj._id,
+                    content: content,
+                    post_image_path : imagePath,
+                    _created: new Date(),
+                    _id:data._id,
+                    _etag: data._etag,
+                    interestedPeople : []
+
+				});
+
+				var myAlert = $alert({
+					title: 'Successfully Posted! :)',
+					placement: 'top',
+					type: 'success',
+					show: true
+				});
+				$timeout(function() {
+					myAlert.hide();
+				}, 5000);
+
+			}.bind(this));
+		};
+
+		InfinitePosts.prototype.deletePost = function(post, user) {
+            console.log('delete post details', post.author)
+			Restangular.one('posts', post._id).remove({},{
+			    'If-Match': (post._etag).toString()
+			}).then(function(data) {
+			    for(var k in this.posts){
+			        if(this.posts[k]._id == post._id){
+			            this.posts.splice(k,1)
+			            this.SpecificPost = {};
+			            console.log("successfully deleted")
+			        }
+			    }
+			}.bind(this));
+
+			for(var i in post.author.matchnotifications){
+			    if(post.author.matchnotifications[i].postid == post._id){
+    		       post.author.matchnotifications.splice(i,1)
+
+    		       user.patch({'matchnotifications':post.author.matchnotifications})
+    		       .then(function(data){
+    		            console.log('delete notification==>', data)
+    		       })
+			    }
+			}
+		};
+		return InfinitePosts;
+	})
 	.service('PostService', function($http, Restangular) {
 		this.posts = [];
         var param1 = '{"author":1}';
@@ -432,157 +584,7 @@ angular.module('weberApp')
 			log: 'trace'
 		});
 	})
-	.factory('InfinitePosts', function($http, Restangular, $alert, $timeout) {
-
-		var InfinitePosts = function(user_obj,authorIds) {
-			this.posts = [];
-			this.SpecificPost = {},
-			this.user_obj = user_obj;
-			this.busy = true;
-			this.page = 1;
-			this.loadPostIds = authorIds;
-			this.end = false;
-            this.params = '{"author": {"$in":'+this.loadPostIds+'}}';
-            console.log('author params===>', this.params)
-        }
-
-        InfinitePosts.prototype.getEarlyPosts = function(){
-                Restangular.all('posts').getList({
-                    where : this.params,
-                    max_results: 10,
-                    page: this.page,
-                    sort: '[("_created",-1)]',
-                    seed:Math.random()
-                }).then(function(posts) {
-                    //console.log('loadposts')
-                    if (posts.length < 10) {
-                        this.end = true;
-                    }
-                    this.posts.push.apply(this.posts, posts);
-                    this.page = this.page + 1;
-                    this.busy = false;
-
-                }.bind(this));
-		};
-
-        InfinitePosts.prototype.getSpecificPost = function(postid){
-            console.log('dddddddddd',postid)
-            var embedded = '{"author":1}';
-            Restangular.one('posts', postid.postid).get({embedded:embedded, seed:Math.random()})
-            .then(function(data){
-                this.posts.push({
-                    '_id':data._id,
-                    'author':data.author,
-                    'content':data.content,
-                    '_created': data._created,
-                    '_etag': data._etag
-                });
-                console.log('posts--------->', this.posts);
-                console.log('ddata--------->', data);
-            }.bind(this));
-
-        }
-
-		InfinitePosts.prototype.nextPage = function() {
-		    //console.log('nextpage')
-			if (this.busy | this.end) return;
-			this.busy = true;
-
-			Restangular.all('posts').getList({
-			    where : this.params,
-				max_results: 10,
-				page: this.page,
-				sort: '[("_created",-1)]',
-				seed:Math.random()
-			}).then(function(posts) {
-				if (posts.length === 0) {
-					this.end = true;
-				}
-				this.posts.push.apply(this.posts, posts);
-				this.page = this.page + 1;
-				this.busy = false;
-			}.bind(this));
-		};
-
-		InfinitePosts.prototype.loadNotificPost = function(postid, author){
-            //console.log(postid, author)
-            if(this.user_obj._id !== author){
-                Restangular.one('posts', postid).get().then(function(post) {
-                    //console.log(post)
-                    this.posts.unshift({
-                        author: post.author,
-                        content: post.content,
-                        _created: post._created,
-                        _id: post._id,
-                        _etag: post._etag,
-                         interestedPeople : post.interestedPeople
-                    });
-                    //console.log(this.posts)
-                }.bind(this));
-            }
-		}
-
-		InfinitePosts.prototype.addPost = function(content, similar_keywords, imagePath) {
-
-			this.user_obj.all('posts').post({
-				author: this.user_obj._id,
-				content: content,
-				keywords: similar_keywords,
-				post_image_path : imagePath,
-				interestedPeople: []
-			}).then(function(data) {
-
-                this.posts.unshift({
-                    author: this.user_obj._id,
-                    content: content,
-                    post_image_path : imagePath,
-                    _created: new Date(),
-                    _id:data._id,
-                    _etag: data._etag,
-                    interestedPeople : []
-
-				});
-
-				var myAlert = $alert({
-					title: 'Successfully Posted! :)',
-					placement: 'top',
-					type: 'success',
-					show: true
-				});
-				$timeout(function() {
-					myAlert.hide();
-				}, 5000);
-
-			}.bind(this));
-		};
-
-		InfinitePosts.prototype.deletePost = function(post, user) {
-            console.log('delete post details', post.author)
-			Restangular.one('posts', post._id).remove({},{
-			    'If-Match': (post._etag).toString()
-			}).then(function(data) {
-			    for(var k in this.posts){
-			        if(this.posts[k]._id == post._id){
-			            this.posts.splice(k,1)
-			            this.SpecificPost = {};
-			            console.log("successfully deleted")
-			        }
-			    }
-			}.bind(this));
-
-			for(var i in post.author.matchnotifications){
-			    if(post.author.matchnotifications[i].postid == post._id){
-    		       post.author.matchnotifications.splice(i,1)
-
-    		       user.patch({'matchnotifications':post.author.matchnotifications})
-    		       .then(function(data){
-    		            console.log('delete notification==>', data)
-    		       })
-			    }
-			}
-		};
-		return InfinitePosts;
-	}).factory('SearchActivity', function($http, Restangular, $alert, $timeout) {
+    .factory('SearchActivity', function($http, Restangular, $alert, $timeout) {
 
 		var SearchActivity = function(user_obj) {
 			this.searchResult = [];
