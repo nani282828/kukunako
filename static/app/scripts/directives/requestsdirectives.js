@@ -70,7 +70,7 @@ angular.module('weberApp')
                 $element.html(html);
                 $compile($element.contents())($scope);
 
-                var data = Friends.addFriend($scope.currentuser._id, $scope.profileuser._id);
+                var data = Friends.addFriend($scope.user._id, $scope.profileuser._id);
 
                 console.log('data----------->', data)
                 data.then(function(data){
@@ -107,7 +107,7 @@ angular.module('weberApp')
                 $element.html(html);
                 $compile($element.contents())($scope);
 
-                var data = Friends.cancelRequest($scope.currentuser._id, $scope.profileuser._id);
+                var data = Friends.cancelRequest($scope.user._id, $scope.profileuser._id);
                 console.log('data----------->', data)
                 data.then(function(data){
                     console.log('data123--------->', data)
@@ -140,7 +140,7 @@ angular.module('weberApp')
 
                 var navbar_request = false;
                 if(typeof cuserid === 'undefined' || typeof puserid === 'undefined'){
-                    cuserid = $scope.currentuser._id;
+                    cuserid = $scope.user._id;
                     puserid = $scope.profileuser._id;
                 }else{
                     navbar_request = true;
@@ -176,7 +176,7 @@ angular.module('weberApp')
             $scope.rejectrequest = function(cuserid, puserid){
                 var navbar_request = false;
                 if(typeof cuserid === 'undefined' || typeof puserid === 'undefined'){
-                    cuserid = $scope.currentuser._id;
+                    cuserid = $scope.user._id;
                     puserid = $scope.profileuser._id;
                 }else{
                     navbar_request = true;
@@ -225,7 +225,7 @@ angular.module('weberApp')
                 $element.html(html);
                 $compile($element.contents())($scope);
 
-                var data = Friends.unFreind($scope.currentuser._id, $scope.profileuser._id);
+                var data = Friends.unFreind($scope.user._id, $scope.profileuser._id);
                 console.log('data----------->', data)
                 data.then(function(data){
                     console.log('data123--------->', data)
