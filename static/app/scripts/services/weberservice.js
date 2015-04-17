@@ -138,8 +138,6 @@ angular.module('weberApp')
 		};
 
 		this.match = function(authorid, postid, cuserid){
-
-
 		    return Restangular.one('match').get({
 		        cuserid : cuserid,
 		        authorid : authorid,

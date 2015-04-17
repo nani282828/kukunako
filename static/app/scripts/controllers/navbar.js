@@ -138,7 +138,7 @@ angular.module('weberApp')
                     Restangular.one('people',JSON.parse(user_id)).get({seed: Math.random()})
                     .then(function(user) {
                             $scope.currentUser = user;
-                            console.log('getting notifications==>')
+                            console.log('got notifications to this user', user.name.first)
                             get_friend_notifications(user);
                     });
                 });
