@@ -15,14 +15,12 @@ import requests
 import flask
 import time
 import urllib2, random
-from views import get_search
 from weberdb import WeberDB
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room
 from flask import Flask
 from flask_mail import Mail, Message
 from bson import json_util
 import string
-import random
 from friendRequests import Friends, Notifications, MatchUnmatch
 import logging
 
