@@ -24,9 +24,10 @@ from bson import json_util
 import string
 import random
 from friendRequests import Friends, Notifications, MatchUnmatch
+import logging
 
 
-
+logging.basicConfig(filename='/var/log/weber_error.log', format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %I:%M:%S %p')
 
 class TokenAuth(TokenAuth):
 	def check_auth(self, token, allowed_roles, resource, method):
@@ -71,6 +72,7 @@ def addfriend():
     print '--------result---> return'
     print result
     if result:
+        logging.error('successfully added as a friend')
         socketio.emit('FMnotific',{'data':{'FMnotific': True}}, room = str(puserid))
     return jsonify({'data': result})
 
