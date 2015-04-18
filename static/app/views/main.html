@@ -5,7 +5,7 @@
             <div class="itemsContainer">
                 <div class="image">
                     <a href="">
-                        <img class="img-rounded" style="width:;" src="{{user.picture.large}}" />
+                        <img class="img-rounded" style="width:;" ng-src="{{user.picture.large}}" />
                     </a>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                     <img data-placement="top-right" style="width:87px"
                          data-content="{{ UserService.get(friend).location.city }}, {{UserService.get(friend).location.state}}"
                          title="{{UserService.get(friend).name.first}} {{UserService.get(friend).name.last}}"
-                         data-trigger="hover" bs-popover src="{{UserService.get(friend).picture.thumbnail}}">
+                         data-trigger="hover" bs-popover ng-src="{{UserService.get(friend).picture.thumbnail}}">
                 </a>
             </div>
 		</div>
@@ -116,7 +116,7 @@
 				<div class="panel-heading post-div" style="background-color:#fff;border-bottom:1px solid #F2F2F2;">
 
 					<a class="pull-left" style="padding: 5px;" href="#/profile/{{UserService.get(post.author)._id}}">
-						<img style="width:35px" class="media-object img-circle" src="{{UserService.get(post.author).picture.thumbnail}}" alt="">
+						<img style="width:35px" class="media-object img-circle" ng-src="{{UserService.get(post.author).picture.thumbnail}}" alt="">
 					</a>
 					<strong>
 						<a href="#/profile/{{UserService.get(post.author)._id}}" style="color:#133444">

@@ -245,7 +245,8 @@ angular.module('weberApp')
                }
             }
     };
-})
+});
+/*
 .directive('matchmeunfriend', function ($compile, CurrentUser, Restangular, $routeParams, friendsActivity,$route) {
     return {
         restrict: 'A',
@@ -303,4 +304,4 @@ angular.module('weberApp')
         }
 
     };
-});
+});*/

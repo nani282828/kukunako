@@ -20,7 +20,7 @@
                               <div class="media-left">
                                 <a class="pull-left" style="padding: 0px 7px;">
                                   <img class="media-object" style="width:40px;border-radius:50%;"
-                                       src="{{ chatuser.picture.thumbnail}}" alt="{{ chatuser.picture.thumbnail}}">
+                                       ng-src="{{ chatuser.picture.thumbnail}}" alt="{{ chatuser.picture.thumbnail}}">
                                 </a>
                               </div>
                               <div class="media-body">
@@ -61,7 +61,7 @@
                               <div class="media-left">
                                 <a class="pull-left" style="padding: 0px 7px;">
                                   <img class="media-object" style="width:40px;border-radius:50%;"
-                                       src="{{ UserService.get(conversation).picture.thumbnail }}"
+                                       ng-src="{{ UserService.get(conversation).picture.thumbnail }}"
                                        alt="{{ UserService.get(conversation).picture.thumbnail}}">
                                 </a>
                               </div>

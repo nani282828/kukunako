@@ -79,8 +79,9 @@
                                                      style="cursor:pointer;padding:10px;border-bottom:1px solid #F5F5F5;" >
                                                   <div class="media-left">
                                                     <a class="pull-left" style="padding: 0px 7px;">
+
                                                       <img class="media-object" style="width:40px;border-radius:50%;"
-                                                           src="{{ message.sender.picture.large }}"
+                                                           ng-src="{{ message.sender.picture.large }}"
                                                            alt="{{ message.sender.name.first }} {{ message.sender.name.last }}">
                                                     </a>
                                                   </div>
@@ -133,8 +134,8 @@
                                              ng-repeat="request_notific in currentUser.notifications"
                                              ng-if='request_notific.notific_type === 1'   >
                                             <div class="col-sm-2">
-                                                <a href="#/profile/{{ requestedPeople.username }}">
-                                                    <img src="{{ requestedPeople.picture.thumbnail }}"
+                                                <a href="#/profile/{{ request_notific.friendid }}">
+                                                    <img ng-src="{{  UserService.get(request_notific.friendid).picture.thumbnail }}"
                                                          style="width:50px">
                                                 </a>
                                             </div>
@@ -181,7 +182,7 @@
                                                 ng-if="request_notific.notific_type === 2 || request_notific.notific_type === 3" >
                                             <div class="col-sm-2" >
 
-                                                <img src="{{ UserService.get(request_notific.friendid).picture.large}}"
+                                                <img ng-src="{{ UserService.get(request_notific.friendid).picture.large}}"
                                                      style="width:50px">
                                                 
                                             </div>
@@ -211,7 +212,7 @@
                     </li>
                     <li>
                         <a href="" bs-dropdown="dropdown" style="padding-top: 11px; padding-bottom: 11px;" getuserdata>
-                            <img style="width:28px; border: 2px solid; margin-right: 5px;" class="img-circle" src="{{currentUser.picture.thumbnail}}" alt="">
+                            <img style="width:28px; border: 2px solid; margin-right: 5px;" class="img-circle" ng-src="{{currentUser.picture.thumbnail}}" alt="">
                             {{currentUser.username}}
                             <span class="caret"></span>
                         </a>

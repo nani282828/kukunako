@@ -40,22 +40,8 @@ angular
 		}
 	])
 
-	/*.run(['$route', '$rootScope', '$location', function ($route, $rootScope, $location) {
-        var original = $location.path;
-        $location.path = function (path, reload) {
-            if (reload === false) {
-                var lastRoute = $route.current;
-                var un = $rootScope.$on('$locationChangeSuccess', function () {
-                    $route.current = lastRoute;
-                    un();
-                });
-            }
-            return original.apply($location, [path]);
-        };
-    }])*/
-
    .config(["$socketProvider", function ($socketProvider) {
-      $socketProvider.setUrl("www.weber.ooo");
+      $socketProvider.setUrl("http://127.0.0.1:8000");
     }])
 
 	.config(['RestangularProvider',
@@ -118,20 +104,6 @@ angular
 				controller: 'WeberSearchCtrl',
 				reloadOnSearch: false
 			})
-
-			.when('/matchme/:query?', {
-				templateUrl: '/static/app/views/search.html',
-				controller: 'WeberSearchCtrl',
-				resolve: {
-					authenticated: function($location, $auth) {
-						if (!$auth.isAuthenticated()) {
-							return $location.path('/login');
-						}
-					}
-				},
-				reloadOnSearch: false
-			})
-
 			.when('/login:query?', {
 				templateUrl: '/static/app/views/login.html',
 				controller: 'LoginCtrl',

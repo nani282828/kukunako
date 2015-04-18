@@ -26,13 +26,6 @@ angular.module('weberApp')
 				//$location.path('/home');
 			}, function(error) {
 				$scope.error = error.data.error;
-				/*$alert({
-					title: 'Login Failed: ',
-					content: error.data.error,
-					placement: 'top',
-					type: 'danger',
-					show: true
-				});*/
 			});
 		};
 	});

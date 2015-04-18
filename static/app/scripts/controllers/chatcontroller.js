@@ -367,16 +367,8 @@ angular.module('weberApp')
     require : "^scroll",
     link: function(scope, element, attr, scrollCtrl) {
         scrollCtrl.setElement(element[0]);
-      /*scope.$watchCollection(attr.scroll, function(newVal) {
-        $timeout(function() {
-         console.log('time out')
-         console.log(element[0].scrollTop)
-         console.log(element[0].scrollHeight)
-         element[0].scrollTop = element[0].scrollHeight;
-         console.log(element[0].scrollTop)
-        });*/
       }
-         }
+  }
 })
 .directive('upwardsScoll', function ($timeout) {
     return {
