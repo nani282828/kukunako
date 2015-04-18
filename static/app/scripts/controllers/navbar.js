@@ -17,14 +17,15 @@ angular.module('weberApp')
         controller: "navbarcontroller"
   }
 })
-    .controller('navbarcontroller',function($scope, $auth, CurrentUser, $alert,$rootScope,$timeout,InstanceSearch,
-                                            InstanceSearchHistory, PostService, Friends,
+    .controller('navbarcontroller',function($scope, $auth, CurrentUser, $alert,$rootScope,$timeout,                                            InstanceSearchHistory, PostService, Friends,
                                             $location, $http, Restangular,ChatActivity, $window,UserService,
                                             CurrentUser1,SearchActivity, friendsActivity,$socket) {
 
     /* testing of auto complete code for search results in weber*/
         $scope.notifications_count = 0;
+
         $scope.instanceSearchHistory = {};
+
         $scope.PostService = PostService;
         $scope.UserService = UserService;
 
@@ -60,11 +61,11 @@ angular.module('weberApp')
         });
       };
 
-    $scope.instancesearch = new InstanceSearch();
+    /*$scope.instancesearch = new InstanceSearch();
 
     $scope.testingsearch = function(){
        $scope.instancesearch.getInstancePeoples(this.InstanceSearchQuery);
-    }
+    }*/
 
     $scope.UserService = UserService;
 

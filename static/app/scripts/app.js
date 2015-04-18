@@ -17,7 +17,6 @@ angular
 		'ngSanitize',
 		'ngTouch',
 		'mgcrea.ngStrap',
-		'mgcrea.ngStrap.typeahead',
 		'satellizer',
 		'restangular',
 		'angularMoment',
@@ -26,8 +25,7 @@ angular
 		'ngSocket',
 		'ngTagsInput',
 		'cgBusy',
-		'autocomplete',
-		'angularFileUpload'
+		'autocomplete'
 	])
 	.run(["$rootScope", "$location",
 		function($rootScope, $location) {
