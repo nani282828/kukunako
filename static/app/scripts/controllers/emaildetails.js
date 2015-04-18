@@ -10,9 +10,9 @@
 angular.module('weberApp')
 	.controller('EmailDetailsCtrl', function($http, Restangular, $scope, $auth, $alert, $location, $routeParams) {
 
-        var element = $routeParams.userId;
-        console.log(element)
+        //var element = $routeParams.userId;
+        //console.log(element)
 
-        $scope.user = $routeParams.userId;
-        console.log($scope.user);
+        $scope.email = $routeParams.userId;
+        //console.log($scope.user);
     });

@@ -18,23 +18,23 @@ angular.module('weberApp')
 
 	 	$scope.tags = [];
 
-        for(var i=0; i<$scope.tags.length; i++){
-            console.log($scope.tags[i])
-        }
+        //for(var i=0; i<$scope.tags.length; i++){
+            //console.log($scope.tags[i])
+        //}
 
         $scope.loadTags = function(query) {
         //return $http.get('/tags?query=' + query);
         };
 
         $scope.tagAdded = function(tag) {
-            console.log('Tag added: ', tag.text);
+            //console.log('Tag added: ', tag.text);
             //$scope.tags.push(tag)
             //alert(tag.text)
         };
 
         $scope.tagRemoved = function(tag) {
-            console.log('Tag removed: ', tag);
-            console.log($scope.tags)
+            //console.log('Tag removed: ', tag);
+            //console.log($scope.tags)
         };
 
 
@@ -52,7 +52,7 @@ angular.module('weberApp')
 				//$location.path('/search');
 				//$route.reload();
 			}, function(error) {
-                console.log(error.data.error)
+                //console.log(error.data.error)
 				$scope.loginError = error;
 				$alert({
 					title: 'Login Failed:',
@@ -72,15 +72,15 @@ angular.module('weberApp')
                 if (this.formData.gender) {
 
                 var self = this;
-                var interests = []
+                var interests = [];
                 var querystring = "";
                 for(var temp in $scope.tags){
-                    interests.push($scope.tags[temp].text.toString())
+                    interests.push($scope.tags[temp].text.toString());
                     querystring = querystring+$scope.tags[temp].text+" ";
                 }
 
                 //console.log('successdata', interestsSimilarWords)
-                var data = ['d','i','dd']
+                var data = ['d','i','dd'];
                 $scope.signupBusy = $auth.signup({
                     email: self.formData.email,
                     password: self.formData.password,
@@ -90,7 +90,7 @@ angular.module('weberApp')
                     gender: self.formData.gender,
                     interests: interests
                 }).then(function (response) {
-                    console.log('response data', response.data);
+                    //console.log('response data', response.data);
                     $location.path('/email_details/' + self.formData.email);
                 }, function (signuperror) {
                     $scope.signUpError = signuperror;
@@ -117,7 +117,7 @@ angular.module('weberApp')
         }).success(function(userId) {
             Restangular.one('people', JSON.parse(userId)).get().then(function(user) {
             $scope.openchatroom = function(id){
-                    console.log('open chat room', id)
+                    //console.log('open chat room', id)
                 $rootScope.chatactivity.addToConversations(id);
                 if(!(sessionStorage.getItem(id))){
                     var json = {};
@@ -161,7 +161,7 @@ angular.module('weberApp')
         }
         function store_search_text(searchText){
             if(!($scope.user) && searchText){
-                console.log('no user and yes search text')
+                //console.log('no user and yes search text')
                 $scope.currentuserobj = new CurrentUser();
                 $scope.currentuserobj.getUserId()
                 .then(function(){
@@ -169,8 +169,8 @@ angular.module('weberApp')
                         $scope.currentuserobj.getCUserDetails($scope.currentuserobj.userId)
                         .then(function(user){
                            $scope.user = user;
-                           $scope.searchActivity = new SearchActivity(user)
-                           var res = $scope.searchActivity.getSimilarWords(searchText)
+                           $scope.searchActivity = new SearchActivity(user);
+                           var res = $scope.searchActivity.getSimilarWords(searchText);
                            res.then(function(data){
                                 $scope.searchActivity.addSearchText(searchText, data.data);
                            });
@@ -178,10 +178,10 @@ angular.module('weberApp')
                     };
                 });
             }else if(($scope.user) && searchText){
-                console.log('yes user and search text')
-                $scope.searchActivity = new SearchActivity($scope.user)
+                //console.log('yes user and search text')
+                $scope.searchActivity = new SearchActivity($scope.user);
 
-                var res = $scope.searchActivity.getSimilarWords(searchText)
+                var res = $scope.searchActivity.getSimilarWords(searchText);
                 res.then(function(data){
                     //console.log(data.data)
                     $scope.searchActivity.addSearchText(searchText, data.data);
@@ -189,7 +189,7 @@ angular.module('weberApp')
 
                 //
             }else{
-                console.log('nothing to do')
+                //console.log('nothing to do');
             }
         }
 
@@ -231,15 +231,15 @@ angular.module('weberApp')
         }
 
            $scope.openchatroom = function(id){
-                    console.log('open chat room')
+                    //console.log('open chat room')
                     if(!(sessionStorage.getItem(id))){
                         // check room alredy open
 
                         var json = {};
                         Restangular.one('people', id).get({seed: Math.random()})
                         .then(function(data){
-                            console.log('person deatils')
-                            console.log(data)
+                            //console.log('person deatils')
+                            //console.log(data)
                             json = {
                                 name:data.name.first,
                                 id: data._id,
@@ -260,54 +260,9 @@ angular.module('weberApp')
                     }
                  }
 
-        /*$scope.perfomSearch = function(){
-
-            $scope.showNoResults = !($scope.showNoResults);
-
-            if($scope.query && ($routeParams.query == $scope.query)){
-                //$scope.matchResults = new MatchMeResults($scope.query);
-            }else if($scope.query){
-
-                if (!($auth.isAuthenticated())) {
-                    $routeParams.query = $scope.query;
-                    $location.path('search/' + $routeParams.query);
-
-                }
-                else {
-                    $routeParams.query = $scope.query;
-                    $location.search('query',  + $routeParams.query);
-
-                }
+ 	})
 
 
-
-            }
-            else{
-                //$scope.query = '';
-                //$scope.matchResults.mresults = null;
-            }
-        }*/
-
-	})
-
-
-
-    /*$scope.loadNewResullts = function(searchId){
-        var matchResults = new MatchMeResults();
-        matchResults.getMatchedNewResults(searchId).then(function() {
-                $scope.matchmeresults = matchResults;
-        });
-    };*/
-
-
-	/*.directive('myDirective', function(){
-            return function(scope, element, attrib){
-            element.bind('click', function(){
-                //scope.loadNewResullts(element[0].id);
-                //$('#notific'+element[0].id).css({"display":"none"});
-            });
-        };
-    })*/
 
     .directive('seefulltextdirective', function ($compile, CurrentUser, Restangular, $routeParams, friendsActivity) {
         return {

@@ -24,8 +24,8 @@ angular.module('weberApp')
 			Restangular.one('people',JSON.parse(user_id)).get({seed:Math.random()}).then(function(user) {
 
                 $scope.user = user;
-				var loadPostIds = angular.copy(user.friends)
-                loadPostIds.push(user._id)
+				var loadPostIds = angular.copy(user.friends);
+                loadPostIds.push(user._id);
                 loadPostIds = "[\"" + loadPostIds.join("\",\"") + "\"]";
 
                 $scope.infinitePosts = new InfinitePosts(user, loadPostIds);
@@ -54,7 +54,7 @@ angular.module('weberApp')
                         if(user.friends.indexOf(data.author) == -1){
                             //console.log('no a friend')
                         }else if(user.friends.indexOf(data.author != -1) && data.postid != 'undefined'){
-                            $scope.infinitePosts.loadNotificPost(data.postid, data.author)
+                            $scope.infinitePosts.loadNotificPost(data.postid, data.author);
                         }else{
                             //console.log('nothing to do')
                         }
@@ -80,7 +80,7 @@ angular.module('weberApp')
                             iPeople.push({'interested_person': user._id, 'match_date': new Date()});
                             //console.log('post author-->', postauthor)
                             MatchButtonService.match(postauthor, postid , user._id).then(function(data){
-                                console.log('match agree succesfully-->', data);
+                                //console.log('match agree succesfully-->', data);
                             });
 
                         }
@@ -100,7 +100,7 @@ angular.module('weberApp')
 				                if(iPeople[i].interested_person == user._id){
 				                   iPeople.splice(i,1);
 				                   MatchButtonService.unmatch(postauthor, postid, user._id).then(function(data){
-                                        console.log('unmatch disagree succesfully-->', data);
+                                        //console.log('unmatch disagree succesfully-->', data);
                                    });
 				                }
                             }
@@ -148,11 +148,9 @@ angular.module('weberApp')
                     var result = checkdeletepost(get_post_id);
 
                     if(result.status){
-                        $scope.infinitePosts.deletePost(result.post)
+                        $scope.infinitePosts.deletePost(result.post);
                     }
-                    else{
-                        //console.log(" failed in check post id with author")
-                    }
+
                 }
             }
         }

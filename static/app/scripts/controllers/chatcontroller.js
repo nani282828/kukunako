@@ -3,36 +3,16 @@ angular.module('weberApp')
                                           $http,$rootScope,SearchActivity,
                                           $document, Restangular,ChatActivity){
 
-
-
-
     //updating the chat div height using below code please put it
     $scope.get_screen_height = window.innerHeight-52;
     $scope.get_inner_div_height = (window.innerHeight-210)/2;
-
      $http.get('/api/me', {
             headers: {
                 'Content-Type': 'application/json'
             }
     }).success(function(userId) {
 
-            // popup notifications code
-            $scope.chat_message_Opened = false;
-            $scope.chat_message_Menu = function(event) {
-                $scope.chat_message_Opened = !($scope.chat_message_Opened);
-                event.stopPropagation();
-            };
-
-            window.onclick = function() {
-                if ($scope.chat_message_Opened) {
-                    $scope.chat_message_Opened = false;
-                // You should let angular know about the update that you have made, so that it can refresh the UI
-                  $scope.$apply();
-                }
-            };
-            // popup notitications code end
-
-            var date = new Date()
+            var date = new Date();
             this.userId = userId;
             Restangular.one('people', JSON.parse(userId)).get().then(function(user) {
 
@@ -61,14 +41,14 @@ angular.module('weberApp')
 
                 $socket.on('join_status', function(msg) {
                     if(msg.data){
-                        console.log('successfully joined into room');
+                        //console.log('successfully joined into room');
                     }
                 });
 
                 $socket.on('receive_messages', function(msg) {
 
-                    console.log('message received')
-                    new_message = {}
+                    //console.log('message received')
+                    new_message = {};
 
                     var details = JSON.parse(sessionStorage.getItem(msg.senderid));
 
@@ -80,8 +60,8 @@ angular.module('weberApp')
                         // no chat rooms opened push message into latest Notifications
                         if(sessionStorage.getItem(msg.senderid) == null){
                            // console.log('no chat div opened')
-                            $rootScope.chatactivity.pushLatestMessage(msg)
-                            console.log('pushed message.........')
+                            $rootScope.chatactivity.pushLatestMessage(msg);
+                            //console.log('pushed message.........')
                              $scope.$apply(function(){
                                 $rootScope.chatactivity = $rootScope.chatactivity;
                           });
@@ -108,12 +88,12 @@ angular.module('weberApp')
                          }
 
                          if(JSON.parse(sessionStorage.getItem(msg.senderid)).minimize){
-                                $scope.chatdivnotification.push({ id:msg.senderid,message: true})
+                                $scope.chatdivnotification.push({ id:msg.senderid,message: true});
                          }
 
 
                           $rootScope.chatactivity.pushMessage(msg.senderid, new_message);
-                          console.log('elese message pushed')
+                          //console.log('elese message pushed')
 
                           //$scope.$apply(function(){
                             //$rootScope.chatactivity.messages = $rootScope.chatactivity.messages;
@@ -127,7 +107,7 @@ angular.module('weberApp')
                 $scope.newMessageSeen = function(id){
                     for(k in $scope.chatdivnotification){
                         if($scope.chatdivnotification[k].id == id){
-                            $scope.chatdivnotification.splice(k,1)
+                            $scope.chatdivnotification.splice(k,1);
                         }
                     }
                 }
@@ -176,7 +156,7 @@ angular.module('weberApp')
 
                   $.each(sessionStorage, function(i, v){
                     if(sessionStorage.hasOwnProperty(i)){
-                        console.log('attrib==>', i ,'value==>',v)
+                        //console.log('attrib==>', i ,'value==>',v)
                         json.push(angular.fromJson(v));
                      }
                   });
@@ -187,7 +167,7 @@ angular.module('weberApp')
 
                     var chatrooms = getData();
 
-                    console.log('chat room opened previously', chatrooms)
+                    //console.log('chat room opened previously', chatrooms)
                     for(k in  chatrooms){
                         $rootScope.chatactivity.loadMessages(user._id, chatrooms[k].id, chatrooms[k]);
                    }
@@ -232,13 +212,13 @@ angular.module('weberApp')
                     for(k in $rootScope.chatactivity.messages){
                         if($rootScope.chatactivity.messages[k].id == id){
                             // remove get chat room
-                            $rootScope.chatactivity.messages.splice(k,1)
+                            $rootScope.chatactivity.messages.splice(k,1);
                         }
                     }
 
                     for(var i in $rootScope.chatactivity.pages){
                         if($rootScope.chatactivity.pages[i].id == id){
-                            $rootScope.chatactivity.pages.splice(k,1)
+                            $rootScope.chatactivity.pages.splice(k,1);
                         }
                     }
                     // remove from chat room
@@ -262,7 +242,7 @@ angular.module('weberApp')
                        for(k in $scope.chatdivnotification){
 
                            if($scope.chatdivnotification[k].id == id && $scope.chatdivnotification[k].message == true){
-                             return true
+                             return true;
                              }else{
                                 //console.log("not equal")
                              }
@@ -350,7 +330,7 @@ angular.module('weberApp')
         $element.bind('scroll', function(){
 
             if($element[0].scrollTop == 0){
-                $scope.chatactivity.nextPage($element[0].id)
+                $scope.chatactivity.nextPage($element[0].id);
             }
          });
 

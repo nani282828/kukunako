@@ -53,12 +53,12 @@ angular.module('weberApp')
                 }
 
                 if(this.status === null){
-                    this.status = 'addfriend'
+                    this.status = 'addfriend';
                 }
-            return (this.status)
+            return (this.status);
         }
 
-         return friendsActivity
+         return friendsActivity;
 	})
 	.service('Friends', function($http, Restangular) {
 
@@ -101,13 +101,13 @@ angular.module('weberApp')
 		        cuserid : cuserid,
 		        puserid : puserid,
 		        seed : Math.random()
-		    })
+		    });
 		}
 
 		this.makeSeen = function(cuserid){
 		    return Restangular.one('makeseen').get({
 		        cuserid : cuserid,
 		        seed : Math.random()
-		    })
+		    });
 		}
 	});

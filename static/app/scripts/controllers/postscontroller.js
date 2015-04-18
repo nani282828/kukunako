@@ -21,7 +21,7 @@ angular.module('weberApp')
 			Restangular.one('people',JSON.parse(user_id)).get({seed:Math.random()}).then(function(user) {
 
                 $scope.user = user;
-				var loadPostIds = angular.copy(user.friends)
+				var loadPostIds = angular.copy(user.friends);
 
                 if (user.friends.length !== 0) {
 
@@ -33,7 +33,7 @@ angular.module('weberApp')
 				}
 
 				$scope.infinitePosts = new InfinitePosts(user, []);
-				$scope.infinitePosts.getSpecificPost($routeParams)
+				$scope.infinitePosts.getSpecificPost($routeParams);
 
                 $scope.confirm_delete = function(){
                     $scope.infinitePosts.deletePost($scope.infinitePosts.posts[0], user);
@@ -52,9 +52,9 @@ angular.module('weberApp')
                             }
                             iPeople.push({'interested_person': user._id, 'match_date': new Date()});
                             //console.log('post author-->', postauthor)
-                            console.log('postauthor-->', postauthor)
-                            console.log('postid -->', postid)
-                            console.log('user id-->', user._id)
+                            //console.log('postauthor-->', postauthor)
+                            //console.log('postid -->', postid)
+                            //console.log('user id-->', user._id)
                             MatchButtonService.match(postauthor, postid , user._id).then(function(data){
                                 console.log('match agree succesfully-->', data);
                             });
@@ -65,7 +65,7 @@ angular.module('weberApp')
 
                 $scope.deleteFromPost = function(postauthor, postid){
 
-                    console.log('unmatch user id', user._id)
+                    //console.log('unmatch user id', user._id)
                     var posts = $scope.infinitePosts.posts;
 
                     for(var temp in posts){
@@ -76,7 +76,7 @@ angular.module('weberApp')
                                 if(iPeople[i].interested_person == user._id){
                                    iPeople.splice(i,1);
                                    MatchButtonService.unmatch(postauthor, postid, user._id).then(function(data){
-                                        console.log('unmatch disagree succesfully-->', data);
+                                        //console.log('unmatch disagree succesfully-->', data);
                                    });
                                 }
                             }

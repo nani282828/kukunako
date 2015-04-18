@@ -27,7 +27,7 @@ angular.module('weberApp')
                 var params = '{"_id": {"$in":["'+(this.currentuser.friends).join('", "') + '"'+']}}';
                 Restangular.all('people').getList({where :params})
                     .then(function(data){
-                        this.chatfriends.push.apply(this.chatfriends, data)
+                        this.chatfriends.push.apply(this.chatfriends, data);
                     }.bind(this));
             }
         };
@@ -58,8 +58,8 @@ angular.module('weberApp')
                         'If-Match': this._etag,
                         'Authorization': $auth.getToken()
                }).then(function(data){
-                   console.log('successfully inserted into conversations')
-                   console.log(data)
+                   //console.log('successfully inserted into conversations')
+                   //console.log(data)
                    this._etag = data._etag;
                }.bind(this));
             }
@@ -93,7 +93,7 @@ angular.module('weberApp')
                         temp_pages = pages[k];
                         key = k;
                         found = true;
-                        return ({'pageinfo':temp_pages, 'key':key})
+                        return ({'pageinfo':temp_pages, 'key':key});
                     }
                 }
 
@@ -104,27 +104,27 @@ angular.module('weberApp')
                         page:1,
                         end: false
                     });
-                   temp_pages = pages[pages.length-1]
-                   console.log('pushed when not found', pages)
-                   return ({'pageinfo':pages[pages.length-1], 'key': pages.length-1})
+                   temp_pages = pages[pages.length-1];
+                   //console.log('pushed when not found', pages)
+                   return ({'pageinfo':pages[pages.length-1], 'key': pages.length-1});
 
                 }
             }
             // no chat room open push first page
             else{
-                console.log('first page')
+                //console.log('first page')
                 pages.push({
                     id:recept,
                     page:1,
                     end: false
                 });
-                return ({'pageinfo': pages[0], 'key':0})
+                return ({'pageinfo': pages[0], 'key':0});
             }
         }
 
         ChatActivity.prototype.loadMessages = function(user1, user2, roomdetails){
-            console.log(user1, user2, roomdetails)
-            console.log('load messages calling----------------------')
+            //console.log(user1, user2, roomdetails)
+            //console.log('load messages calling----------------------')
             var self = this;
             this.busy = true;
             var page = null;
@@ -135,10 +135,10 @@ angular.module('weberApp')
                     '{ "$and" : [ { "sender" : "'+user2+'" }, { "receiver": "'+user1+'" }  ] }'+
                 ']}';
 
-            self.embedded_param = '{"sender":1,"receiver":1}'
-            console.log('------------open id pages-------------')
-            console.log(self.pages)
-            var data = getKey_Pages(self.pages, user2)
+            self.embedded_param = '{"sender":1,"receiver":1}';
+            //console.log('------------open id pages-------------')
+            //console.log(self.pages)
+            var data = getKey_Pages(self.pages, user2);
             page = data.pageinfo;
             key = data.key;
             // find and increment pages count of different chatrooms
@@ -154,7 +154,7 @@ angular.module('weberApp')
                 sort: '[("message_created",-1)]',
             }).then(function(response){
 
-                console.log('loading messages at service')
+                //console.log('loading messages at service')
 				if (response.length < 10) {
 					page.end = true;
 				}
@@ -163,8 +163,8 @@ angular.module('weberApp')
 				self.busy = false;
 				page.page = page.page+1;
 				self.pages[key] = page;
-				console.log('-------page----------')
-                console.log(self.pages)
+				//console.log('-------page----------')
+                //console.log(self.pages)
 
             }.bind(self));
         }
@@ -173,9 +173,9 @@ angular.module('weberApp')
         function PushMessages(allMessages, newMessages, recept){
             for(k in allMessages){
                 if(allMessages[k].id == recept){
-                   console.log('all one messages', allMessages[k].messages)
-                   allMessages[k].messages.push.apply(allMessages[k].messages, newMessages)
-                   console.log('after all one messages', allMessages[k].messages)
+                   //console.log('all one messages', allMessages[k].messages)
+                   allMessages[k].messages.push.apply(allMessages[k].messages, newMessages);
+                   //console.log('after all one messages', allMessages[k].messages)
                    return allMessages;
 
                 }
@@ -186,7 +186,7 @@ angular.module('weberApp')
         ChatActivity.prototype.nextPage = function(user2) {
 
 		    //console.log(this.messages)
-		    console.log('chat next ')
+		    //console.log('chat next ')
 
 
 			if (this.busy | this.end) return;
@@ -207,7 +207,7 @@ angular.module('weberApp')
                     '{ "$and" : [ { "sender" : "'+user2+'" }, { "receiver": "'+user1+'" }  ] }'+
                 ']}';
 
-            self.embedded_param = '{"sender":1,"receiver":1}'
+            self.embedded_param = '{"sender":1,"receiver":1}';
 
 			Restangular.all('messages').getList({
 			    where:self.main_params,
@@ -234,14 +234,14 @@ angular.module('weberApp')
             for(k in this.messages){
 
                 if(this.messages[k].id == receiverid){
-                   this.messages[k].messages.unshift(message)
+                   this.messages[k].messages.unshift(message);
                 }
             }
         }
 
         ChatActivity.prototype.pushLatestMessage = function(msg){
             this.messageNotifc.push.apply(this.messageNotifc,[msg]);
-            console.log(this.messageNotifc)
+           // console.log(this.messageNotifc)
         }
 
         ChatActivity.prototype.getMessageNotifcations= function(){
@@ -264,7 +264,7 @@ angular.module('weberApp')
 
             var params = null;
             var getResults = false;
-            console.log(getResults)
+           // console.log(getResults)
 
             params =  '{ "$and" : [ { "timestamp":{"$gte": '+this.currentuser.lastmessageseen +' }},'+
                                        '{ "receiver" : "'+this.currentuser._id+'" }] }';
@@ -275,7 +275,7 @@ angular.module('weberApp')
                 getResults = true;
 
             }else if(!(this.latestMessages.length)){
-                getResults = true
+                getResults = true;
             }else{}
 
             var sort_param = '[("message_created",-1)]';
@@ -288,7 +288,7 @@ angular.module('weberApp')
                     timestamp:this.currentuser.lastmessageseen,
                     userid:this.currentuser._id
                 }).then(function(data){
-                    console.log(data)
+                    //console.log(data)
                 });
 
                 Restangular.all('messages').getList({
@@ -300,26 +300,26 @@ angular.module('weberApp')
                 }).then(function(data){
 
                     // getting distinct message notifications
-                    var data2 = []
-                    data2.push.apply(data2,data)
-                    var distinctMessages = []
+                    var data2 = [];
+                    data2.push.apply(data2,data);
+                    var distinctMessages = [];
 
                     for(temp in data2){
 
                         // update seen true messages
-                        this.updateseenmessages.push.apply(this.updateseenmessages, data)
+                        this.updateseenmessages.push.apply(this.updateseenmessages, data);
                         // distinct arry empty then push
                         if(distinctMessages.length == 0){
-                            distinctMessages.push(data2[temp])
+                            distinctMessages.push(data2[temp]);
                         }
                         // else check in array then push
                         else{
                             for(var k in distinctMessages){
                                 if(data2[temp].receiver._id == distinctMessages[k].receiver._id){
-                                    console.log('alredy pushed')
+                                    //console.log('alredy pushed')
                                 }
                                 else{
-                                    distinctMessages.push(data2[temp])
+                                    distinctMessages.push(data2[temp]);
                                 }
                             }
 
@@ -332,25 +332,25 @@ angular.module('weberApp')
 
                     if(self.messageNotifc.length){
                         self.makeMessagesSeen(self.latestMessages);
-                        self.messageNotifc = []
+                        self.messageNotifc = [];
                     }
 
-                }.bind(self))
+                }.bind(self));
             }
 
         }
 
         ChatActivity.prototype.makeMessagesSeen = function(latestMessages){
-            var messageids = []
+            var messageids = [];
             for(x in this.updateseenmessages){
-                messageids.push(this.updateseenmessages[x]._id)
+                messageids.push(this.updateseenmessages[x]._id);
             }
             if(messageids.length){
                 Restangular.all('updateMessageSeen').post({
                     messageids: messageids
                 }).then(function(data){
-                    console.log('--------updated messages seen status----------')
-                    console.log(data)
+                    //console.log('--------updated messages seen status----------')
+                    //console.log(data)
                     this.updateseenmessages = [];
                 });
 
@@ -376,9 +376,5 @@ angular.module('weberApp')
                 }
             }
         }
-
-
-
-
     return ChatActivity;
     });

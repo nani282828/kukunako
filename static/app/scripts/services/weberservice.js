@@ -37,17 +37,17 @@ angular.module('weberApp')
 
                 $http(req).success(function (peoples) {
                     self.InstancesearchResult = peoples;
-                    console.log(self.InstancesearchResult)
+                    //console.log(self.InstancesearchResult)
                 }.bind(self));
             }else{
-                self.InstancesearchResult = []
+                self.InstancesearchResult = [];
             }
 
         };
 
         InstanceSearch.prototype.nextPage = function() {
-            console.log('next page')
-            console.log(this.busy, this.end)
+            //console.log('next page')
+            //console.log(this.busy, this.end)
             if (this.busy | this.end) return;
 			this.busy = true;
 			var self = this;
@@ -71,7 +71,7 @@ angular.module('weberApp')
 				self.InstancesearchResult.push.apply(self.InstancesearchResult, peoples);
 				self.page = self.page + 1;
 				self.busy = false;
-				console.log(self.InstancesearchResult)
+				//console.log(self.InstancesearchResult)
             }.bind(self));
 
 		};
@@ -274,7 +274,7 @@ angular.module('weberApp')
 			}).then(function(data) {
 			    for(var k in this.posts){
 			        if(this.posts[k]._id == post._id){
-			            this.posts.splice(k,1)
+			            this.posts.splice(k,1);
 			            this.SpecificPost = {};
 			            //console.log("successfully deleted")
 			        }
@@ -283,7 +283,7 @@ angular.module('weberApp')
 
 			for(var i in post.author.matchnotifications){
 			    if(post.author.matchnotifications[i].postid == post._id){
-    		       post.author.matchnotifications.splice(i,1)
+    		       post.author.matchnotifications.splice(i,1);
 
     		       user.patch({'matchnotifications':post.author.matchnotifications})
     		       .then(function(data){
@@ -480,14 +480,14 @@ angular.module('weberApp')
         // remove duplicate results
         function removeDuplicateResults(inputarry){
 
-            var temparray = []
-            var authorIds = []
+            var temparray = [];
+            var authorIds = [];
 
             for(var i in inputarry){
                 //console.log(i)
                 if(authorIds.indexOf(inputarry[i].author._id) === -1){
-                    authorIds.push(inputarry[i].author._id)
-                    temparray.push(inputarry[i])
+                    authorIds.push(inputarry[i].author._id);
+                    temparray.push(inputarry[i]);
                 }
             }
 
@@ -713,12 +713,11 @@ angular.module('weberApp')
                                 }
                             }
 					    }
-					    tempresutls.push(author)
+					    tempresutls.push(author);
 					}
 
 					this.mresults = tempresutls;
 			}.bind(this));
 		}
-
 		return MatchMeResults;
 	});

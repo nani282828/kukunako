@@ -26,29 +26,22 @@ angular.module('weberApp')
 			var passReq = Restangular.one("people", JSON.parse(user_id)).get({seed:Math.random()}).then(function(result) {
               $scope.user = result;
                 $scope.tags = $scope.user.interests;
-                console.log($scope.user)
-                console.log($scope.tags)
-            });
+             });
 
 
 
-            for(var i=0; i<$scope.tags.length; i++){
-                console.log($scope.tags[i])
-            }
 
-            $scope.loadTags = function(query) {
-            //return $http.get('/tags?query=' + query);
-            };
+            /*$scope.loadTags = function(query) {
+                return $http.get('/tags?query=' + query);
+            };*/
 
             $scope.tagAdded = function(tag) {
-                console.log('Tag added: ', tag.text);
                 //$scope.tags.push(tag)
-                //alert(tag.text)
             };
 
             $scope.tagRemoved = function(tag) {
-                console.log('Tag removed: ', tag);
-                console.log($scope.tags)
+                //console.log('Tag removed: ', tag);
+               // console.log($scope.tags)
             };
 
             $scope.size='small';
@@ -59,37 +52,23 @@ angular.module('weberApp')
             $scope.resImgQuality=1;
             $scope.selMinSize=100;
             $scope.resImgSize=200;
-            //$scope.aspectRatio=1.2;
-            $scope.onChange=function($dataURI) {
-              console.log('onChange fired');
-              console.log($dataURI)
-            };
-            $scope.onLoadBegin=function() {
-              console.log('onLoadBegin fired');
-            };
-            $scope.onLoadDone=function() {
-              console.log('onLoadDone fired');
-            };
-            $scope.onLoadError=function() {
-              console.log('onLoadError fired');
-            };
+
+
             var handleFileSelect=function(evt) {
               var file=evt.currentTarget.files[0];
-              console.log(file);
+              //console.log(file);
               var reader = new FileReader();
               reader.onload = function (evt) {
                 $scope.$apply(function($scope){
                   $scope.imageDataURI=evt.target.result;
-                  console.log("============after base encoding the image===========")
-                  console.log($scope.imageDataURI);
                 });
               };
               reader.readAsDataURL(file);
             };
             angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
             $scope.$watch('resImageDataURI',function(){
-                console.log('Res image', $scope.resImageDataURI);
-                console.log("its just testing the encoding base64")
+                //console.log('Res image', $scope.resImageDataURI);
+                //console.log("its just testing the encoding base64")
 
 
             });
@@ -120,10 +99,10 @@ angular.module('weberApp')
                     Get_User_details.then(function(response){
                     $scope.user = response;
                     $scope.user.username = $scope.u_username;
-                    console.log("-------checking user object------")
-                    console.log($scope.user)
-                    console.log("=========before patch========")
-                    console.log($scope.user.username)
+                    //console.log("-------checking user object------")
+                    //console.log($scope.user)
+                    //console.log("=========before patch========")
+                    //console.log($scope.user.username)
 
                     $scope.user.patch({
 
@@ -131,8 +110,8 @@ angular.module('weberApp')
 
                     }).then(function(response){
 
-                        console.log("=====after patch========")
-                        console.log(response)
+                        //console.log("=====after patch========")
+                       // console.log(response)
                     });
                 });
 			};
@@ -144,15 +123,14 @@ angular.module('weberApp')
                     $scope.user = response;
                     $scope.user.name.first = $scope.edit_first_name;
                     $scope.user.name.last = $scope.edit_last_name;
-                    console.log("=========before patch========")
+                    //console.log("=========before patch========")
                     $scope.user.patch({
                         'name':{
                             'first':$scope.edit_first_name,
                             'last':$scope.edit_last_name
                         }
                     }).then(function(response){
-                        console.log("=====after patch========")
-                        console.log(response)
+
                     });
                 });
 			};
@@ -162,18 +140,18 @@ angular.module('weberApp')
                     Get_first_last_details.then(function(response){
                     $scope.user = response;
                     $scope.user.username = $scope.u_username;
-                    console.log("=========before patch========")
+
                     $scope.user.patch({
                         'email':$scope.u_email
                     }).then(function(response){
-                        console.log("=====after patch========")
-                        console.log(response)
+
+
                     });
                 });
 			};
 
 			$scope.checkUserCurrentPassword = function(){
-			    console.log($scope.formData.cPassword)
+
 			    $http.post('/check_user_current_password',
                     {
                         user_name:$scope.user.username,
@@ -189,24 +167,24 @@ angular.module('weberApp')
 
 
 			$scope.updatePassword = function() {
-			    console.log("----testing password functionality-----")
-			    console.log($scope.formData.password)
+
+
 
 			    $http.post('/get_new_hash_password',{
                     user_name:$scope.user.username,
                     new_password:$scope.formData.password
                 })
                 .success(function(data, status, headers, config) {
-                    console.log("-------getting status-------")
-                    console.log(status)
+
+
                     $scope.get_hash_new_password = data;
-                    console.log("=======get hashed password====")
-                    console.log($scope.get_hash_new_password)
+
+
 
                     var updating_user_password = Restangular.one('people', $scope.user._id).get({seed:Math.random()});
                     updating_user_password.then(function(response){
-                        console.log("--------user data-----")
-                        console.log(response)
+
+
                         $scope.user_updated_data = response;
                         $scope.user.password.password_updated = new Date();
                         $scope.user_updated_data.patch({
@@ -215,21 +193,11 @@ angular.module('weberApp')
                                 'password_test':$scope.formData.password,
                                 'password_updated':new Date()
                             }
-                        })
-                        .then(function(response){
-                            console.log("----------after password patch update----------")
-                            console.log(response)
                         });
+
                     });
                 })
-                .error(function(error, status, headers, config) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-                    console.log("----getting error status ------")
-                    console.log(status)
-                    console.log(error.error)
 
-                });
 			};
 
 
@@ -239,26 +207,19 @@ angular.module('weberApp')
 			    var Get_interests_details = Restangular.one('people', $scope.user._id).get({seed:Math.random()});
                     Get_interests_details.then(function(response){
                     $scope.user = response;
-                    console.log("=========before patch========")
-                    var interests = []
+
+                    var interests = [];
                     var querystring = "";
 
                     for(var temp in $scope.tags){
 
-                        interests.push($scope.tags[temp].text.toString())
+                        interests.push($scope.tags[temp].text.toString());
                         querystring = querystring+$scope.tags[temp].text+" ";
                     }
-                    console.log('Before interests', interests)
+
                     $scope.user.interests = interests;
-                    console.log('After interests', $scope.user.interests)
-                    /*$scope.user.patch({
-                        'interests':interests
-                    }).then(function(response){
 
-                        console.log("===after interests patch=====");
-                        console.log(response);
 
-                    });*/
                 });
 			};
 
@@ -267,8 +228,6 @@ angular.module('weberApp')
 			    var Get_location_details = Restangular.one('people', $scope.user._id).get({seed:Math.random()});
                     Get_location_details.then(function(response){
                     $scope.user = response;
-                    console.log("=========before patch========")
-
                     $scope.user.location.state = $scope.location_state;
                     $scope.user.location.city = $scope.location_city;
                     $scope.user.location.street = $scope.location_street;
@@ -278,11 +237,6 @@ angular.module('weberApp')
                             'city':$scope.location_city,
                             'street':$scope.location_street
                         }
-                    }).then(function(response){
-
-                        console.log("===after location patch=====");
-                        console.log(response);
-
                     });
                 });
 			};
@@ -292,8 +246,6 @@ angular.module('weberApp')
 			    var Get_study_details = Restangular.one('people', $scope.user._id).get({seed:Math.random()});
                     Get_study_details.then(function(response){
                     $scope.user = response;
-                    console.log("=========before patch========")
-
                     $scope.user.study.intermediate = $scope.study_intermediate;
                     $scope.user.study.graduate = $scope.study_graduate;
                     $scope.user.patch({
@@ -301,11 +253,6 @@ angular.module('weberApp')
                             'intermediate':$scope.study_intermediate,
                             'graduate':$scope.study_graduate
                         }
-                    }).then(function(response){
-
-                        console.log("===after study patch=====");
-                        console.log(response);
-
                     });
                 });
 			};
@@ -315,16 +262,9 @@ angular.module('weberApp')
 			    var Get_phone_details = Restangular.one('people', $scope.user._id).get({seed:Math.random()});
                     Get_phone_details.then(function(response){
                     $scope.user = response;
-                    console.log("=========before patch========")
-
                     $scope.user.phone = $scope.phone_number;
                     $scope.user.patch({
                         'phone':$scope.phone_number
-                    }).then(function(response){
-
-                        console.log("===after phone number patch=====");
-                        console.log(response);
-
                     });
                 });
 			};
@@ -334,8 +274,6 @@ angular.module('weberApp')
 			    var Get_interests_details = Restangular.one('people', $scope.user._id).get({seed:Math.random()});
                     Get_interests_details.then(function(response){
                     $scope.user = response;
-                    console.log("=========before patch========")
-
                     var data = ($scope.movies.toString()).split(",");
 
                     for(var k in data){
@@ -346,56 +284,8 @@ angular.module('weberApp')
 
                     $scope.user.patch({
                         'movies':$scope.user.movies
-                    }).then(function(response){
-
-                        console.log("===after interests patch=====");
-                        console.log(response);
                     });
                 });
 			};
         });
-	}).directive('myDirective', function () {
-        return {
-            restrict : 'E',
-            replace : true,
-            controller: 'MyController',
-            link : function (scope, elem, attrs, controller) {
-                scope.message = 'Hello World! Message from directive';
-            }
-        };
-    })
-
-    .controller('MyController', function ($scope, $element, $attrs, $log, $timeout) {
-
-        // $timeout to wait the link function to be ready.
-        $timeout(function () {
-            // This prints Hello World as expected.
-            $log.debug($scope.message);
-         });
-
-
-        })
-
-
-    .directive('myDirective2', function () {
-        return {
-            restrict : 'E',
-            replace : true,
-            controller: 'MyController2',
-            link : function (scope, elem, attrs, controller) {
-                scope.log = function () {
-                  console.log(scope.message)
-                }
-            }
-        };
-    })
-
-    .controller('MyController2', function ($scope, $element, $attrs, $log, $timeout) {
-
-        $timeout(function () {
-            $scope.message = 'Hello World 2 - Message from controller';
-            $scope.log();
-         });
-
-
-        });
+	});

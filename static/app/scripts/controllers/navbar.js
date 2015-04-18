@@ -35,8 +35,8 @@ angular.module('weberApp')
                     data.then(function(data){
                     //console.log('if part')
                     $scope.movies = data.data;
-                    InstanceSearchHistory.pushToHistory(data.data, typedthings)
-                    })
+                    InstanceSearchHistory.pushToHistory(data.data, typedthings);
+                    });
                 }else{
                     $scope.movies = data;
                 }
@@ -45,7 +45,7 @@ angular.module('weberApp')
 
         $scope.doSomethingElse = function(suggestion){
             //console.log("Suggestion selected: ", suggestion._id);
-            $location.path('profile/'+suggestion._id.$oid)
+            $location.path('profile/'+suggestion._id.$oid);
         }
 
 
@@ -62,10 +62,10 @@ angular.module('weberApp')
     $scope.instancesearch = new InstanceSearch();
 
     $scope.testingsearch = function(){
-       $scope.instancesearch.getInstancePeoples(this.InstanceSearchQuery)
+       $scope.instancesearch.getInstancePeoples(this.InstanceSearchQuery);
     }
 
-    $scope.UserService = UserService
+    $scope.UserService = UserService;
 
     $scope.dropdown = [{
         "text": "Settings",
@@ -96,16 +96,16 @@ angular.module('weberApp')
 
         Restangular.one('people',JSON.parse(user_id)).get({seed: Math.random()}).then(function(user) {
 
-            $scope.testing = 'ddddddddddd';
+            //$scope.testing = 'ddddddddddd';
             $scope.currentUser = user;
 
             $socket.emit('connecting', {id:user._id});
 
             $socket.on('joiningstatus', function(data) {
-                console.log(data)
+                //console.log(data)
             });
 
-        $scope.searchActivity = new SearchActivity($scope.currentUser)
+        $scope.searchActivity = new SearchActivity($scope.currentUser);
 
         $scope.loadSearchHistory = function(){
             $scope.searchActivity.getMysearches();
@@ -118,7 +118,7 @@ angular.module('weberApp')
                 //console.log(user.notifications[k].seen,'-->', user._id)
                 if(user.notifications[k].seen == false){
                     $scope.notifications_count += 1;
-                    console.log('count of notfication', $scope.notifications_count)
+                    //console.log('count of notfication', $scope.notifications_count)
                 }
                 //return true;
             }
@@ -138,7 +138,7 @@ angular.module('weberApp')
                     Restangular.one('people',JSON.parse(user_id)).get({seed: Math.random()})
                     .then(function(user) {
                             $scope.currentUser = user;
-                            console.log('got notifications to this user', user.name.first)
+                            //console.log('got notifications to this user', user.name.first)
                             get_friend_notifications(user);
                     });
                 });

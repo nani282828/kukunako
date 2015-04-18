@@ -26,8 +26,8 @@ angular.module('weberApp')
 		                $scope.profileuser = profileuser;
                         $scope.user = user;
 
-                        var loadPostIds = []
-                        loadPostIds.push(profileuser._id)
+                        var loadPostIds = [];
+                        loadPostIds.push(profileuser._id);
                         loadPostIds = "[\"" + loadPostIds.join("\",\"") + "\"]";
 
                         $scope.infinitePosts = new InfinitePosts(user_obj, loadPostIds);
@@ -45,7 +45,7 @@ angular.module('weberApp')
 			            }
 
                         if($scope.user._id !== $scope.profileuser._id){
-                            var friendsactivity = new friendsActivity($scope.user, $scope.profileuser)
+                            var friendsactivity = new friendsActivity($scope.user, $scope.profileuser);
                             //console.log(friendsactivity)
                             $scope.check_relation = function(){
                                 $scope.relation = friendsactivity.getRelation();

@@ -25,7 +25,7 @@ angular.module('weberApp')
 				this.userId = userId;
 				var promise = Restangular.one('people',JSON.parse(userId)).get().then(function(user) {
 					this.userobj = user;
-					console.log(this.userobj);
+					//console.log(this.userobj);
 				}.bind(this));
 				return promise;
 			}.bind(this));
@@ -61,6 +61,6 @@ angular.module('weberApp')
 			return $http.post(uploadUrl, fd, {
 				transformRequest: angular.identity,
 				headers: {'Content-Type': undefined}
-			})
+			});
 		}
 	}]);/*====== end of file upload services ======*/

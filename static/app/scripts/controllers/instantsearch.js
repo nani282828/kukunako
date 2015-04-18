@@ -17,9 +17,9 @@ angular.module('weberApp')
             $scope.instancesearch = new InstanceSearch();
             $scope.InstanceSearchPeoples = function() {
 
-                $scope.instancesearch.getInstancePeoples($scope.InstanceSearchQuery)
-                console.log($scope.instancesearch)
-                $scope.testing = 'dddddddddddcccccccccccddd'
+                $scope.instancesearch.getInstancePeoples($scope.InstanceSearchQuery);
+                //console.log($scope.instancesearch)
+                //$scope.testing = 'dddddddddddcccccccccccddd'
 
             }
         }

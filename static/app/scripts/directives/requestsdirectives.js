@@ -8,14 +8,10 @@ angular.module('weberApp')
         controller:function($scope, $element, $attrs){
 
             $scope.chatroomdiv = function(id){
-                if($element[0].offsetHeight == 364){+
+                if($element[0].offsetHeight == 364){
+                    $element.css('height', '40px');
 
-
-                    //console.log('clicked element==>',$element)
-
-                    $element.css('height', '40px')
-
-                    var data = JSON.parse(sessionStorage.getItem(id))
+                    var data = JSON.parse(sessionStorage.getItem(id));
                     json = {
                                       name:data.name,
                                       id: data.id,
@@ -29,10 +25,10 @@ angular.module('weberApp')
 
                 }else{
 
-                    $element.css('height', '364px')
+                    $element.css('height', '364px');
                     $scope.chatdivnotification = [];
 
-                    var data = JSON.parse(sessionStorage.getItem(id))
+                    var data = JSON.parse(sessionStorage.getItem(id));
                     json = {
                                       name:data.name,
                                       id: data.id,
@@ -157,7 +153,7 @@ angular.module('weberApp')
                     //console.log('data123--------->', data)
                     if(data.data){
                          if(navbar_request){
-                            html = '<b> friends </b>'
+                            html = '<b> friends </b>';
                          }else{
                             html ='<unaddfriend><button ng-click="friendunfriend()" class="btn btn-primary">unfriend</button></unaddfriend>';
                          }
@@ -193,7 +189,7 @@ angular.module('weberApp')
                    // console.log('data123--------->', data)
                     if(data.data){
                         if(navbar_request){
-                            html = '<b>rejected</b>'
+                            html = '<b>rejected</b>';
                         }else{
                             html ='<cancelrequest><button ng-click="frndaddrequest()" class="btn btn-primary">AddFriend</button></cancelrequest>';
                         }
@@ -246,62 +242,3 @@ angular.module('weberApp')
             }
     };
 });
-/*
-.directive('matchmeunfriend', function ($compile, CurrentUser, Restangular, $routeParams, friendsActivity,$route) {
-    return {
-        restrict: 'A',
-        replace: true,
-        link: function ($scope, element, attrs) {},
-        controller:function($scope, $element, $attrs, $transclude){
-        $scope.matchmeunfriend = function(id) {
-
-               html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
-               $element.html(html);
-               $compile($element.contents())($scope);
-
-               var currentuserobj = new CurrentUser();
-               currentuserobj.getUserId().then(function(){
-                   currentuserobj.getCUserDetails(currentuserobj.userId).then(function(user){
-                        var user_obj = Restangular.one('people',id);
-		                user_obj.get({ seed : Math.random() }).then(function(profileuser) {
-
-                            $scope.friendsactivity = new friendsActivity(user, profileuser)
-                            var f_status = $scope.friendsactivity.checkInFriends();
-
-                            if(f_status.pf_status && f_status.cf_status){
-
-                                var data = $scope.friendsactivity.unfriend();
-                                data.then(function(data){
-                                    html ='<cancelrequest><button ng-click="AddFriend()" class="btn btn-primary" ng-click="frndcancelrequest("'+id+'")">AddFriend</button></cancelrequest>';
-                                    e =$compile(html)($scope);
-                                    $element.replaceWith(e);
-                                });
-
-                            }else if(f_status.pf_status){
-                                var data = $scope.friendsactivity.remove_pfriends();
-                                data.then(function(data){
-                                    html ='<cancelrequest><button ng-click="AddFriend()" class="btn btn-primary" ng-click="frndcancelrequest("'+id+'")">AddFriend</button></cancelrequest>';
-                                    e =$compile(html)($scope);
-                                    $element.replaceWith(e);
-                                });
-
-                            }else if(f_status.cf_status){
-                                var data = $scope.friendsactivity.remove_cfriends();
-                                data.then(function(data){
-                                    html ='<cancelrequest><button ng-click="AddFriend()" class="btn btn-primary" ng-click="frndcancelrequest("'+id+'")">AddFriend</button></cancelrequest>';
-                                    e =$compile(html)($scope);
-                                    $element.replaceWith(e);
-                                });
-
-                            }else{
-                                console.log('nothing to done')
-                            }
-
-		                });
-                   });
-               });
-            }
-        }
-
-    };
-});*/

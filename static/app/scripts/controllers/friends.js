@@ -24,8 +24,8 @@ angular.module('weberApp')
 				    var params = '{"_id": {"$in":["'+($scope.user.friends).join('", "') + '"'+']}}';
 
 					Restangular.all('people').getList({where :params}).then(function(friend) {
-					    console.log('===friends====')
-					    console.log(friend)
+					   // console.log('===friends====')
+					   // console.log(friend)
 						$scope.friends = friend;
 					});
 				}
