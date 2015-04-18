@@ -21,7 +21,6 @@ angular
 		'satellizer',
 		'restangular',
 		'angularMoment',
-		'elasticsearch',
 		'ngImgCrop',
 		'infinite-scroll',
 		'ngSocket',
