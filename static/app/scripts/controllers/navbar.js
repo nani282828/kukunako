@@ -27,6 +27,7 @@ angular.module('weberApp')
         $scope.instanceSearchHistory = {};
         $scope.PostService = PostService;
         $scope.UserService = UserService;
+
         $scope.doSomething = function(typedthings){
             if(typedthings){
                 $scope.movies = [];
