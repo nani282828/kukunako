@@ -63,18 +63,21 @@ def create_token(user):
 # adding friend request
 @app.route('/api/addfriend', methods=['POST', 'GET'])
 def addfriend():
-    print '---------data-----------'
-    cuserid = request.args.get('cuserid')
-    puserid = request.args.get('puserid')
+    try:
+        print '---------data-----------'
+        cuserid = request.args.get('cuserid')
+        puserid = request.args.get('puserid')
 
-    friends = Friends(cuserid, puserid, app)
-    result = friends.addFriend()
-    print '--------result---> return'
-    print result
-    if result:
-        logging.error('successfully added as a friend')
-        socketio.emit('FMnotific',{'data':{'FMnotific': True}}, room = str(puserid))
-    return jsonify({'data': result})
+        friends = Friends(cuserid, puserid, app)
+        result = friends.addFriend()
+        print '--------result---> return'
+        print result
+        if result:
+
+            socketio.emit('FMnotific',{'data':{'FMnotific': True}}, room = str(puserid))
+        return jsonify({'data': result})
+    except Exception as e:
+        logging.error(e)
 
 # cancel request
 @app.route('/api/cancelfriend', methods=['POST', 'GET'])
