@@ -14,6 +14,9 @@ angular.module('weberApp')
 
             var date = new Date();
             this.userId = userId;
+
+            // file has been changed
+            
             Restangular.one('people', JSON.parse(userId)).get().then(function(user) {
 
                 $scope.chatdivnotification = [];
