@@ -18,7 +18,8 @@ angular.module('weberApp')
   }
 })
     .controller('navbarcontroller',function($scope, $auth, CurrentUser, $alert,$rootScope,$timeout,                                            InstanceSearchHistory, PostService, Friends,
-                                            $location, $http, Restangular,ChatActivity, $window,UserService,
+                                            $location, $http, Restangular,ChatActivity,
+                                            $window,UserService,
                                             CurrentUser1,SearchActivity, friendsActivity,$socket) {
 
     /* testing of auto complete code for search results in weber*/

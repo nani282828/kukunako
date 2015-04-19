@@ -23,15 +23,12 @@ angular.module('weberApp')
                 'Authorization':$auth.getToken()
 			}
 		}).success(function(user_id) {
-			var passReq = Restangular.one("people", JSON.parse(user_id)).get({seed:Math.random()}).then(function(result) {
+			var passReq = Restangular.one("people", JSON.parse(user_id)).get({seed:Math.random()})
+			.then(function(result) {
               $scope.user = result;
-                $scope.tags = $scope.user.interests;
+              $scope.tags = $scope.user.interests;
              });
-
-
-
-
-            /*$scope.loadTags = function(query) {
+          /*$scope.loadTags = function(query) {
                 return $http.get('/tags?query=' + query);
             };*/
 

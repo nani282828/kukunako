@@ -15,7 +15,6 @@ angular.module('weberApp')
 		$scope.UserService = UserService;
 		$scope.MatchButtonService = MatchButtonService;
 		$scope.sortIListService = sortIListService;
-
         var currentuserobj = new CurrentUser();
          currentuserobj.getUserId()
             .then(function(){
