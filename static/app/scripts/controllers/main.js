@@ -9,7 +9,7 @@
 angular.module('weberApp')
 	.controller('MainCtrl', function($scope, $auth, $rootScope, $socket, Restangular, InfinitePosts,
 	                                $alert, $http, CurrentUser,sortIListService,
-	                                UserService, fileUpload, MatchButtonService, $upload) {
+	                                UserService, fileUpload, MatchButtonService) {
 
 		$scope.UserService = UserService;
         $scope.MatchButtonService = MatchButtonService;
