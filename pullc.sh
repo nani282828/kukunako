@@ -16,11 +16,9 @@ java -jar /usr/share/yui-compressor/yui-compressor.jar --type js -v
 static/app/scripts/directives/${file##*/};  -o static/app/scripts/directives/${file##*/};
 done
 
-for file in static/app/scripts/services/*; do
 echo '-------compressing------------'
-echo ${file##*/};
 java -jar /usr/share/yui-compressor/yui-compressor.jar --type js -v
-static/app/scripts/services/${file##*/};  -o static/app/scripts/services/${file##*/};
+static/app/scripts/services/weberservice.js  -o static/app/scripts/services/weberservice.min.js;
 done
 
 
