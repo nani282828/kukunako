@@ -1,4 +1,6 @@
 var dbName = 'test'
+
+
 db.getSiblingDB(dbName).getCollectionNames().forEach(function(collName) {
     // Drop all collections except system ones (indexes/profile)
     if (!collName.startsWith("system.")) {
