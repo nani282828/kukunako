@@ -1,5 +1,4 @@
 angular.module('weberApp')
-
     .factory('ChatActivity', function($http, Restangular,$auth) {
 
         var ChatActivity = function(currentuser){
@@ -378,119 +377,9 @@ angular.module('weberApp')
         }
     return ChatActivity;
     })
-    .factory('friendsActivity', function($http, Restangular, $alert, $timeout,CurrentUser) {
 
-        var friendsActivity = function(currentuser, profileuser){
-            //console.log(profileuser)
-            this.currentuser = currentuser;
-            this.profileuser = profileuser;
-            this.status = null;
-            this.status_method = null;
-
-            if (typeof this.profileuser.notifications === "undefined"){
-                profileuser.patch({
-                    "notifications": []
-                })
-            }
-
-            if(typeof this.currentuser.notifications === "undefined"){
-                currentuser.patch({
-                    "notifications": []
-                })
-            }
-        }
-
-
-
-        friendsActivity.prototype.getRelation = function(){
-
-                if(this.status === null){
-                    if(this.profileuser.friends.indexOf(this.currentuser._id) > -1){
-                        this.status = 'unfriend';
-                    }
-                }
-
-                if(this.status === null){
-                    var k = '';
-                    for (k in this.profileuser.notifications){
-                        if((this.profileuser.notifications[k].friendid == (this.currentuser._id)) &&
-                          (this.profileuser.notifications[k].notific_type == 1)){
-                            this.status = 'cancelrequest';
-                        }
-                    }
-                }
-
-                if(this.status === null){
-                    var k = ''
-                    for (k in this.currentuser.notifications){
-                        if((this.currentuser.notifications[k].friendid == (this.profileuser._id)) &&
-                           (this.currentuser.notifications[k].notific_type == 1))
-                        {
-                            this.status = 'reject_accept';
-                        }
-                    }
-                }
-
-                if(this.status === null){
-                    this.status = 'addfriend';
-                }
-            return (this.status);
-        }
-
-         return friendsActivity;
-	})
-	.service('Friends', function($http, Restangular) {
-
-		this.addFriend = function(cuserid, puserid) {
-		    return Restangular.one('addfriend').get({
-		        cuserid : cuserid,
-		        puserid : puserid,
-		        seed:Math.random()
-		    });
-		}
-
-		this.cancelRequest = function(cuserid, puserid){
-		    return Restangular.one('cancelfriend').get({
-		        cuserid : cuserid,
-		        puserid : puserid,
-		        seed:Math.random()
-		    });
-
-		}
-
-		this.acceptRequest = function(cuserid, puserid){
-		    return Restangular.one('acceptfriend').get({
-		        cuserid : cuserid,
-		        puserid : puserid,
-		        seed:Math.random()
-		    });
-
-		}
-
-		this.rejectRequest = function(cuserid, puserid){
-		    return Restangular.one('rejectfriend').get({
-		        cuserid : cuserid,
-		        puserid : puserid,
-		        seed : Math.random()
-		    });
-		}
-
-		this.unFreind = function(cuserid, puserid){
-		    return Restangular.one('unfriend').get({
-		        cuserid : cuserid,
-		        puserid : puserid,
-		        seed : Math.random()
-		    });
-		}
-
-		this.makeSeen = function(cuserid){
-		    return Restangular.one('makeseen').get({
-		        cuserid : cuserid,
-		        seed : Math.random()
-		    });
-		}
-	})
-	.factory('SettingsService', function($http, Restangular, $alert, $timeout,$auth, fileUpload) {
+    //--------------------------------------------------------- setting services------------------------------------->
+    .factory('SettingsService', function($http, Restangular, $alert, $timeout,$auth, fileUpload) {
 
 		var SettingsService = function(fieldvalue, fieldname) {
 
@@ -546,7 +435,10 @@ angular.module('weberApp')
 			});
 		}
 	}])
-	.factory('InstanceSearch', function($http, Restangular, $alert, $timeout) {
+
+	//-------------------------------weber services ---------------------------------------
+
+		.factory('InstanceSearch', function($http, Restangular, $alert, $timeout) {
 
 		var InstanceSearch = function() {
 
@@ -1259,4 +1151,365 @@ angular.module('weberApp')
 			}.bind(this));
 		}
 		return MatchMeResults;
-	});
+	})
+
+	//--------------------------------friend requests service-----------------------------------
+
+	.factory('friendsActivity', function($http, Restangular, $alert, $timeout,CurrentUser) {
+
+        var friendsActivity = function(currentuser, profileuser){
+            //console.log(profileuser)
+            this.currentuser = currentuser;
+            this.profileuser = profileuser;
+            this.status = null;
+            this.status_method = null;
+
+            if (typeof this.profileuser.notifications === "undefined"){
+                profileuser.patch({
+                    "notifications": []
+                })
+            }
+
+            if(typeof this.currentuser.notifications === "undefined"){
+                currentuser.patch({
+                    "notifications": []
+                })
+            }
+        }
+
+
+
+        friendsActivity.prototype.getRelation = function(){
+
+                if(this.status === null){
+                    if(this.profileuser.friends.indexOf(this.currentuser._id) > -1){
+                        this.status = 'unfriend';
+                    }
+                }
+
+                if(this.status === null){
+                    var k = '';
+                    for (k in this.profileuser.notifications){
+                        if((this.profileuser.notifications[k].friendid == (this.currentuser._id)) &&
+                          (this.profileuser.notifications[k].notific_type == 1)){
+                            this.status = 'cancelrequest';
+                        }
+                    }
+                }
+
+                if(this.status === null){
+                    var k = ''
+                    for (k in this.currentuser.notifications){
+                        if((this.currentuser.notifications[k].friendid == (this.profileuser._id)) &&
+                           (this.currentuser.notifications[k].notific_type == 1))
+                        {
+                            this.status = 'reject_accept';
+                        }
+                    }
+                }
+
+                if(this.status === null){
+                    this.status = 'addfriend';
+                }
+            return (this.status);
+        }
+
+         return friendsActivity;
+	})
+	.service('Friends', function($http, Restangular) {
+
+		this.addFriend = function(cuserid, puserid) {
+		    return Restangular.one('addfriend').get({
+		        cuserid : cuserid,
+		        puserid : puserid,
+		        seed:Math.random()
+		    });
+		}
+
+		this.cancelRequest = function(cuserid, puserid){
+		    return Restangular.one('cancelfriend').get({
+		        cuserid : cuserid,
+		        puserid : puserid,
+		        seed:Math.random()
+		    });
+
+		}
+
+		this.acceptRequest = function(cuserid, puserid){
+		    return Restangular.one('acceptfriend').get({
+		        cuserid : cuserid,
+		        puserid : puserid,
+		        seed:Math.random()
+		    });
+
+		}
+
+		this.rejectRequest = function(cuserid, puserid){
+		    return Restangular.one('rejectfriend').get({
+		        cuserid : cuserid,
+		        puserid : puserid,
+		        seed : Math.random()
+		    });
+		}
+
+		this.unFreind = function(cuserid, puserid){
+		    return Restangular.one('unfriend').get({
+		        cuserid : cuserid,
+		        puserid : puserid,
+		        seed : Math.random()
+		    });
+		}
+
+		this.makeSeen = function(cuserid){
+		    return Restangular.one('makeseen').get({
+		        cuserid : cuserid,
+		        seed : Math.random()
+		    });
+		}
+	})
+
+	//-------------------------------------requested all directives-----------------------------------------
+
+	.directive('chatdivdir', function () {
+    return {
+        restrict: 'A',
+        replace: true,
+
+
+        controller:function($scope, $element, $attrs){
+
+            $scope.chatroomdiv = function(id){
+                if($element[0].offsetHeight == 364){
+                    $element.css('height', '40px');
+
+                    var data = JSON.parse(sessionStorage.getItem(id));
+                    json = {
+                                      name:data.name,
+                                      id: data.id,
+                                      minimize:true,
+                                      maximize:false,
+                                      right:0,
+                                      height:'40px'
+                    }
+                    sessionStorage.removeItem(id);
+                    sessionStorage.setItem(data.id, JSON.stringify(json));
+
+                }else{
+
+                    $element.css('height', '364px');
+                    $scope.chatdivnotification = [];
+
+                    var data = JSON.parse(sessionStorage.getItem(id));
+                    json = {
+                                      name:data.name,
+                                      id: data.id,
+                                      minimize:false,
+                                      maximize:true,
+                                      right:0,
+                                      height:'364px'
+                          }
+
+                    sessionStorage.removeItem(id);
+                    sessionStorage.setItem(data.id, JSON.stringify(json));
+                    //console.log('chat div notifications============')
+                    // make message notifications on div seen
+                    $scope.newMessageSeen(data.id);
+                }
+            }
+
+        }
+
+
+    };
+})
+
+
+.directive('cancelrequest', function ($compile, CurrentUser, Restangular, $routeParams, $route,friendsActivity, Friends) {
+    return {
+        restrict: 'E',
+        replace: true,
+
+        link: function ($scope, element, attrs ) {},
+         controller:function($scope, $element, $attrs, $transclude){
+
+         $scope.frndaddrequest = function(id){
+
+                html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
+                $element.html(html);
+                $compile($element.contents())($scope);
+
+                var data = Friends.addFriend($scope.user._id, $scope.profileuser._id);
+
+                //console.log('data----------->', data)
+                data.then(function(data){
+                   // console.log('data123--------->', data)
+                    if(data.data){
+                         var html ='<addfriend><button ng-click="frndcancelrequest(\''+id+'\')"  class="btn btn-primary">cancel request</button></addfriend>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+
+                    }else{
+                         var html ='<b>unable to process</b>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }
+                });
+            }
+         }
+
+    };
+})
+
+.directive('addfriend', function ($compile, CurrentUser, Restangular,$route, $routeParams, friendsActivity, Friends,$route) {
+
+    return {
+        restrict: 'E',
+        replace: true,
+        link: function ($scope, $element, attrs) {},
+         controller:function($scope, $element, $attrs, $transclude){
+         $scope.frndcancelrequest = function(id){
+
+                html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
+                $element.html(html);
+                $compile($element.contents())($scope);
+
+                var data = Friends.cancelRequest($scope.user._id, $scope.profileuser._id);
+                //console.log('data----------->', data)
+                data.then(function(data){
+                    //console.log('data123--------->', data)
+                    if(data.data){
+                         var html ='<cancelrequest><button  ng-click="frndaddrequest(\''+id+'\')"  class="btn btn-primary">AddFriend</button></cancelrequest>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }else{
+                         var html ='<b>unable to process</b>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }
+                });
+
+               }
+         }
+    };
+})
+
+.directive('acceptreject', function ($compile, CurrentUser, Restangular,$route, $routeParams,Friends, friendsActivity) {
+    return {
+        restrict: 'E',
+        replace: true,
+        link: function (scope, element, attrs) {},
+        controller:function($scope, $element, $attrs, $transclude){
+
+            $scope.acceptrequest = function(cuserid, puserid){
+
+                var navbar_request = false;
+                if(typeof cuserid === 'undefined' || typeof puserid === 'undefined'){
+                    cuserid = $scope.user._id;
+                    puserid = $scope.profileuser._id;
+                }else{
+                    navbar_request = true;
+                }
+
+                html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
+                $element.html(html);
+                $compile($element.contents())($scope);
+
+                 var data = Friends.acceptRequest(cuserid, puserid);
+                //console.log('data----------->', data)
+                data.then(function(data){
+                    //console.log('data123--------->', data)
+                    if(data.data){
+                         if(navbar_request){
+                            html = '<b> friends </b>';
+                         }else{
+                            html ='<unaddfriend><button ng-click="friendunfriend()" class="btn btn-primary">unfriend</button></unaddfriend>';
+                         }
+
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }else{
+                         var html ='<b>unable to process</b>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }
+                });
+            }
+
+            $scope.rejectrequest = function(cuserid, puserid){
+                var navbar_request = false;
+                if(typeof cuserid === 'undefined' || typeof puserid === 'undefined'){
+                    cuserid = $scope.user._id;
+                    puserid = $scope.profileuser._id;
+                }else{
+                    navbar_request = true;
+                }
+
+                var html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
+                $element.html(html);
+                $compile($element.contents())($scope);
+
+                var data = Friends.rejectRequest(cuserid, puserid);
+                //console.log('data----------->', data)
+                data.then(function(data){
+                   // console.log('data123--------->', data)
+                    if(data.data){
+                        if(navbar_request){
+                            html = '<b>rejected</b>';
+                        }else{
+                            html ='<cancelrequest><button ng-click="frndaddrequest()" class="btn btn-primary">AddFriend</button></cancelrequest>';
+                        }
+
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }else{
+                         html ='<b>unable to process</b>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }
+                });
+
+            }
+        }
+    };
+})
+.directive('unaddfriend', function ($compile, CurrentUser, Restangular, $routeParams, Friends, friendsActivity,$route) {
+    return {
+        restrict: 'E',
+        replace: true,
+        link: function ($scope, element, attrs) {},
+        controller:function($scope, $element, $attrs, $transclude){
+
+        $scope.friendunfriend = function(id){
+
+                var html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
+                $element.html(html);
+                $compile($element.contents())($scope);
+
+                var data = Friends.unFreind($scope.user._id, $scope.profileuser._id);
+                //console.log('data----------->', data)
+                data.then(function(data){
+                    //console.log('data123--------->', data)
+                    if(data.data){
+                         html ='<cancelrequest><button ng-click="frndaddrequest(\''+id+'\')" class="btn btn-primary">AddFriend</button></cancelrequest>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }else{
+                         html ='<b>unable to process</b>';
+                         e =$compile(html)($scope);
+                         $element.replaceWith(e);
+                         $route.reload();
+                    }
+                });
+               }
+            }
+    };
+});

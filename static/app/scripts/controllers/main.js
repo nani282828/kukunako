@@ -154,4 +154,4 @@ angular.module('weberApp')
                 }
             }
         }
-    })
+    });
