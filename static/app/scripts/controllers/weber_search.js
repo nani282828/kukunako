@@ -88,7 +88,18 @@ angular.module('weberApp')
                     lastname: self.formData.lastname,
                     username: self.formData.firstname + self.formData.lastname,
                     gender: self.formData.gender,
-                    interests: interests
+                    interests: interests,
+
+                    data : { 'interest1': {
+                                    'id':'55350611bed06933b3163cba',
+                                    'string': 'cricktet'
+                              },
+                              'interest2':{
+                                'id':'55350611bed06933b3163cba',
+                                'string': 'footbal'
+                              }
+                    }
+
                 }).then(function (response) {
                     //console.log('response data', response.data);
                     $location.path('/email_details/' + self.formData.email);

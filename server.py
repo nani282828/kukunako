@@ -23,7 +23,7 @@ from bson import json_util
 import string
 from friendRequests import Friends, Notifications, MatchUnmatch
 import logging
-
+from bson.objectid import ObjectId
 
 logging.basicConfig(filename='/var/log/weber_error.log', format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %I:%M:%S %p')
 
@@ -349,12 +349,17 @@ import time
 def signup():
 
 
+
+
+
     accounts = app.data.driver.db['people']
     user_email = accounts.find_one({'email': request.json['email']})
     if not user_email:
         dt = datetime.now()
 
         data = requests.get('http://weber.ooo/api/similarwords?querystring='+' '.join(request.json['interests']))
+
+
         user = {
             'email' :request.json['email'],
             'username':request.json['username'],
@@ -391,7 +396,7 @@ def signup():
             'friends' : [],
             'matchnotifications':[],
             'notifications':[],
-            'interests': request.json['interests'],
+            'interests': get_interested_ids( request.json ['data']),
             'interestsimilarwords': list(data),
             'conversations':[]
         }
@@ -417,6 +422,27 @@ def signup():
         return response
     return 'hai'
 
+
+def get_interested_ids(data):
+
+    interests = app.data.driver.db['interests']
+    interest_ids = []
+
+    for temp in data:
+        #print data[temp]['id']+'id of printing'
+        if data[temp]['id'] is not None and data[temp]['id']:
+            rs = interests.find_one({'_id': ObjectId(str(data[temp]['id']))})
+            if rs is None:
+                interest_ids.append(interests.insert({'interest_string' : data[temp]['string']}))
+            else:
+                interest_ids.append(str(data[temp]['id']))
+        else:
+            interest_ids.append(interests.insert({'interest_string' : data[temp]['string']}))
+    return list(set(interest_ids))
+    #
+    #interests.findAndModify({'_id': ObjectId()},
+
+    #})
 
 @app.route('/api/chat/sendmessage', methods=['POST'])
 def sendmessage():

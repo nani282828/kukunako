@@ -104,22 +104,12 @@ posts_schema = {
 
 interests_schema = {
 
-        'author': {
-            'type': 'objectid',
-            'required': True,
-            'data_relation': {
-                     'resource': 'people',
-                     'field': '_id',
-                     'embeddable': True
-            },
-        },
-
         'similarWordsOfInterests': {
             'type': 'list',
         },
 
-        'interests': {
-            'type': 'list',
+        'interest_string': {
+            'type': 'string',
         },
 }
 
@@ -335,10 +325,14 @@ people = {
             'default':False
         },
 
-        'interests':{
-            'type':'list',
+         'interests': {
+            'type': 'list',
             'schema': {
-                'type': 'string',
+                'type': 'objectid',
+                'data_relation': {
+                    'resource': 'interests',
+                    'embeddable': True
+                }
             }
         },
 
@@ -476,7 +470,7 @@ DOMAIN = {
     #'items':items,
     'people': people,
     'posts': posts,
-    'peopleInterests': interests,
+    'interests': interests,
     'searchActivity': searchActivity,
     'people_searchActivity':people_searchActivity,
     'people_posts':people_posts,
