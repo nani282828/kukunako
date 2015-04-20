@@ -12,7 +12,7 @@ angular.module('weberApp')
 
         Restangular.one('people',$routeParams.objectId).get({seed:Math.random()}).then(function(user) {
               //console.log('objectid', $routeParams.objectId)
-              console.log('user', user);
+              //console.log('user', user);
               $scope.user = user;
               if($routeParams.rand_string == $scope.user.random_string){
                 //console.log('random stirng==>', $scope.user.random_string)
@@ -25,7 +25,7 @@ angular.module('weberApp')
                 $scope.user.patch({
                         email_confirmed : true
                 },{},{'If-Match': $scope.user._etag}).then(function(response){
-                        console.log('---------->', response);
+                        //console.log('---------->', response);
                         //$location.path('/login');
                 });
               }
