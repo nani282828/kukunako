@@ -1543,11 +1543,13 @@ angular.module('weberApp')
                 var self = this;
                 var interests = [];
                 var querystring = "";
+
                 for(var temp in $scope.tags){
                     interests.push($scope.tags[temp].text.toString());
                     querystring = querystring+$scope.tags[temp].text+" ";
                 }
 
+                interests_array = ["cricket","backetball","123", "abc"]
                 //console.log('successdata', interestsSimilarWords)
                 var data = ['d','i','dd'];
                 $scope.signupBusy = $auth.signup({
@@ -1557,17 +1559,7 @@ angular.module('weberApp')
                     lastname: self.formData.lastname,
                     username: self.formData.firstname + self.formData.lastname,
                     gender: self.formData.gender,
-                    interests: interests,
-
-                    data : { 'interest1': {
-                                    'id':'55350611bed06933b3163cba',
-                                    'string': 'cricktet'
-                              },
-                              'interest2':{
-                                'id':'55350611bed06933b3163cba',
-                                'string': 'footbal'
-                              }
-                    }
+                    data : interests
 
                 }).then(function (response) {
                     //console.log('response data', response.data);

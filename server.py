@@ -348,16 +348,12 @@ import time
 @app.route('/auth/signup', methods=['POST'])
 def signup():
 
-
-
-
-
     accounts = app.data.driver.db['people']
     user_email = accounts.find_one({'email': request.json['email']})
     if not user_email:
         dt = datetime.now()
 
-        data = requests.get('http://weber.ooo/api/similarwords?querystring='+' '.join(request.json['interests']))
+        #data = requests.get('http://weber.ooo/api/similarwords?querystring='+' '.join(request.json['interests']))
 
 
         user = {
@@ -396,8 +392,8 @@ def signup():
             'friends' : [],
             'matchnotifications':[],
             'notifications':[],
-            'interests': get_interested_ids( request.json ['data']),
-            'interestsimilarwords': list(data),
+            'interests': get_interested_ids(request.json['data']),
+            #'interestsimilarwords': list(data),
             'conversations':[]
         }
 
@@ -424,25 +420,20 @@ def signup():
 
 
 def get_interested_ids(data):
-
     interests = app.data.driver.db['interests']
     interest_ids = []
-
     for temp in data:
-        #print data[temp]['id']+'id of printing'
-        if data[temp]['id'] is not None and data[temp]['id']:
-            rs = interests.find_one({'_id': ObjectId(str(data[temp]['id']))})
+        if temp is not None and temp:
+            rs = interests.find_one({'interest_string': temp})
             if rs is None:
-                interest_ids.append(interests.insert({'interest_string' : data[temp]['string']}))
+                id = interests.insert({'interest_string' : temp})
+                interest_ids.append(id)
             else:
-                interest_ids.append(str(data[temp]['id']))
+                interest_ids.append(rs['_id'])
         else:
-            interest_ids.append(interests.insert({'interest_string' : data[temp]['string']}))
+            id = interests.insert({'interest_string' : temp})
+            interest_ids.append(id)
     return list(set(interest_ids))
-    #
-    #interests.findAndModify({'_id': ObjectId()},
-
-    #})
 
 @app.route('/api/chat/sendmessage', methods=['POST'])
 def sendmessage():
