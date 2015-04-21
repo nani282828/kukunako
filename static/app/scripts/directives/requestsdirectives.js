@@ -1,4 +1,11 @@
 angular.module('weberApp')
+
+.filter('reverse', function() {
+  return function(items) {
+    return items.slice().reverse();
+  };
+})
+
 .directive('chatdivdir', function () {
     return {
         restrict: 'A',

@@ -8,7 +8,7 @@
  * Controller of the weberApp
  */
 angular.module('weberApp')
-	.controller('UserprofileCtrl', function($scope, $routeParams,$templateCache,sortIListService,
+	.controller('UserprofileCtrl', function($scope, $routeParams,$templateCache,sortIListService,questions,
 	                                        Restangular, InfinitePosts, UserService,MatchButtonService,
 	                                        CurrentUser , friendsActivity) {
 
@@ -22,6 +22,34 @@ angular.module('weberApp')
 
                     var user_obj = Restangular.one('people', $routeParams.username);
 		            user_obj.get({ seed : Math.random() }).then(function(profileuser) {
+
+                         // questions section functions
+                        $scope.questions = new questions(profileuser);
+
+                        //$scope.questions.getcquestions();
+                        $scope.questions.getUserQuestions();
+
+                        $scope.answered = function(question, ans){
+                            $scope.questions.updateAnswer(question, ans);
+                            console.log(question, ans)
+                        }
+
+                        $scope.checkAnswer = function(question_id){
+                            data = $scope.questions.checkAnswer(question_id);
+                            return data;
+                        }
+
+                        $scope.checkYouAnswered = function(question_id){
+                            data = $scope.questions.checkYouAnswered(question_id, user);
+                            return data;
+
+                        }
+
+                        $scope.youAnswered = function(question, ans){
+                            $scope.questions.updateUser2(question, ans);
+                            console.log(question, ans)
+                        }
+                         // end of questions section
 		                $scope.profileuser = profileuser;
                         $scope.user = user;
 

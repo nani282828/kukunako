@@ -112,6 +112,100 @@
 		</div>
 	</div>
 	<div class="col-md-6 colpadding" style="min-height:2000px">
+        <!-- questions part -->
+        <div ng-repeat="question in questions.cuserquestions">
+            <div>{{ question.question }}</div>
+             <div class="row" style="padding-bottom:5px;" ng-if="checkYouAnswered(question._id)">
+                    <div class="col-sm-10 col-lg-offset-1"
+                         ng-if="checkAnswer(question._id)==1">
+
+                        <label class="radio-inline" >
+                            <input type="radio" ng-model='choice' value='{{question._id}}_yes'
+                                   ng-change="answered('{{ question._id}}',1)"
+                                   name="ans_{{question._id}}" ng-checked="true">
+                            <strong>Yes</strong>
+                        </label>
+
+
+                        <label class="radio-inline">
+                            <input type="radio"  ng-model='choice' value='{{question._id}}_no'
+                                   ng-change="answered('{{ question._id }}', 0)" ng-select="true"
+                                   name="ans_{{question._id}}">
+                            <strong>
+                                No
+                            </strong>
+                        </label>
+                        answered : Yes
+                    </div>
+
+                    <div class="col-sm-10 col-lg-offset-1" ng-if="checkAnswer(question._id)==0">
+
+                        <label class="radio-inline" >
+                            <input type="radio" ng-model='choice' value='{{question._id}}_yes'
+                                   ng-change="answered('{{ question._id}}',1)"
+                                   name="ans_{{question._id}}" >
+                            <strong>Yes</strong>
+                        </label>
+
+
+                        <label class="radio-inline">
+                            <input type="radio"  ng-model='choice' value='{{question._id}}_no'
+                                   ng-change="answered('{{ question._id }}', 0)" ng-select="true"
+                                   name="ans_{{question._id}}" ng-checked="true">
+                            <strong>
+                                No
+                            </strong>
+                        </label>
+                        answered : No
+
+                    </div>
+
+                    <div class="col-sm-10 col-lg-offset-1" ng-if="checkAnswer(question._id)==3">
+
+                        <label class="radio-inline" >
+                            <input type="radio" ng-model='choice' value='{{question._id}}_yes'
+                                   ng-change="answered('{{ question._id}}',1)"
+                                   name="ans_{{question._id}}" >
+                            <strong>Yes</strong>
+                        </label>
+
+
+                        <label class="radio-inline">
+                            <input type="radio"  ng-model='choice' value='{{question._id}}_no'
+                                   ng-change="answered('{{ question._id }}', 0)" ng-select="true"
+                                   name="ans_{{question._id}}">
+                            <strong>
+                                No
+                            </strong>
+                        </label>
+                    Not Yet answered
+                    </div>
+
+
+                </div>
+                <div ng-if="checkYouAnswered(question._id) == false">please answer to see this question
+                     <label class="radio-inline" >
+                            <input type="radio" ng-model='choice' value='{{question._id}}_yes'
+                                   ng-change="youAnswered('{{ question._id}}',1)"
+                                   name="ans_{{question._id}}" >
+                            <strong>Yes</strong>
+                     </label>
+
+
+                     <label class="radio-inline">
+                            <input type="radio"  ng-model='choice' value='{{question._id}}_no'
+                                   ng-change="youAnswered('{{ question._id }}', 0)" ng-select="true"
+                                   name="ans_{{question._id}}">
+                            <strong>
+                                No
+                            </strong>
+                     </label>
+                </div>
+
+        </div>
+
+
+        <!-- questions part ended--->
 
 		<div infinite-scroll='infinitePosts.nextPage()' infinite-scroll-disabled='infinitePosts.busy'
 			 infinite-scroll-distance='1'>

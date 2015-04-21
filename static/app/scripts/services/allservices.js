@@ -1,4 +1,57 @@
 angular.module('weberApp')
+    .factory('questions', function($http, Restangular,$auth) {
+
+        var questions = function(currentuser){
+            this.currentuser = currentuser;
+            this.cquestions = [];
+            this.canswers = this.currentuser.questions;
+            console.log(this.currentuser.username)
+        }
+
+        questions.prototype.getcquestions = function(){
+          Restangular.all('questions').getList().then(function(data){
+            this.cquestions.push.apply(this.cquestions, data);
+
+          }.bind(this));
+        }
+
+        questions.prototype.updateAnswer = function(question, answer){
+            console.log('----------------service------------')
+            Restangular.one('updateAnswer').get({
+		        question : question,
+		        answer : answer,
+		        cuserid : this.currentuser._id,
+		        seed:Math.random()
+		    }).then(function(data){
+		        console.log('updated answer', data);
+		        for(var temp in this.canswers){
+                    if(this.canswers[temp].questionid == question){
+                        this.canswers[temp].answer = answer;
+                        return true
+                    }
+		        }
+
+		        this.canswers.push({'questionid':question, 'answer':answer});
+		    }.bind(this));
+        }
+
+        questions.prototype.checkAnswer = function(questionid){
+            console.log('check answer', questionid)
+            for(var temp in this.canswers){
+                if(this.canswers[temp].questionid == questionid){
+                    return this.canswers[temp].answer;
+                }
+            }
+            return 3;
+        }
+        return questions;
+    });
+
+
+
+
+
+angular.module('weberApp')
     .factory('ChatActivity', function($http, Restangular,$auth) {
 
         var ChatActivity = function(currentuser){

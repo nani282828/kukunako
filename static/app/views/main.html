@@ -1,4 +1,3 @@
-
 <div class="container">
 	<div class="col-md-3 colpadding" wb-affix="150">
 		<div class="thumbnail">
@@ -81,7 +80,34 @@
             </div>
 		</div>
 	</div>
+
+    <!--<div ng-repeat="question in all_questions">
+        {{question.question}}
+        <input type="radio" name="ans"  ng-model='yes' value='{{question._id}}' ng-change="questionyes(yes)"> yes
+        <input type="radio" name="ans"  ng-model='no' value='{{question._id}}' ng-change="questionno(no)"> no
+    </div>-->
+
 	<div class="col-md-6 colpadding" style="min-height:2000px">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6 colpadding" style="cursor:pointer;border-right:1px solid #DFD9D9;">
+                        <div class="jumbotron" style="margin-bottom:0px;padding:25px;">
+                            <h4 class="text-center">
+                                Questions
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 colpadding" style="cursor:pointer;">
+                        <div class="jumbotron" style="margin-bottom:0px;padding:25px;">
+                            <h4 class="text-center">
+                                Status Update
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 		<form role="form" class="post-to-timeline panel panel-default panel-body clearfix">
 			<textarea ng-model="new_post" class="form-control"
                       style="height: 70px;margin-bottom: 10px;resize: none;" placeholder="Whats happening?" required></textarea>
@@ -93,6 +119,127 @@
 				</div>
 			</div>
 		</form>
+
+        <div class="media panel panel-default" ng-repeat="question in questions.allquestions">
+            <div class="panel-heading post-div"
+                 style="background-color:#fff;border-bottom:1px solid #F2F2F2;padding-bottom:17px;">
+
+                <div class="pull-left" style="padding: 2px 8px 2px 0px;" href="">
+                    <div style="width:47px;height:47px;border:1px solid #DCDCDC;border-radius:50%;">
+                        <h4 style="margin-top:;opacity:0.50;color:#008080" class="text-center">
+                            <strong>
+                                w
+                            </strong>
+                        </h4>
+                    </div>
+                </div>
+                <h5 style="margin-top:17px;">
+                    {{question.question}}?
+                </h5>
+            </div>
+            <div class="panel-body" style="margin-bottom:0px;padding-bottom:0px;">
+
+                <div class="row" style="padding-bottom:5px;">
+                    <div class="col-sm-10 col-lg-offset-1" ng-if="checkAnswer(question._id)==1">
+
+                        <label class="radio-inline" >
+                            <input type="radio" ng-model='choice' value='{{question._id}}_yes'
+                                   ng-change="answered('{{ question._id}}',1)"
+                                   name="ans_{{question._id}}" ng-checked="true">
+                            <strong>Yes</strong>
+                        </label>
+
+
+                        <label class="radio-inline">
+                            <input type="radio"  ng-model='choice' value='{{question._id}}_no'
+                                   ng-change="answered('{{ question._id }}', 0)" ng-select="true"
+                                   name="ans_{{question._id}}">
+                            <strong>
+                                No
+                            </strong>
+                        </label>
+                        answered : Yes
+                    </div>
+
+                    <div class="col-sm-10 col-lg-offset-1" ng-if="checkAnswer(question._id)==0">
+
+                        <label class="radio-inline" >
+                            <input type="radio" ng-model='choice' value='{{question._id}}_yes'
+                                   ng-change="answered('{{ question._id}}',1)"
+                                   name="ans_{{question._id}}" >
+                            <strong>Yes</strong>
+                        </label>
+
+
+                        <label class="radio-inline">
+                            <input type="radio"  ng-model='choice' value='{{question._id}}_no'
+                                   ng-change="answered('{{ question._id }}', 0)" ng-select="true"
+                                   name="ans_{{question._id}}" ng-checked="true">
+                            <strong>
+                                No
+                            </strong>
+                        </label>
+                        answered : No
+
+                    </div>
+
+                    <div class="col-sm-10 col-lg-offset-1" ng-if="checkAnswer(question._id)==3">
+
+                        <label class="radio-inline" >
+                            <input type="radio" ng-model='choice' value='{{question._id}}_yes'
+                                   ng-change="answered('{{ question._id}}',1)"
+                                   name="ans_{{question._id}}" >
+                            <strong>Yes</strong>
+                        </label>
+
+
+                        <label class="radio-inline">
+                            <input type="radio"  ng-model='choice' value='{{question._id}}_no'
+                                   ng-change="answered('{{ question._id }}', 0)" ng-select="true"
+                                   name="ans_{{question._id}}">
+                            <strong>
+                                No
+                            </strong>
+                        </label>
+                    Not Yet answered
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="panel-footer"
+                 style="padding-top:5px;background-color:#fff;border:1px solid #FCF8F8;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h6>
+                            <!--<span ng-repeat="temp in sortIListService.sendList(post.interestedPeople.interestedlist, user._id)">
+                                <a style="text-decoration:none;cursor:pointer;"
+                                   alt="Match this post">
+                                    <i class="fa fa-slideshare" style="font-size:14px;"></i>&nbsp;
+                                </a>
+                                <span ng-if="user._id == temp">
+                                    <a href="">
+                                        you
+                                    </a>
+                                </span>
+
+                                <span ng-if="user._id != temp">
+                                    <a href="">
+                                        {{ UserService.get(temp).name.first }}
+                                    </a>
+                                </span>
+                                matched with this post
+                            </span>
+                            <span ng-if="sortIListService.sendList(matchPeople.interestedList).length">
+                                {{ sortIListService.sendList(matchPeople.interestedList).length }}
+                                matched with this post
+                            </span>-->
+
+                        </h6>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 		<div ng-if="!(infinitePosts.posts.length)" class="well clearfix"
              style="background-color:#fff;">

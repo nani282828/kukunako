@@ -57,7 +57,36 @@ def create_token(user):
     token = jwt.encode(payload, TOKEN_SECRET)
     return token.decode('unicode_escape')
 
+#update user answer
+@app.route('/api/updateAnswer', methods=['POST', 'GET'])
+def updateAnswer():
+    print '----------update answer---------'
+    data = (request.args.to_dict())
+    print data['cuserid'], data['question'], data['answer']
+    accounts = app.data.driver.db['people']
+    userdata = accounts.find_one({'_id':ObjectId(data['cuserid']), 'questions.questionid': ObjectId(data['question'])})
+    if userdata is not None:
+        print '------if yes----------', data['cuserid']
+        accounts.update({'_id':ObjectId(data['cuserid']), 'questions.questionid': ObjectId(data['question'])},
+                    {"$set":{"questions.$.answer": data['answer'] }})
 
+        return jsonify({'data':True})
+
+    else:
+        print '------if no----------'
+        print data['cuserid']
+
+        accounts.update({'_id':ObjectId(data['cuserid'])},
+                    { "$push" : { "questions":
+                                                {'questionid': ObjectId(data['question']),
+                                                 'answer': data['answer']
+                                                }
+                                }
+                    })
+        return jsonify({'data':True})
+
+
+    
 # adding friend request
 @app.route('/api/addfriend', methods=['POST', 'GET'])
 def addfriend():
@@ -382,6 +411,7 @@ def signup():
             'random_string': id_generator(),
             'accept_notifications':[],
             'born' : "",
+            'questions':[],
             'gender' : request.json['gender'],
             'lastmessageseen' : dt.strftime('%Y-%m-%dT%H:%M:%SZ'),
             'location' : {

@@ -46,6 +46,7 @@ for raw_user in users:
     user['notifications'] = []
     user['conversations'] = []
     user['role'] = "test"
+    user['questions']=[]
 
     print '----------------------------user-------------------------'
     print user

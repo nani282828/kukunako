@@ -7,6 +7,109 @@
  * Service in the weberApp.
  */
 angular.module('weberApp')
+
+       .factory('questions', function($http, Restangular,$auth) {
+
+        var questions = function(currentuser){
+            this.currentuser = currentuser;
+            this.allquestions = [];
+            this.cuserquestions = [];
+            this.user2 = {},
+            this.canswers = this.currentuser.questions;
+            console.log(this.currentuser.username)
+        }
+
+        questions.prototype.getallquestions = function(){
+          Restangular.all('questions').getList().then(function(data){
+            this.allquestions.push.apply(this.allquestions, data);
+
+          }.bind(this));
+        }
+
+        function combine_ids(ids) {
+   			return (ids.length ? "\"" + ids.join("\",\"") + "\"" : "");
+		}
+
+        questions.prototype.getUserQuestions = function(){
+            var cuserquestionids = []
+
+            for(var temp in this.currentuser.questions){
+                cuserquestionids.push((this.currentuser.questions[temp].questionid).toString())
+            }
+            console.log('cuser question ids', cuserquestionids)
+
+            var params = '{"_id": {"$in":['+combine_ids(cuserquestionids)+']}}';
+
+            console.log(params)
+            Restangular.all('questions').getList({where:params, seed: Math.random()}).then(function(data){
+            this.cuserquestions.push.apply(this.cuserquestions, data);
+          }.bind(this));
+
+        }
+
+        questions.prototype.updateAnswer = function(question, answer){
+            console.log('----------------service------------')
+            Restangular.one('updateAnswer').get({
+		        question : question,
+		        answer : answer,
+		        cuserid : this.currentuser._id,
+		        seed:Math.random()
+		    }).then(function(data){
+		        console.log('updated answer', data);
+		        for(var temp in this.canswers){
+                    if(this.canswers[temp].questionid == question){
+                        this.canswers[temp].answer = answer;
+                        return true
+                    }
+		        }
+
+		        this.canswers.push({'questionid':question, 'answer':answer});
+		    }.bind(this));
+        }
+
+        questions.prototype.checkAnswer = function(questionid){
+            console.log('check answer', questionid)
+            for(var temp in this.canswers){
+                if(this.canswers[temp].questionid == questionid){
+                    return this.canswers[temp].answer;
+                }
+            }
+            return 3;
+        }
+
+         questions.prototype.checkYouAnswered = function(questionid, cuser){
+            this.user2 = cuser;
+            for(var temp in this.user2.questions){
+                if(this.user2.questions[temp].questionid == questionid){
+                    return true;
+                }
+            }
+            return false;
+         }
+
+         questions.prototype.updateUser2 = function(question, answer){
+            console.log('----------------service------------')
+            Restangular.one('updateAnswer').get({
+		        question : question,
+		        answer : answer,
+		        cuserid : this.user2._id,
+		        seed:Math.random()
+		    }).then(function(data){
+		        console.log('updated answer', data);
+		        for(var temp in this.user2.questions){
+                    if(this.user2.questions[temp].questionid == question){
+                        this.user2.questions[temp].answer = answer;
+                        return true
+                    }
+		        }
+		       this.user2.questions.push({'questionid':question, 'answer':answer});
+		    }.bind(this));
+         }
+
+
+        return questions;
+    })
+
 	.factory('InstanceSearch', function($http, Restangular, $alert, $timeout) {
 
 		var InstanceSearch = function() {

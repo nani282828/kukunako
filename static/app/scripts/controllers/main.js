@@ -7,7 +7,7 @@
  * Controller of the weberApp
  */
 angular.module('weberApp')
-	.controller('MainCtrl', function($scope, $auth, $rootScope, $socket, Restangular, InfinitePosts,
+	.controller('MainCtrl', function($scope, $auth, $rootScope, $socket, Restangular, InfinitePosts,questions,
 	                                $alert, $http, CurrentUser,sortIListService,
 	                                UserService, fileUpload, MatchButtonService) {
 
@@ -24,6 +24,22 @@ angular.module('weberApp')
 			Restangular.one('people',JSON.parse(user_id)).get({seed:Math.random()}).then(function(user) {
 
                 $scope.user = user;
+
+                // questions section functions
+                $scope.questions = new questions(user);
+                $scope.questions.getallquestions();
+
+
+                $scope.answered = function(question, ans){
+                    $scope.questions.updateAnswer(question, ans);
+                    console.log(question, ans)
+                }
+
+                $scope.checkAnswer = function(question_id){
+                    data = $scope.questions.checkAnswer(question_id);
+                    return data;
+                }
+                // end of questions section
 				var loadPostIds = angular.copy(user.friends);
                 loadPostIds.push(user._id);
                 loadPostIds = "[\"" + loadPostIds.join("\",\"") + "\"]";

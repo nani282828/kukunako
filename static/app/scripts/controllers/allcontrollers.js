@@ -580,7 +580,7 @@ angular.module('weberApp')
 	})
 
 .controller('MainCtrl', function($scope, $auth, $rootScope, $socket, Restangular, InfinitePosts,
-	                                $alert, $http, CurrentUser,sortIListService,
+	                                $alert, $http, CurrentUser,sortIListService,questions,
 	                                UserService, fileUpload, MatchButtonService) {
 
 		$scope.UserService = UserService;
@@ -594,6 +594,20 @@ angular.module('weberApp')
 			}
 		}).success(function(user_id) {
 			Restangular.one('people',JSON.parse(user_id)).get({seed:Math.random()}).then(function(user) {
+
+                $scope.questions = new questions(user);
+                $scope.questions.getcquestions();
+
+
+                $scope.answered = function(question, ans){
+                    $scope.questions.updateAnswer(question, ans);
+                    console.log(question, ans)
+                }
+
+                $scope.checkAnswer = function(question_id){
+                    data = $scope.questions.checkAnswer(question_id);
+                    return data;
+                }
 
                 $scope.user = user;
 				var loadPostIds = angular.copy(user.friends);
@@ -1477,7 +1491,7 @@ angular.module('weberApp')
                 });
            });
 	})
-	 .controller('WeberSearchCtrl', function($scope, $auth, Restangular,$route,$window,
+	 .controller('WeberSearchCtrl', function($scope, $auth, Restangular,$route,$window,Restangular,
 	 										InfinitePosts, $alert, $http,$location,$socket,
 	 										CurrentUser, UserService,CurrentUser1,$rootScope,
 	 										SearchActivity, $routeParams, MatchMeResults) {
@@ -1505,7 +1519,16 @@ angular.module('weberApp')
             //console.log('Tag removed: ', tag);
             //console.log($scope.tags)
         };
+        $scope.storequestion = function(){
 
+            var question = $scope.enterquestion;
+            $scope.enterquestion = null;
+            Restangular.all('questions').post({
+                'question':question
+            }).then(function(data){
+                console.log('questions posted',data)
+            });
+        }
 
 	 	/* login functionality code goes here*/
         $scope.submitLogin = function() {
