@@ -5,7 +5,10 @@
 	src: url('../assets/entypo.ttf') format('truetype'),
 		url('../assets/entypo.eot') format('eot');
 }
-
+.active>a{
+    background-color:none !important;
+    border:0px solid #FFF;
+}
 * {
 	margin: 0px;
 	padding: 0px;

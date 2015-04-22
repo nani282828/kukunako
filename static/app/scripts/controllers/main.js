@@ -49,7 +49,7 @@ angular.module('weberApp')
 
 				$scope.submit_post = function(){
                      if($scope.new_post) {
-                        $http({
+                        $scope.new_submit_busy_post = $http({
                             url: '/api/similarwords',
                             method: "GET",
                             params: {querystring: $scope.new_post}

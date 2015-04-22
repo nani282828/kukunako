@@ -28,17 +28,41 @@ angular.module('weberApp')
               $scope.user = result;
               $scope.tags = $scope.user.interests;
              });
-          /*$scope.loadTags = function(query) {
-                return $http.get('/tags?query=' + query);
-            };*/
 
+            $scope.tags = [];
+            $scope.interests_filter = [];
+            $scope.loadTags = function(query) {
+                $scope.getting_interests = [];
+                var param1 = '{"interest_string":{"$regex":".*'+query+'.*"}}';
+                return Restangular.all('interests').getList({
+                    where : param1,
+                    seed: Math.random(),
+                    max_results: 5
+                })
+                .then(function(data){
+                    console.log("getting length", data.length)
+                    for(var i=0;i<data.length;i++){
+                        console.log(data[i].interest_string);
+                        $scope.getting_interests.push(data[i].interest_string);
+                    }
+                    console.log("getting interests from server",$scope.getting_interests);
+                    console.log("getting details",$scope.getting_interests);
+                    var deferred = $q.defer();
+                    deferred.resolve($scope.getting_interests);
+                    return deferred.promise;
+                });
+            }
             $scope.tagAdded = function(tag) {
-                //$scope.tags.push(tag)
+                console.log('Tag added: ', tag.text, $scope.tags);
+                $scope.interests_filter.push(tag.text);
+                console.log("------->>>>", $scope.interests_filter);
             };
-
             $scope.tagRemoved = function(tag) {
-                //console.log('Tag removed: ', tag);
-               // console.log($scope.tags)
+                var index = $scope.interests_filter.indexOf(tag.text);
+                if(index > -1){
+                    $scope.interests_filter.splice(index, 1);
+                }
+                console.log("----->>>>>>>", $scope.interests_filter);
             };
 
             $scope.size='small';
