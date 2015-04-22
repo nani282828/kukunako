@@ -1,5 +1,33 @@
-<div class="popover">
-  <div class="arrow"></div>
-  <h3 class="popover-title" ng-bind="title" ng-show="title"></h3>
-  <div class="popover-content" ng-bind="content"></div>
+<div class="popover show_nav_bar_popup_div">
+  <h3 class="popover-title">
+      See Messages New
+  </h3>
+  <div class="popover-content" style="height:300px;">
+        <div class="row" ng-repeat="message in chatactivity.latestMessages  | limitTo : 5 ">
+            <div class="col-sm-12">
+                <div class="media" ng-click="openchatroom('{{ message.sender._id }}')"
+                     style="" >
+                  <div class="media-left">
+                    <a class="pull-left" style="">
+
+                      <img class="media-object" style="width:40px;border-radius:50%;"
+                           ng-src="{{ message.sender.picture.large }}"
+                           alt="{{ message.sender.name.first }} {{ message.sender.name.last }}">
+                    </a>
+                  </div>
+                  <div class="media-body">
+                    <h5 class="media-heading" style="font-family: 'Open sans',Arial,sans-serif;" >
+                        {{ message.sender.name.first }} {{ message.sender.name.last }}
+                        <span class="pull-right" style="opacity:0.40;font-size:9px;padding-top:3px;">
+                           11/11/11
+                        </span>
+                    </h5>
+                    <h6 style="font-family: 'Open sans',Arial,sans-serif;opacity:0.50;">
+                        {{ message.message }}
+                    </h6>
+                  </div>
+                </div>
+            </div>
+        </div>
+  </div>
 </div>

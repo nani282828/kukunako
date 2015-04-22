@@ -4,7 +4,9 @@
             <div class="itemsContainer">
                 <div class="image">
                     <a href="">
-                        <img class="img-rounded" style="width:;" ng-src="{{user.picture.large}}" />
+                        <img class="img-rounded" style="width:;" data-placement="center"
+                             data-animation="am-fade-and-scale" data-template="static/app/views/show_profile_image.html"
+                             bs-modal="modal" ng-src="{{user.picture.large}}" />
                     </a>
                 </div>
             </div>
@@ -69,7 +71,6 @@
                     </strong>
                 </h5>
 			</div>
-
             <div class="panel-body" style="padding:1px;">
                 <a ng-repeat="friend in user.friends " href="#/profile/{{ friend }}">
                     <img data-placement="top-right" style="width:87px"
@@ -103,85 +104,85 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div class="tab-pane fade active in" id="home">
-                        <div class="media panel panel-default"
-                             ng-repeat="question in questions.allquestions"
-                                style="border:0px solid #fff;">
-                            <div class="panel-heading post-div"
-                                 style="background-color:#fff;border:0px solid #F2F2F2;padding-bottom:;">
-                                <h5 style="margin-top:14px;">
-                                    {{question.question}}?
-                                </h5>
-                            </div>
-                            <div class="panel-body" style="margin-bottom:0px;padding:0px 15px;">
+                        <div class="questions_arrow">
+                            <div class="media panel panel-default"
+                                 ng-repeat="question in questions.allquestions"
+                                    style="border:0px solid #fff;">
+                                <div class="panel-heading post-div"
+                                     style="background-color:#fff;border:0px solid #F2F2F2;padding-bottom:;">
+                                    <h5 style="margin-top:10px;margin-left: -8px;">
+                                        {{question.question}}?
+                                    </h5>
+                                </div>
+                                <div class="panel-body" style="margin-bottom:0px;padding:0px 15px;">
+                                    <div class="row" style="padding-bottom:5px;">
+                                        <div class="col-lg-10" style="margin-left:20px;" ng-if="checkAnswer(question._id)==1">
+                                            <label class="radio"
+                                                   style="margin-bottom:20px;cursor:pointer;" >
+                                                <input type="radio" ng-model='choice' value='{{question._id}}_yes'
+                                                       ng-change="answered('{{ question._id}}',1)"
+                                                       name="ans_{{question._id}}" ng-checked="true">
+                                                <strong>Yes</strong>
+                                            </label>
+                                            <label class="radio" style="cursor:pointer;">
+                                                <input type="radio"  ng-model='choice' value='{{question._id}}_no'
+                                                       ng-change="answered('{{ question._id }}', 0)" ng-select="true"
+                                                       name="ans_{{question._id}}">
+                                                <strong>
+                                                    No
+                                                </strong>
+                                            </label>
+                                            <!--answered : Yes-->
+                                        </div>
 
-                                <div class="row" style="padding-bottom:5px;">
-                                    <div class="col-lg-10" style="margin-left:20px;" ng-if="checkAnswer(question._id)==1">
+                                        <div class="col-lg-10" style="margin-left:20px;" ng-if="checkAnswer(question._id)==0">
 
-                                        <label class="radio" >
-                                            <input type="radio" ng-model='choice' value='{{question._id}}_yes'
-                                                   ng-change="answered('{{ question._id}}',1)"
-                                                   name="ans_{{question._id}}" ng-checked="true">
-                                            <strong>Yes</strong>
-                                        </label>
-                                        <label class="radio">
-                                            <input type="radio"  ng-model='choice' value='{{question._id}}_no'
-                                                   ng-change="answered('{{ question._id }}', 0)" ng-select="true"
-                                                   name="ans_{{question._id}}">
-                                            <strong>
-                                                No
-                                            </strong>
-                                        </label>
-                                        <!--answered : Yes-->
-                                    </div>
+                                            <label class="radio"
+                                                   style="margin-bottom:20px;cursor:pointer;" >
+                                                <input type="radio" ng-model='choice' value='{{question._id}}_yes'
+                                                       ng-change="answered('{{ question._id}}',1)"
+                                                       name="ans_{{question._id}}" >
+                                                <strong>Yes</strong>
+                                            </label>
+                                            <label class="radio" style="cursor:pointer;">
+                                                <input type="radio"  ng-model='choice' value='{{question._id}}_no'
+                                                       ng-change="answered('{{ question._id }}', 0)" ng-select="true"
+                                                       name="ans_{{question._id}}" ng-checked="true">
+                                                <strong>
+                                                    No
+                                                </strong>
+                                            </label>
+                                            <!--answered : No-->
+                                        </div>
 
-                                    <div class="col-lg-10" style="margin-left:20px;" ng-if="checkAnswer(question._id)==0">
+                                        <div class="col-lg-10" style="margin-left:20px;" ng-if="checkAnswer(question._id)==3">
 
-                                        <label class="radio" >
-                                            <input type="radio" ng-model='choice' value='{{question._id}}_yes'
-                                                   ng-change="answered('{{ question._id}}',1)"
-                                                   name="ans_{{question._id}}" >
-                                            <strong>Yes</strong>
-                                        </label>
-
-
-                                        <label class="radio">
-                                            <input type="radio"  ng-model='choice' value='{{question._id}}_no'
-                                                   ng-change="answered('{{ question._id }}', 0)" ng-select="true"
-                                                   name="ans_{{question._id}}" ng-checked="true">
-                                            <strong>
-                                                No
-                                            </strong>
-                                        </label>
-                                        <!--answered : No-->
-
-                                    </div>
-
-                                    <div class="col-lg-10" style="margin-left:20px;" ng-if="checkAnswer(question._id)==3">
-
-                                        <label class="radio" >
-                                            <input type="radio" ng-model='choice' value='{{question._id}}_yes'
-                                                   ng-change="answered('{{ question._id}}',1)"
-                                                   name="ans_{{question._id}}" >
-                                            <strong>Yes</strong>
-                                        </label>
+                                            <label class="radio"
+                                                   style="margin-bottom:20px;cursor:pointer;" >
+                                                <input type="radio" ng-model='choice' value='{{question._id}}_yes'
+                                                       ng-change="answered('{{ question._id}}',1)"
+                                                       name="ans_{{question._id}}" >
+                                                <strong>Yes</strong>
+                                            </label>
 
 
-                                        <label class="radio">
-                                            <input type="radio"  ng-model='choice' value='{{question._id}}_no'
-                                                   ng-change="answered('{{ question._id }}', 0)" ng-select="true"
-                                                   name="ans_{{question._id}}">
-                                            <strong>
-                                                No
-                                            </strong>
-                                        </label>
-                                    <!--Not Yet answered-->
+                                            <label class="radio" style="cursor:pointer;">
+                                                <input type="radio"  ng-model='choice' value='{{question._id}}_no'
+                                                       ng-change="answered('{{ question._id }}', 0)" ng-select="true"
+                                                       name="ans_{{question._id}}">
+                                                <strong>
+                                                    No
+                                                </strong>
+                                            </label>
+                                        <!--Not Yet answered-->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="profile" cg-busy="new_submit_busy_post">
-                        <form role="form" class="post-to-timeline clearfix">
+                        <form role="form" class="post-to-timeline status_arrow clearfix">
                             <textarea ng-model="new_post" class="form-control"
                                       style="height: 70px;margin-bottom: 10px;resize: none;" placeholder="Whats happening?" required></textarea>
                             <div class="row">

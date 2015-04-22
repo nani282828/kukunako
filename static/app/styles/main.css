@@ -5,6 +5,132 @@ body {
 	font-size: 14px;
 	line-height: 1.428571429;
 }
+/* styles for navbar search bar text box*/
+    .search-navbar::-webkit-input-placeholder {
+        font-size: 14px;
+        font-family: Raleway, Helvetica, Arial, sans-serif;
+    }
+    .search-navbar:-moz-placeholder { /* Firefox 18- */
+        font-size: 14px;
+        font-family: Raleway, Helvetica, Arial, sans-serif;
+    }
+    .search-navbar::-moz-placeholder {  /* Firefox 19+ */
+        font-size: 14px;
+        font-family: Raleway, Helvetica, Arial, sans-serif;
+    }
+    .search-navbar:-ms-input-placeholder {  
+        font-size: 14px;
+        font-family: Raleway, Helvetica, Arial, sans-serif;
+    }
+/* end of navbar search box styles */
+
+/* styles for status update and questions div arrow */
+    .status_arrow {
+        position: relative;
+        background: #fff;
+        border: 0px solid #45ff5e;
+    }
+    .status_arrow:after, .status_arrow:before {
+        bottom: 118px;
+        left: 33%;
+        border: 1px solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+    }
+
+    .status_arrow:after {
+        border-color: rgba(54, 54, 255, 0);
+        border-bottom-color: #ffffff;
+        border-width: 10px;
+        margin-left: -10px;
+    }
+    .status_arrow:before {
+        border-color: rgba(69, 255, 94, 0);
+        border-bottom-color: #ffffff;
+        border-width: 17px;
+        margin-left: -17px;
+    }
+
+    /* start of questions arrow css */
+
+    .questions_arrow {
+        position: relative;
+        background: #fff;
+        border: 0px solid #45ff5e;
+    }
+    .questions_arrow:after, .questions_arrow:before {
+        top: -34px;
+        left: 8%;
+        border: 1px solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+    }
+
+    .questions_arrow:after {
+        border-color: rgba(54, 54, 255, 0);
+        border-bottom-color: #ffffff;
+        border-width: 10px;
+        margin-left: -10px;
+    }
+    .questions_arrow:before {
+        border-color: rgba(69, 255, 94, 0);
+        border-bottom-color: #ffffff;
+        border-width: 12px;
+        margin-left: -16px;
+    }
+/* end of css for status update and questions div arrow */
+
+/* style for show navabar popup div */
+    .show_nav_bar_popup_div{
+        position: absolute;
+        top: 50px !important;
+        right: 0 !important;
+        left:-350px !important;
+        z-index: 1060;
+        width: 400px;
+        display: none;
+        max-width: 500px;
+    }
+    .show_nav_bar_popup_div:after, .show_nav_bar_popup_div:before {
+        top: -20px;
+        right: 6%;
+        border: 1px solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+    }
+
+    .show_nav_bar_popup_div:after {
+        border-color: rgba(54, 54, 255, 0);
+        border-bottom-color: #ffffff;
+        border-width: 10px;
+        margin-left: -10px;
+    }
+    .show_nav_bar_popup_div:before {
+        border-color: rgba(69, 255, 94, 0);
+        border-bottom-color: #ffffff;
+        border-width: 10px;
+        margin-left: -16px;
+    }
+
+/* end of show nav bar styles popup div */
+
+/* styles for custom radio buttons */
+    .radio input[type=radio], .radio-inline input[type=radio], .checkbox input[type=checkbox], .checkbox-inline input[type=checkbox]{
+        width:20px !important;
+        height:20px !important;
+        margin: 0px 0px 0 -28px !important;
+    }
+/* end of styles for custom radio buttons */
+
 .in { display:none; }
 
 /* Smartphones (portrait and landscape) ----------- */

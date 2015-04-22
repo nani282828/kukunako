@@ -49,6 +49,17 @@ angular.module('weberApp')
             console.log("----->>>>>>>", $scope.interests_filter);
         };
 
+        $scope.storequestion = function(){
+
+            var question = $scope.enterquestion;
+            $scope.enterquestion = null;
+            Restangular.all('questions').post({
+                'question':question
+            }).then(function(data){
+                console.log('questions posted',data)
+            });
+        }
+
 
 	 	/* login functionality code goes here*/
         $scope.submitLogin = function() {

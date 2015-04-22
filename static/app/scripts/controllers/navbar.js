@@ -22,6 +22,13 @@ angular.module('weberApp')
                                             $window,UserService,
                                             CurrentUser1,SearchActivity, friendsActivity,$socket) {
 
+        $scope.popover = {
+          "title": "Title",
+          "content": "Hello Popover<br />This is a multiline message!",
+          "saved": true
+        };
+
+
     /* testing of auto complete code for search results in weber*/
         $scope.notifications_count = 0;
 
