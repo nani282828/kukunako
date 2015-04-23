@@ -245,7 +245,7 @@ people = {
                 }
             }
         },
-        
+
         'token':{
           'type':'string'
         },
