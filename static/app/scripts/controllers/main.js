@@ -14,6 +14,8 @@ angular.module('weberApp')
 		$scope.UserService = UserService;
         $scope.MatchButtonService = MatchButtonService;
         $scope.sortIListService = sortIListService;
+        $scope.show_only_profile_pic = true;
+        $scope.show_only_p_user_pic = false;
 
 		$http.get('/api/me', {
 			headers: {

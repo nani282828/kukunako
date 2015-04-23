@@ -86,74 +86,59 @@
 	margin-top: -13px;
 }
 
-
-/*end of left arrow chat css*/
-
-
-/* Styles go here */
-
-.heightClass{
-  height:100px;
-  overflow :auto;
+.commentArea {
+    font: 14px Arial;
+    padding: 0 10px;
 }
 
-
-.right_arrow_box {
-	position: relative;
-	background: #DCDCDC;
-	border: 1px solid #DCDCDC;
-	border-radius:0%;
-}
-.right_arrow_box:after, .right_arrow_box:before {
-	left: 100%;
-	top: 5%;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
+.bubbledLeft,.bubbledRight {
+    margin-top: 20px;
+    padding: 10px;
+    max-width: 90%;
+    clear: both;
+    position: relative;
 }
 
-.right_arrow_box:after {
-	border-color: rgba(136, 183, 213, 0);
-	border-left-color: #dcdcdc;
-	border-width: 7px;
-	margin-top: -7px;
-}
-.right_arrow_box:before {
-	border-color: rgba(194, 225, 245, 0);
-	border-left-color: #dcdcdc;
-	border-width: 8px;
-	margin-top: -8px;
-}
-
-
-.left_arrow_box {
-	position: relative;
-	background: #88b7d5;
-	border: 1px solid #c2e1f5;
-}
-.left_arrow_box:after, .left_arrow_box:before {
-	right: 100%;
-	top: 50%;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
+.bubbledLeft{
+    float: left;
+    margin-right: auto;
+    -webkit-border-radius: 8px 8px 8px 0px;
+    -moz-border-radius: 8px 8px 8px 0px;
+    -o-border-radius: 8px 8px 8px 0px;
+    -ms-border-radius: 8px 8px 8px 0px;
+    border-radius: 8px 8px 8px 0px;
+    background-color: #65B045;
+    color: #ffffff;
 }
 
-.left_arrow_box:after {
-	border-color: rgba(136, 183, 213, 0);
-	border-right-color: #88b7d5;
-	border-width: 7px;
-	margin-top: -7px;
+.bubbledLeft:before {
+    border-bottom: 10px solid #65B045;
+    border-left: 9px solid rgba(0, 0, 0, 0);
+    position: absolute;
+    bottom: 0;
+    left: -8px;
+    content: "";
 }
-.left_arrow_box:before {
-	border-color: rgba(194, 225, 245, 0);
-	border-right-color: #c2e1f5;
-	border-width: 7px;
-	margin-top: -7px;
+
+.bubbledRight{
+    float: right;
+    margin-left: auto;
+    text-align: left;
+    -webkit-border-radius: 8px 8px 0px 8px;
+    -moz-border-radius: 8px 8px 0px 8px;
+    -o-border-radius: 8px 8px 0px 8px;
+    -ms-border-radius: 8px 8px 0px 8px;
+    border-radius: 8px 8px 0px 8px;
+    background-color: #07D;
+    color: white;
 }
+
+.bubbledRight:before {
+    border-bottom: 9px solid #07D;
+    border-right: 9px solid rgba(0, 0, 0, 0);
+    position: absolute;
+    bottom: 0;
+    right: -8px;
+    content: "";
+}
+

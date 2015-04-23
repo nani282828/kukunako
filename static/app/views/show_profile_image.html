@@ -9,11 +9,20 @@
             </label>
         </h5>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" ng-if="show_only_profile_pic">
           <div class="row">
               <div class="col-lg-12">
                   <div class="thumbnail" style="border:0px solid">
                       <img ng-src="{{user.picture.large}}">
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="modal-body" ng-if="show_only_p_user_pic">
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="thumbnail" style="border:0px solid">
+                      <img ng-src="{{profileuser.picture.large}}">
                   </div>
               </div>
           </div>

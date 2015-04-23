@@ -17,7 +17,8 @@ angular.module('weberApp')
 		}).success(function(user_id) {
 			Restangular.one('people',JSON.parse(user_id)).get().then(function(user) {
 				$scope.user = user;
-				$scope.infinitePosts = new InfinitePosts(user);
+				$scope.show_only_profile_pic = true;
+                $scope.show_only_p_user_pic = false;
 
                 if (user.friends.length !== 0) {
 

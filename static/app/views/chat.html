@@ -17,23 +17,28 @@
                             <div  class="media" ng-repeat="chatuser in tempfriends = (chatactivity.chatfriends | filter:searchChatConversation)"
                                  ng-click="openchatroom('{{ chatuser._id }}')"
                                  style="border-bottom:1px solid #F5F5F5;cursor:pointer;" >
-                              <div class="media-left">
-                                <a class="pull-left" style="padding: 0px 7px;">
-                                  <img class="media-object" style="width:40px;border-radius:50%;"
-                                       ng-src="{{ chatuser.picture.thumbnail}}" alt="{{ chatuser.picture.thumbnail}}">
-                                </a>
-                              </div>
-                              <div class="media-body">
-                                <h5 class="media-heading" style="font-family: 'Open sans',Arial,sans-serif;">
-                                    {{ chatuser.name.first }} {{ chatuser.name.last }}
-                                    <!--<span class="pull-right" style="opacity:0.40;font-size:9px;padding-top:3px;">
-                                       11/11/11
-                                    </span>-->
-                                </h5>
-                                <h6 style="font-family: 'Open sans',Arial,sans-serif;opacity:0.50;">
-                                    Wonder what weber can do
-                                </h6>
-                              </div>
+                                <div data-html="true" data-placement="right"
+                                         data-title="<h5>{{chatuser.name.first}} {{chatuser.name.last}}</h5>
+                                         <h5>Lives In {{chatuser.location.city}}, {{chatuser.location.state}}</h5>"
+                                         data-trigger="hover" bs-tooltip>
+                                  <div class="media-left">
+                                    <a class="pull-left" style="padding: 0px 7px;">
+                                      <img class="media-object" style="width:40px;border-radius:50%;"
+                                           ng-src="{{ chatuser.picture.thumbnail}}" alt="{{ chatuser.picture.thumbnail}}">
+                                    </a>
+                                  </div>
+                                  <div class="media-body">
+                                    <h5 class="media-heading" style="font-family: 'Open sans',Arial,sans-serif;">
+                                        {{ chatuser.name.first }} {{ chatuser.name.last }}
+                                        <!--<span class="pull-right" style="opacity:0.40;font-size:9px;padding-top:3px;">
+                                           11/11/11
+                                        </span>-->
+                                    </h5>
+                                    <h6 style="font-family: 'Open sans',Arial,sans-serif;opacity:0.50;">
+                                        Wonder what weber can do
+                                    </h6>
+                                  </div>
+                                </div>
                             </div>
                             <div ng-if="temp.length == 0">
                                 no friends foundsss
@@ -129,46 +134,16 @@
 
 					<div class="panel-collapse">
 						<div class="panel-body"   style="height:270px;overflow:auto;background-color:#f2f2f2;"  id="{{ chatroom.id }}" scroll>
-							<ul class="chat"  >
-                                <div ng-repeat="message in chatroom.messages | reverse">
-                                    <li
-                                        ng-if="message.sender._id == chatroom.id" scrollitem
-                                        class=" left clearfix"  >
-                                        <!--<span class="chat-img pull-left">
-                                            <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
-                                        </span>-->
-                                        <div class="bubble me clearfix">
-                                            <!--<div class="header">
-                                                <strong class="primary-font">{{ message.sender.name.first }}</strong>
-                                                <small class="pull-right text-muted">
-                                                    <span class="glyphicon glyphicon-time"></span>
-                                                    <span am-time-ago="message._created"></span></small>
-                                                </small>
-                                            </div>-->
-                                            <p style="margin:0 0 0px;">
-                                                  {{ message.message }}
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li ng-if="message.receiver._id == chatroom.id"  class=" right clearfix" scrollitem>
-                                        <!--<span class="chat-img pull-right">
-                                            <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
-                                        </span>-->
-                                        <div class="bubble1 you clearfix">
-                                            <!--<div class="header">
-                                                <small class=" text-muted">
-                                                    <span class="glyphicon glyphicon-time"></span>
-                                                    <span am-time-ago="message._created"></span></small>
-                                                </small>
-                                                <strong class="pull-right primary-font">{{ message.sender.name.first }}</strong>
-                                            </div>-->
-                                            <p style="margin:0 0 0px;">
-                                                {{ message.message }}
-                                            </p>
-                                        </div>
-                                    </li>
+
+                            <div class="commentArea" ng-repeat="message in chatroom.messages | reverse">
+                                <div class="bubbledLeft"
+                                        ng-if="message.sender._id == chatroom.id" scrollitem>
+                                    {{ message.message }}
                                 </div>
-    						</ul>
+                                <div class="bubbledRight" ng-if="message.receiver._id == chatroom.id" scrollitem>
+                                    {{ message.message }}
+                                </div>
+                            </div>
 						</div>
 						<div class="panel-footer" style="padding:10px 15px;">
 							<div class="row">

@@ -15,6 +15,12 @@ angular.module('weberApp')
 		$scope.UserService = UserService;
 		$scope.MatchButtonService = MatchButtonService;
 		$scope.sortIListService = sortIListService;
+
+		$scope.show_only_profile_pic = false;
+        $scope.show_only_p_user_pic = true;
+        $scope.show_c_user_info = false;
+        $scope.show_p_user_info = true;
+
         var currentuserobj = new CurrentUser();
          currentuserobj.getUserId()
             .then(function(){
@@ -22,6 +28,15 @@ angular.module('weberApp')
 
                     var user_obj = Restangular.one('people', $routeParams.username);
 		            user_obj.get({ seed : Math.random() }).then(function(profileuser) {
+
+
+                        $scope.profileuser = profileuser;
+		                $scope.tooltip = {
+                            "title": "<h5>"+$scope.profileuser.name.first+"&nbsp;"+
+                                        $scope.profileuser.name.last+"</h5>"+
+                                        "<h5>Lives In "+$scope.profileuser.location.state+"&nbsp;"+
+                                        $scope.profileuser.location.city+"</h5>"
+                        }
 
                          // questions section functions
                         $scope.questions = new questions(profileuser);
@@ -50,7 +65,7 @@ angular.module('weberApp')
                             console.log(question, ans)
                         }
                          // end of questions section
-		                $scope.profileuser = profileuser;
+
                         $scope.user = user;
 
                         var loadPostIds = [];

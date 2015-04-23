@@ -4,13 +4,18 @@
             <div class="itemsContainer">
                 <div class="image">
                     <a href="">
-                        <img class="img-rounded" style="width:;" src="{{user.picture.large}}" />
+                        <img class="img-rounded" style="width:;" data-placement="center"
+                             data-animation="am-fade-and-scale" data-template="static/app/views/show_profile_image.html"
+                             bs-modal="modal" ng-src="{{user.picture.large}}" />
                     </a>
                 </div>
             </div>
 			<div class="caption text-center">
 				<h3 style="text-transform: capitalize;">
-                    <a href="" style="text-decoration:none;">
+                    <a href="" data-placement="bottom" style="text-decoration:none;" data-animation="am-fade-and-scale"
+                       data-html="true" data-title="<h5>{{user.name.first}} {{user.name.last}}</h5>
+                            <h5>Lives In {{user.location.state}}, {{user.location.city}}</h5>"
+                         bs-tooltip>
                         {{user.name.first}} {{user.name.last}}
                     </a>
                 </h3>
@@ -65,28 +70,31 @@
 			<div class="clearfix panel-heading" style="background-color:#fff;">
                 <h5>
                     <strong>
-                        Friends - <span style="opacity:0.70;">{{user.friends.length}}</span>
+                        Friends - <span style="opacity:0.70;">
+                        {{user.friends.length}}
+                    </span>
                     </strong>
                 </h5>
 			</div>
 
             <div class="panel-body" style="padding:1px;">
-                <a ng-repeat="friend in friends " href="#/profile/{{friend._id}}">
-                    <img data-placement="top-right" style="width:87px"
-                         data-content="{{friend.location.city}}, {{friend.location.state}}"
-                         title="{{friend.name.first}} {{friend.name.last}}" data-trigger="hover" bs-popover src="{{friend.picture.thumbnail}}">
+                <a ng-repeat="friend in user.friends " href="#/profile/{{ friend }}">
+                    <img data-placement="top" style="width:87px" data-animation="am-fade-and-scale" data-html="true"
+                         data-title="<h5>{{UserService.get(friend).name.first}} {{UserService.get(friend).name.last}}</h5>
+                            <h5>Lives In {{ UserService.get(friend).location.city }}, {{UserService.get(friend).location.state}}</h5>"
+                         bs-tooltip ng-src="{{UserService.get(friend).picture.thumbnail}}">
                 </a>
             </div>
 		</div>
 	</div>
-    <div class="col-md-6" style="min-height:2000px">
+    <div class="col-lg-6">
         <div class="row">
            <div class="panel panel-default">
                <div class="panel-heading" style="background-color:#fff;">
                    <div class="row">
                        <div class="col-sm-6">
                            <h5 style="opacity:0.70">
-                               Friends -&nbsp;
+                               <strong>Friends</strong> -&nbsp;
                                    <label class="">
                                        <a href="" style="">
                                            {{user.friends.length}}
@@ -109,14 +117,21 @@
                         <div class="jumbotron"
                              style="padding:5px 10px;background-color:#fff;margin-bottom:10px;">
                             <div class="row" style="">
-                                <div class="col-sm-1">
-                                    <img src="{{ friend.picture.thumbnail }}"
-                                         style="width:60px;border-radius:4px">
+                                <div class="col-lg-2" style="padding-right:5px;">
+                                    <div class="thumbnail" style="border:0px solid;">
+                                        <img ng-src="{{ friend.picture.thumbnail }}"
+                                            style="border-radius:2px">
+                                    </div>
                                 </div>
-                                <div class="col-sm-6" style="padding-left:30px;">
+                                <div class="col-sm-6 colpadding">
                                     <h5>
-                                        <a href="#/profile/{{ friend._id }}">
-                                            {{ friend.name.first }} {{ friend.name.last }}
+                                        <a href="#/profile/{{ friend._id }}" data-placement="bottom" style="text-decoration:none;" data-animation="am-fade-and-scale"
+                                           data-html="true" data-title="<h5>{{friend.name.first}} {{friend.name.last}}</h5>
+                                                <h5>Lives In {{friend.location.state}}, {{friend.location.city}}</h5>"
+                                             bs-tooltip>
+                                            <strong>
+                                                {{ friend.name.first }} {{ friend.name.last }}
+                                            </strong>
                                         </a>
                                     </h5>
                                 </div>
