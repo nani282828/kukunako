@@ -49,19 +49,36 @@ angular.module('weberApp')
         ChatActivity.prototype.addToConversations = function(id){
             if(this.currentuser.conversations.indexOf(id) == -1 &&
                this.currentuser.friends.indexOf(id) == -1){
+                   this.currentuser.conversations.push(id);
 
-               this.currentuser.conversations.push(id);
-               Restangular.one('people', this.currentuser._id).patch({
-                   conversations : this.currentuser.conversations
-               },{},{
-                        'Content-Type': 'application/json',
-                        'If-Match': this._etag,
-                        'Authorization': $auth.getToken()
-               }).then(function(data){
-                   //console.log('successfully inserted into conversations')
-                   //console.log(data)
-                   this._etag = data._etag;
-               }.bind(this));
+                   Restangular.one('addconversation').get({
+                    cuserid : this.currentuser._id,
+                    conversationid : id,
+                    seed:Math.random()
+                  }).then(function(data){
+                      console.log('add conversation-->', data)
+                  }.bind(this));
+            }
+        }
+
+
+         ChatActivity.prototype.deleteConversation = function(id){
+            if(this.currentuser.conversations.indexOf(id) !== -1){
+               this.currentuser.conversations.splice(this.currentuser.conversations.indexOf(id),1);
+               for(var k in this.messages){
+                   if(this.messages[k].id == id){
+                        this.messages.splice(k, 1);
+                        break;
+                   }
+               }
+              Restangular.one('deleteconversation').get({
+		        cuserid : this.currentuser._id,
+		        conversationid : id,
+		        seed:Math.random()
+		      }).then(function(data){
+		          console.log('delete conversation-->', data)
+		      }.bind(this));
+
             }
         }
 
@@ -123,8 +140,6 @@ angular.module('weberApp')
         }
 
         ChatActivity.prototype.loadMessages = function(user1, user2, roomdetails){
-            //console.log(user1, user2, roomdetails)
-            //console.log('load messages calling----------------------')
             var self = this;
             this.busy = true;
             var page = null;
@@ -136,15 +151,9 @@ angular.module('weberApp')
                 ']}';
 
             self.embedded_param = '{"sender":1,"receiver":1}';
-            //console.log('------------open id pages-------------')
-            //console.log(self.pages)
             var data = getKey_Pages(self.pages, user2);
             page = data.pageinfo;
             key = data.key;
-            // find and increment pages count of different chatrooms
-
-
-
             Restangular.all('messages').getList({
                 where:self.main_params,
                 embedded:self.embedded_param,
@@ -153,19 +162,13 @@ angular.module('weberApp')
                 page:page.page,
                 sort: '[("message_created",-1)]',
             }).then(function(response){
-
-                //console.log('loading messages at service')
 				if (response.length < 10) {
 					page.end = true;
 				}
-
 				self.messages.push.apply(self.messages,[{id:user2,details:roomdetails,messages:response}]);
 				self.busy = false;
 				page.page = page.page+1;
 				self.pages[key] = page;
-				//console.log('-------page----------')
-                //console.log(self.pages)
-
             }.bind(self));
         }
 
@@ -184,31 +187,21 @@ angular.module('weberApp')
         }
 
         ChatActivity.prototype.nextPage = function(user2) {
-
-		    //console.log(this.messages)
-		    //console.log('chat next ')
-
-
 			if (this.busy | this.end) return;
-
 			var self = this;
-
 			self.busy = true;
             var page = null;
             var key = null;
-
-            var data = getKey_Pages(self.pages, user2)
+            var data = getKey_Pages(self.pages, user2);
             page = data.pageinfo;
             key = data.key;
             var user1 = self.currentuser._id;
-
 			self.main_params =  '{ "$or" : ['+
                     '{ "$and" : [ { "sender" : "'+user1+'" }, { "receiver" : "'+user2+'" } ] },'+
                     '{ "$and" : [ { "sender" : "'+user2+'" }, { "receiver": "'+user1+'" }  ] }'+
                 ']}';
 
             self.embedded_param = '{"sender":1,"receiver":1}';
-
 			Restangular.all('messages').getList({
 			    where:self.main_params,
                 embedded:self.embedded_param,
@@ -217,16 +210,13 @@ angular.module('weberApp')
                 page:page.page,
                 sort: '[("message_created",-1)]'
 			}).then(function(posts) {
-
 				if (posts.length === 0) {
 					page.end = true;
 				}
-                //self.messages.push.apply(self.messages,[{id:user2,details:roomdetails,messages:response}]);
                 self.messages = PushMessages(self.messages, posts, user2)
                 page.page = page.page + 1;
 				self.pages[key] = page;
 				self.busy = false;
-
 			}.bind(self));
 		};
 

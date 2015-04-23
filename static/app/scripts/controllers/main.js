@@ -23,8 +23,10 @@ angular.module('weberApp')
 				'Authorization': $auth.getToken()
 			}
 		}).success(function(user_id) {
-			Restangular.one('people',JSON.parse(user_id)).get({seed:Math.random()}).then(function(user) {
 
+		    console.log('authorize token', $auth.getToken())
+			Restangular.one('people',JSON.parse(user_id)).get({seed:Math.random()},{'Authorization': $auth.getToken()}).then(function(user) {
+                console.log('user==>', user)
                 $scope.user = user;
 
                 // questions section functions

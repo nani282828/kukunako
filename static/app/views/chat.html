@@ -14,7 +14,8 @@
                      style="padding:0px;min-height:{{ get_inner_div_height }}px;max-height:{{ get_inner_div_height }}px;">
                     <div class="row">
                         <div class="col-sm-12">
-                            <div  class="media" ng-repeat="chatuser in tempfriends = (chatactivity.chatfriends | filter:searchChatConversation)"
+                            <div  class="media"
+                                 ng-repeat="chatuser in tempfriends = (chatactivity.chatfriends | filter:searchChatConversation)"
                                  ng-click="openchatroom('{{ chatuser._id }}')"
                                  style="border-bottom:1px solid #F5F5F5;cursor:pointer;" >
                                 <div data-html="true" data-placement="right"
@@ -63,6 +64,7 @@
                                  ng-click="openchatroom('{{ conversation }}')"
 
                                  style="border-bottom:1px solid #F5F5F5;cursor:pointer;" >
+
                               <div class="media-left">
                                 <a class="pull-left" style="padding: 0px 7px;">
                                   <img class="media-object" style="width:40px;border-radius:50%;"
@@ -72,7 +74,9 @@
                               </div>
                               <div class="media-body">
                                 <h5 class="media-heading" style="font-family: 'Open sans',Arial,sans-serif;" >
-                                    {{ UserService.get(conversation).name.first }} {{ UserService.get(conversation).name.last }}
+                                    {{ UserService.get(conversation).name.first }}
+
+                                    {{ UserService.get(conversation).name.last }}
                                     <!--<span class="pull-right" style="opacity:0.40;font-size:9px;padding-top:3px;">
                                        11/11/11
                                     </span>-->
@@ -80,6 +84,7 @@
                                 <h5 style="font-family: 'Open sans',Arial,sans-serif;opacity:0.50;">
                                     Wonder what weber can do
                                 </h5>
+                                  <button ng-click="deleteConversation(conversation)"> delete </button>
                               </div>
                             </div>
 

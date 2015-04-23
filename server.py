@@ -28,12 +28,13 @@ from bson.objectid import ObjectId
 logging.basicConfig(filename='/var/log/weber_error.log', format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %I:%M:%S %p')
 
 class TokenAuth(TokenAuth):
-	def check_auth(self, token, allowed_roles, resource, method):
-		accounts = app.data.driver.db['people']
-		return accounts.find_one({'token': token})
+    def check_auth(self, token, allowed_roles, resource, method):
+        accounts = app.data.driver.db['people']
+        return accounts.find_one({'token': token})
 
-app = Eve(__name__,static_url_path='/static')
+app = Eve(__name__,static_url_path='/static', auth = TokenAuth)
 app.debug = True,
+
 app.config.update(
 	DEBUG=True,
     #EMAIL SETTINGS
@@ -43,6 +44,7 @@ app.config.update(
 	MAIL_USERNAME = 'team@theweber.in',
 	MAIL_PASSWORD = 'ashok@weber'
 	)
+
 mail=Mail(app)
 socketio = SocketIO(app)
 
@@ -57,25 +59,48 @@ def create_token(user):
     token = jwt.encode(payload, TOKEN_SECRET)
     return token.decode('unicode_escape')
 
+# add to converstions
+#delete conversation user
+@app.route('/api/addconversation', methods=['GET'])
+def addConversation():
+    data = request.args.to_dict()
+    accounts = app.data.driver.db['people']
+    add_conversation = accounts.update({'_id': ObjectId(data['cuserid'])},
+                                       { "$push" :{ "conversations": ObjectId(data['conversationid'])}})
+    if add_conversation is not None:
+        return jsonify({'data': True})
+    return jsonify({'data': False})
+
+
+
+#delete conversation user
+@app.route('/api/deleteconversation', methods=['GET'])
+def deleteConversation():
+    data = request.args.to_dict()
+    accounts = app.data.driver.db['people']
+    delete_conversation = accounts.update({'_id': ObjectId(data['cuserid'])}, { "$pull" :{ "conversations": ObjectId(data['conversationid'])}})
+    messages = app.data.driver.db['messages']
+    delete_message = messages.remove({ "$or" : [
+        { "$and" : [ { "sender" : ObjectId(data['cuserid']) }, { "receiver" : ObjectId(data['conversationid']) } ] },
+        { "$and" : [ { "sender" : ObjectId(data['conversationid']) },{ "receiver": ObjectId(data['cuserid']) }]}
+    ]})
+    if (delete_conversation and delete_message) is not None:
+        return jsonify({'data': True})
+    return jsonify({'data': False})
+
+
 #update user answer
 @app.route('/api/updateAnswer', methods=['POST', 'GET'])
 def updateAnswer():
     print '----------update answer---------'
     data = (request.args.to_dict())
-    print data['cuserid'], data['question'], data['answer']
     accounts = app.data.driver.db['people']
     userdata = accounts.find_one({'_id':ObjectId(data['cuserid']), 'questions.questionid': ObjectId(data['question'])})
     if userdata is not None:
-        print '------if yes----------', data['cuserid']
         accounts.update({'_id':ObjectId(data['cuserid']), 'questions.questionid': ObjectId(data['question'])},
                     {"$set":{"questions.$.answer": data['answer'] }})
-
         return jsonify({'data':True})
-
     else:
-        print '------if no----------'
-        print data['cuserid']
-
         accounts.update({'_id':ObjectId(data['cuserid'])},
                     { "$push" : { "questions":
                                                 {'questionid': ObjectId(data['question']),
@@ -91,16 +116,11 @@ def updateAnswer():
 @app.route('/api/addfriend', methods=['POST', 'GET'])
 def addfriend():
     try:
-        print '---------data-----------'
         cuserid = request.args.get('cuserid')
         puserid = request.args.get('puserid')
-
         friends = Friends(cuserid, puserid, app)
         result = friends.addFriend()
-        print '--------result---> return'
-        print result
         if result:
-
             socketio.emit('FMnotific',{'data':{'FMnotific': True}}, room = str(puserid))
         return jsonify({'data': result})
     except Exception as e:
@@ -109,84 +129,60 @@ def addfriend():
 # cancel request
 @app.route('/api/cancelfriend', methods=['POST', 'GET'])
 def cancelfriend():
-    print '---------data-----------'
     cuserid = request.args.get('cuserid')
     puserid = request.args.get('puserid')
-
     friends = Friends(cuserid, puserid, app)
     result = friends.cancelFriend()
-    print '--------result---> return'
-    print result
     return jsonify({'data':result})
 
 @app.route('/api/acceptfriend', methods=['POST', 'GET'])
 def acceptfriend():
-    print '--------------------'
     cuserid = request.args.get('cuserid')
     puserid = request.args.get('puserid')
-
     friends = Friends(cuserid, puserid, app)
     result = friends.acceptFriend()
-    print '--------result---> return'
-    print result
     if result:
         socketio.emit('FMnotific',{'data':{'FMnotific': True}}, room = str(puserid))
     return jsonify({'data':result})
 
 @app.route('/api/rejectfriend', methods=['POST', 'GET'])
 def rejectfriend():
-    print '---------data-----------'
     cuserid = request.args.get('cuserid')
     puserid = request.args.get('puserid')
-
     friends = Friends(cuserid, puserid, app)
     result = friends.rejectFriend()
-    print '--------result---> return'
     print result
     return jsonify({'data':result})
 
 @app.route('/api/unfriend', methods=['POST', 'GET'])
 def unfriend():
-    print '---------data-----------'
     cuserid = request.args.get('cuserid')
     puserid = request.args.get('puserid')
-
     friends = Friends(cuserid, puserid, app)
     result = friends.unFriend()
-    print '--------result---> return'
-    print result
     return jsonify({'data':result})
 
 @app.route('/api/makeseen', methods=['POST', 'GET'])
 def makeseen():
-    print '---------make seen-----------'
     cuserid = request.args.get('cuserid')
     operations = Notifications(cuserid, app)
     result = operations.makeSeen()
-    print '--------make seen result-----'
-    print result
     return jsonify({'data':result})
 
 @app.route('/api/match', methods=['POST', 'GET'])
 def match():
-    print '---------match-----------'
     data = (request.args.to_dict())
     matchunmatch = MatchUnmatch(data, app)
     result = matchunmatch.match()
-    print '--------match click result-----'
-    print result
     if result:
         socketio.emit('FMnotific',{'data':{'FMnotific': True}}, room = str(data['authorid']))
     return jsonify({'data':result})
 
 @app.route('/api/unmatch', methods=['POST', 'GET'])
 def unmatch():
-    print '---------match-----------'
     data = (request.args.to_dict())
     matchunmatch = MatchUnmatch(data, app)
     result = matchunmatch.unMatch()
-    print '-------unmatch result-----'
-    print result
     return jsonify({'data':result})
 
 
@@ -227,23 +223,6 @@ def index():
 def me():
     return Response(json.dumps(g.user_id),  mimetype='application/json')
 
-
-
-"""@app.route('/api/getpeoplenames',  methods=['GET','POST'])
-def getnames():
-    print ''
-    page =  request.json['page']
-    query = request.json['query']
-    accounts = app.data.driver.db['people']
-    print page
-    data = accounts.find({"$or":[
-                {"name.first":{"$regex":".*"+query+".*"}},
-                {"name.name":{"$regex":".*"+query+".*"}},
-                {"username":{"$regex":".*"+query+".*"}}
-            ]}).limit(10);
-
-    return json_util.dumps(data)"""
-
 @app.route('/api/getpeoplenames/<query>',  methods=['GET','POST'])
 def getnames(query):
     accounts = app.data.driver.db['people']
@@ -279,6 +258,8 @@ def login():
         response.status_code = 401
         return response
     token = create_token(user)
+    print '========================================================'
+    #accounts.update({'email': request.json['email']},{'token':token})
     return jsonify(token=token)
 
 
@@ -288,6 +269,7 @@ def forgotpassword():
     user = accounts.find_one({'email': request.json['email']})
     user_name = user['username']
     user_randome_string = user['random_string']
+
     if not user:
         response = jsonify(error = 'Your Email does not exist in our database')
         response.status_code = 401
@@ -348,26 +330,14 @@ def get_new_hash_password():
         return response
 
 
-"""@app.route('/getsearch')
-def getSearchResults():
-    extract_words = []
-    extract_words = create_tokens(request.args.get("searchtext"))
-    print len(extract_words)
-    if len(extract_words) == 2:
-        data = 'http://127.0.0.1:8000/api/posts?where={"keywords":{"$in":'+json.dumps(list(extract_words))+'}}'
-        r = requests.get(data)
-        return r.data
-    else:
-        return "none"""
-
-@app.route('/api/similarwords')
+"""@app.route('/api/similarwords')
 def getSimilarWords():
     print '----------------'
     print request.args.get('querystring')
     words = parse_sentence(request.args.get("querystring"))
     post_tokens = create_tokens(request.args.get("querystring"))
     keywords = set(list(post_tokens)+list(words))
-    return json.dumps(list(set(keywords)))
+    return json.dumps(list(set(keywords)))"""
 
 ##################################################
 #Signup with email confirm validation
@@ -381,10 +351,7 @@ def signup():
     user_email = accounts.find_one({'email': request.json['email']})
     if not user_email:
         dt = datetime.now()
-
         #data = requests.get('http://weber.ooo/api/similarwords?querystring='+' '.join(request.json['interests']))
-
-
         user = {
             'email' :request.json['email'],
             'username':request.json['username'],
@@ -575,67 +542,37 @@ def postNotific(updates, original):
     last =  updates['interestedPeople']['lastupdated']
     if(present != last):
         socketio.emit('FMnotific',{'data':{'FMnotific': True}}, room = str(original['author']))
-
-
-
 app.on_inserted_people_posts+= after_post_inserted
 #app.on_updated_people+= after_friend_notification_get
 app.on_updated_posts = postNotific
-
-
-
-
-
-
 from werkzeug import secure_filename
-
 UPLOAD_FOLDER = 'static/images'
 ALLOWED_EXTENSIONS = set(['png','jpg', 'jpeg', 'bmp'])
-
-
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-
-
 @app.route('/fileUpload', methods=['GET', 'POST'])
 def fileupload():
     if request.method == 'POST':
         file = request.files['file']
-
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-
-            import datetime
             dt = str(datetime.datetime.now())
-
-
-            import os
             renamed_filename = dt+'_'+filename
-
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], renamed_filename))
             #print os.path.join(app.config['UPLOAD_FOLDER'], renamed_filename)
         return os.path.join(app.config['UPLOAD_FOLDER'], renamed_filename)
-
-#chating part
-
-
 
 @socketio.on('connecting', namespace='/live')
 def joiningtoroom(data):
     if(join_into_room(data['id'])):
         emit('joiningstatus',{'data': data['id'] in request.namespace.rooms})
 
-
-
 @socketio.on('connect')
 def creta_or_join(data):
-
-    #print '========================'
-    #print data['data']
     if(join_into_room(data['data'])):
         #print request.namespace.rooms
         emit('join_status',{'data': data['data'] in request.namespace.rooms})
@@ -643,12 +580,6 @@ def creta_or_join(data):
 
 @socketio.on('send_message')
 def send_to_room(data):
-
-    #print '===========message============='
-    #print data['receiverid']
-    #print data['senderid']
-    #print data['message']
-
     emit('receive_messages',
          {
           'message': data['message'],
@@ -657,31 +588,19 @@ def send_to_room(data):
          },
          room=data['receiverid'])
 
-    """if(join_into_room(data['data'])):
-        print request.namespace.rooms
-        emit('join_status',{'data': data['data'] in request.namespace.rooms})"""
-
-
-
 @socketio.on_error()
 def error_handler(e):
-    print '============error=========='
     print e
 
 def join_into_room(id):
-
     data = False
     if id is not None:
         join_room(id)
         data = True
     return data
 
-
-app.threaded=True
+#app.threaded=True
 socketio.run(app, host='127.0.0.1', port=8000)
-
-
-
 # server sent events section
 """from redis import Redis
 redis = Redis()

@@ -187,7 +187,7 @@ angular.module('weberApp')
 		this.get = function(userId) {
             for (var i in this.users) {
 				if (this.users[i]._id == userId) {
-					return this.users[i];
+				    return this.users[i];
 				}
 			}
 			var promise = Restangular.one('people',userId).get().$object;

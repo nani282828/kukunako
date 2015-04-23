@@ -116,7 +116,9 @@
                                 <div class="panel-heading post-div"
                                      style="background-color:#fff;border:0px solid #F2F2F2;padding-bottom:;">
                                     <h5 style="margin-top:10px;margin-left: -8px;">
-                                        {{question.question}}?
+                                        <strong>
+                                            {{question.question}}?
+                                        </strong>
                                     </h5>
                                 </div>
                                 <div class="panel-body" style="margin-bottom:0px;padding:0px 15px;">
@@ -224,13 +226,24 @@
 				<div class="panel-heading post-div" style="background-color:#fff;border-bottom:1px solid #F2F2F2;">
 
 					<a class="pull-left" style="padding: 5px;" href="#/profile/{{UserService.get(post.author)._id}}">
-						<img style="width:35px" class="media-object img-circle" ng-src="{{UserService.get(post.author).picture.thumbnail}}" alt="">
+                        <img class="media-object img-circle" data-placement="top" style="width:35px;"
+                             data-animation="am-fade-and-scale" data-html="true" data-container="body"
+                            data-title="<h5>{{UserService.get(post.author).name.first}} {{UserService.get(post.author).name.last}}</h5>
+                                <h5>Lives In {{ UserService.get(post.author).location.city }}, {{UserService.get(post.author).location.state}}</h5>"
+                            bs-tooltip ng-src="{{UserService.get(post.author).picture.thumbnail}}" />
 					</a>
 					<strong>
 						<a href="#/profile/{{UserService.get(post.author)._id}}" style="color:#133444">
 							{{UserService.get(post.author).name.first}} {{UserService.get(post.author).name.last}}
 						</a>
 					</strong>&nbsp;wrote on his story.
+
+                    <button type="button" class="btn btn-sm btn-primary" data-html="true" data-title="surya muppalla"
+                            data-animation="am-fade-and-scale" data-container="body" data-content="<button class='btn btn-primary btn-sm'>surya</button>"
+                            data-placement="center" bs-modal>
+                        Click to toggle modal
+                    </button>
+
                     <confirmdelete>
                         <a class="pull-right delete-div" ng-if="user._id == UserService.get(post.author)._id" ng-click="deletediv(post._id)"
                            style="cursor:pointer;font-size:12px">

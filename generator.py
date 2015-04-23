@@ -42,6 +42,7 @@ for raw_user in users:
         'password_updated':dt
     }
     user['movies'] = []
+    user['token'] = ''
     user['friends'] = []
     user['notifications'] = []
     user['conversations'] = []

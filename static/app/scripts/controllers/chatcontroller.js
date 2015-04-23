@@ -4,9 +4,12 @@ angular.module('weberApp')
                                           $document, Restangular,ChatActivity){
 
     //updating the chat div height using below code please put it
+
     $scope.get_screen_height = window.innerHeight-52;
     $scope.get_inner_div_height = (window.innerHeight-210)/2;
-     $http.get('/api/me', {
+    $scope.UserService = UserService;
+
+    $http.get('/api/me', {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -253,15 +256,13 @@ angular.module('weberApp')
                 }
 
                 $scope.addToConversations = function(id){
-                        alert('haiii')
-                    //if(user.conversations.indexOf(id) == -1 && user.friends.indexOf(id) == -1){
                         $scope.chatactivity.addToConversations(id);
-                   // }else{
-                        //console.log('alredy added')
-                    //}
-
                 }
-                //display_divs();
+                $scope.deleteConversation = function(id){
+                    $scope.chatactivity.deleteConversation(id);
+                     sessionStorage.removeItem(id);
+                }
+
                 loadintodivs();
                 $scope.MessageNotifcations();
         });
