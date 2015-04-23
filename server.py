@@ -32,7 +32,7 @@ class TokenAuth(TokenAuth):
         accounts = app.data.driver.db['people']
         return accounts.find_one({'token': token})
 
-app = Eve(__name__,static_url_path='/static', auth = TokenAuth)
+app = Eve(__name__,static_url_path='/static')
 app.debug = True,
 
 app.config.update(
@@ -58,6 +58,50 @@ def create_token(user):
 
     token = jwt.encode(payload, TOKEN_SECRET)
     return token.decode('unicode_escape')
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not request.headers.get('Authorization'):
+            response = jsonify(error='Missing authorization header')
+            response.status_code = 401
+            return response
+
+        payload = parse_token(request)
+
+        if datetime.fromtimestamp(payload['exp']) < datetime.now():
+            response = jsonify(error='Token has expired')
+            response.status_code = 401
+            return response
+
+        g.user_id = payload['sub']
+
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+@app.route('/auth/login', methods=['POST'])
+def login():
+    accounts = app.data.driver.db['people']
+    user = accounts.find_one({'email': request.json['email']})
+    if not user:
+        response = jsonify(error='Your email does not exist')
+        response.status_code = 401
+        return response
+    if not user['email_confirmed'] == True:
+        response = jsonify(error='Email is not confirmed')
+        response.status_code = 401
+        return response
+    if not user or not check_password_hash(user['password']['password'], request.json['password']):
+        response = jsonify(error='Wrong Email or Password')
+        response.status_code = 401
+        return response
+    token = create_token(user)
+    print '========================================================'
+    #accounts.update({'email': request.json['email']},{'token':token})
+    return jsonify(token=token)
+
+
 
 # add to converstions
 #delete conversation user
@@ -241,26 +285,6 @@ def getnames(query):
 def send_foo(filename):
     return send_from_directory('/static/', filename)
 
-@app.route('/auth/login', methods=['POST'])
-def login():
-    accounts = app.data.driver.db['people']
-    user = accounts.find_one({'email': request.json['email']})
-    if not user:
-        response = jsonify(error='Your email does not exist')
-        response.status_code = 401
-        return response
-    if not user['email_confirmed'] == True:
-        response = jsonify(error='Email is not confirmed')
-        response.status_code = 401
-        return response
-    if not user or not check_password_hash(user['password']['password'], request.json['password']):
-        response = jsonify(error='Wrong Email or Password')
-        response.status_code = 401
-        return response
-    token = create_token(user)
-    print '========================================================'
-    #accounts.update({'email': request.json['email']},{'token':token})
-    return jsonify(token=token)
 
 
 @app.route('/forgotpasswordlink', methods=['POST', 'GET'])
