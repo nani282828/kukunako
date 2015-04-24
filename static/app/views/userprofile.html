@@ -1,5 +1,7 @@
 <div navbar></div>
+
 <div class="container" >
+    <a href="#/search">matchme</a>
 	<div class="col-md-3 colpadding" wb-affix="150">
 		<div class="thumbnail">
 			<img style="cursor:pointer;"
@@ -109,10 +111,11 @@
 
             <div class="panel-body" style="padding:1px;">
                 <a ng-repeat="friend in profileuser.friends " href="#/profile/{{friend._id}}">
+
                     <img data-placement="top" style="width:87px" data-html="true"
-                         data-title="<h5>{{friend.name.first}} {{friend.name.last}}</h5>
-                         <h5>Lives In {{friend.location.city}}, {{friend.location.state}}</h5>"
-                         data-trigger="hover" bs-tooltip src="{{friend.picture.thumbnail}}">
+                         data-title="<h5>{{UserService.get(friend).name.first}} {{ UserService.get(friend).name.last}}</h5>
+                         <h5>Lives In {{ UserService.get(friend).location.city}}, {{ UserService.get(friend).location.state}}</h5>"
+                         data-trigger="hover" bs-tooltip ng-src="{{ UserService.get(friend).picture.thumbnail}}">
                 </a>
             </div>
 		</div>
@@ -221,7 +224,7 @@
 				<div class="panel-heading" style="background-color:#fff;border-bottom:1px solid #F2F2F2;">
 					<a class="pull-left" style="padding: 5px;" href="#/profile/{{UserService.get(post.author)._id}}">
 						<img style="width:35px" class="media-object img-circle"
-							 src="{{UserService.get(post.author).picture.thumbnail}}" alt="">
+							 ng-src="{{UserService.get(post.author).picture.thumbnail}}" alt="">
 					</a>
 					<strong>
 						{{UserService.get(post.author).name.first}} {{UserService.get(post.author).name.last}}
@@ -236,7 +239,7 @@
                     <div ng-if="post.post_image_path" class="row">
 						<div class="col-sm-12" style="padding:0px;">
 							<div class="thumbnail" style="border:0px solid;">
-								<img src="{{ post.post_image_path }}">
+								<img ng-src="{{ post.post_image_path }}">
 							</div>
 						</div>
 					</div>
@@ -291,7 +294,6 @@
                                     {{ sortIListService.sendList(matchPeople.interestedList).length }}
                                     matched with this post
                                 </span>-->
-
                             </h6>
                         </div>
                     </div>
