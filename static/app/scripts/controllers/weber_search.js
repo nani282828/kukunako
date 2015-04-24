@@ -61,33 +61,6 @@ angular.module('weberApp')
         }
 
 
-	 	/* login functionality code goes here*/
-        $scope.submitLogin = function() {
-			$auth.login({
-				email: this.login_email,
-				password: this.login_password
-			}).then(function(response) {
-				$auth.setToken(response.data.token);
-				$rootScope.isloggin = true;
-				$window.location.reload();
-
-
-				//$location.path('/search');
-				//$route.reload();
-			}, function(error) {
-                //console.log(error.data.error)
-				$scope.loginError = error;
-				$alert({
-					title: 'Login Failed:',
-					content: error.data.error,
-					placement: 'top',
-					type: 'danger',
-					show: true
-				});
-			});
-		};
-
-        /* end of login functionality*/
 
         /* starting code of signup goes here */
 
@@ -236,7 +209,6 @@ angular.module('weberApp')
         };
 
         $scope.logout = function() {
-            alert('hai')
             $auth.logout();
             $location.path("/search");
         };
