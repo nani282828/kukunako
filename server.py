@@ -354,14 +354,14 @@ def get_new_hash_password():
         return response
 
 
-"""@app.route('/api/similarwords')
+@app.route('/api/similarwords')
 def getSimilarWords():
     print '----------------'
     print request.args.get('querystring')
     words = parse_sentence(request.args.get("querystring"))
     post_tokens = create_tokens(request.args.get("querystring"))
     keywords = set(list(post_tokens)+list(words))
-    return json.dumps(list(set(keywords)))"""
+    return json.dumps(list(set(keywords)))
 
 ##################################################
 #Signup with email confirm validation

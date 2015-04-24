@@ -48,6 +48,9 @@ for raw_user in users:
     user['conversations'] = []
     user['role'] = "test"
     user['questions']=[]
+    user['study'] = {"school": "my school",
+                     "graduate":"Engineering"
+                     }
 
     print '----------------------------user-------------------------'
     print user

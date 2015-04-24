@@ -88,7 +88,9 @@ angular.module('weberApp')
     $scope.logout = function() {
     //CurrentUser.reset();
         $rootScope.isloggin = false;
+        alert($rootScope.isloggin)
         $window.sessionStorage.clear();
+
         $auth.logout();
         $location.path("/search");
     };

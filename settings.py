@@ -366,7 +366,7 @@ people = {
         'study':{
             'type': 'dict',
             'schema': {
-                'intermediate': {'type': 'string'},
+                'school': {'type': 'string'},
                 'graduate': {'type': 'string'}
             },
         },

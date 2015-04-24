@@ -236,6 +236,7 @@ angular.module('weberApp')
         };
 
         $scope.logout = function() {
+            alert('hai')
             $auth.logout();
             $location.path("/search");
         };
