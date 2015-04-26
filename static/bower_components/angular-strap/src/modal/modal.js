@@ -16,7 +16,7 @@ angular.module('mgcrea.ngStrap.modal', ['mgcrea.ngStrap.helpers.dimensions'])
       element: null,
       backdrop: true,
       keyboard: true,
-      html: false,
+      html: true,
       show: true
     };
 

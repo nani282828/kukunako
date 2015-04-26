@@ -196,6 +196,26 @@ angular.module('weberApp')
 			return promise;
 		};
 	})
+		.service('InterestsService', function($http, Restangular) {
+		this.interests = [];
+
+		this.get = function(interestid) {
+		    if(interestid){
+                console.log('------------interest id----------', interestid)
+                for (var i in this.interests) {
+                    if (this.interests[i]._id == interestid) {
+                        return this.interests[i];
+                    }
+                }
+                var promise = Restangular.one('interests',interestid).get().$object;
+                promise._id = interestid;
+                this.interests.push(promise);
+                console.log('interests---->', interests)
+                return promise;
+            }
+		};
+	})
+
     .service('InstanceSearchHistory', function($http, Restangular) {
         this.history = [];
         this.get = function(query) {

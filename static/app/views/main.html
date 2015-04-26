@@ -4,17 +4,16 @@
             <div class="itemsContainer">
                 <div class="image">
                     <a style="cursor:pointer;">
-                        <img class="img-rounded" style="width:;" data-placement="center"
-                             data-animation="am-fade-and-scale" data-template="static/app/views/show_profile_image.html"
-                             bs-modal="modal" ng-src="{{user.picture.large}}" />
+                        <img class="img-rounded" style="" data-placement="center"
+                             data-animation="am-fade-and-scale" data-template="modal.showProfileImage.tpl.html"
+                             bs-modal ng-src="{{user.picture.large}}" />
                     </a>
                 </div>
             </div>
 			<div class="caption text-center">
 				<h3 style="text-transform: capitalize;">
                     <a href="" data-placement="bottom" style="text-decoration:none;" data-animation="am-fade-and-scale" data-html="true"
-                         data-title="<h5>{{user.name.first}} {{user.name.last}}</h5>
-                            <h5>Lives In {{user.location.state}}, {{user.location.city}}</h5>"
+                         data-title="<h5>Lives In {{user.location.city}}</h5>"
                          bs-tooltip>
                         {{user.name.first}} {{user.name.last}}
                     </a>
@@ -35,7 +34,8 @@
 							I am interested in:
                             <a ng-repeat="interest in user.interests"
                                style="line-height:1.2em;color:;text-decoration:none;text-transform:capitalize;">
-								{{ interest }}{{$last ? '' : ', '}}&nbsp;
+								<!--{{ interest }}{{$last ? '' : ', '}}&nbsp;-->
+                                {{ InterestsService.get(interest).interest_string }}{{$last ? '' : ', '}}
 							</a>
 						</h6>
 					</div>
@@ -88,19 +88,33 @@
 	</div>
 	<div class="col-md-6 colpadding" style="min-height:2000px">
         <div class="panel panel-default">
-            <div class="panel-heading" style="padding:2px;">
+            <div class="panel-heading" style="padding:2px;border-top: 1px solid #ECEAEA;">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist" style="border-bottom:0px solid #fff;">
                     <li class="active">
                       <a data-target="#home" role="tab" data-toggle="tab"
                          style="background:#f5f5f5;border:0px solid #fff;">
-                          <icon class="fa fa-question"></icon> <strong>Questions</strong>
+                          <h6 style="margin-top:0px;margin-bottom:0px;">
+                                <button class="btn btn-warning btn-xs" style="font-size: 10px;">
+                                    <icon class="fa fa-adjust"></icon>
+                                </button>
+                              <strong>
+                                  Questions
+                              </strong>
+                          </h6>
                       </a>
                     </li>
                     <li>
                         <a data-target="#profile" role="tab" data-toggle="tab"
                                  style="background:#f5f5f5;border:0px solid #fff;">
-                            <i class="fa fa-pencil"></i> <strong>Status Update</strong>
+                            <h6 style="margin-top:0px;margin-bottom:0px;">
+                                <button class="btn btn-primary btn-xs" style="font-size: 10px;">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <strong>
+                                    Status Update
+                                </strong>
+                            </h6>
                         </a>
                     </li>
                 </ul>
@@ -121,66 +135,61 @@
                                         </strong>
                                     </h5>
                                 </div>
-                                <div class="panel-body" style="margin-bottom:0px;padding:0px 15px;">
+                                <div class="panel-body" style="margin-bottom:0px;padding:0px 5px;">
                                     <div class="row" style="padding-bottom:5px;">
-                                        <div class="col-lg-10" style="margin-left:20px;" ng-if="checkAnswer(question._id)==1">
-                                            <label class="radio"
-                                                   style="margin-bottom:20px;cursor:pointer;" >
-                                                <input type="radio" ng-model='choice' value='{{question._id}}_yes'
+                                        <div class="col-lg-10" style="margin-left:;" ng-if="checkAnswer(question._id)==1">
+                                            <div class="funkyradio">
+                                                <div class="funkyradio-primary">
+                                                    <input type="radio" ng-model="choice" id="1" value="{{question._id}}_yes"
                                                        ng-change="answered('{{ question._id}}',1)"
-                                                       name="ans_{{question._id}}" ng-checked="true">
-                                                <strong>Yes</strong>
-                                            </label>
-                                            <label class="radio" style="cursor:pointer;">
-                                                <input type="radio"  ng-model='choice' value='{{question._id}}_no'
+                                                       name="ans_{{question._id}}" ng-checked="true" />
+                                                    <label for="1">Say yes</label>
+                                                </div>
+                                                <div class="funkyradio-info">
+                                                    <input type="radio"  ng-model="choice" id="2" value="{{question._id}}_no"
                                                        ng-change="answered('{{ question._id }}', 0)" ng-select="true"
-                                                       name="ans_{{question._id}}">
-                                                <strong>
-                                                    No
-                                                </strong>
-                                            </label>
+                                                       name="ans_{{question._id}}" />
+                                                    <label for="2">Say no</label>
+                                                </div>
+                                            </div>
                                             <!--answered : Yes-->
                                         </div>
 
-                                        <div class="col-lg-10" style="margin-left:20px;" ng-if="checkAnswer(question._id)==0">
+                                        <div class="col-lg-10" style="margin-left:;" ng-if="checkAnswer(question._id)==0">
 
-                                            <label class="radio"
-                                                   style="margin-bottom:20px;cursor:pointer;" >
-                                                <input type="radio" ng-model='choice' value='{{question._id}}_yes'
+                                            <div class="funkyradio">
+                                                <div class="funkyradio-primary">
+                                                    <input type="radio" ng-model="choice" id="3" value="{{question._id}}_yes"
                                                        ng-change="answered('{{ question._id}}',1)"
-                                                       name="ans_{{question._id}}" >
-                                                <strong>Yes</strong>
-                                            </label>
-                                            <label class="radio" style="cursor:pointer;">
-                                                <input type="radio"  ng-model='choice' value='{{question._id}}_no'
+                                                       name="ans_{{question._id}}" />
+                                                    <label for="3">Say yes</label>
+                                                </div>
+                                                <div class="funkyradio-info">
+                                                    <input type="radio"  ng-model="choice" id="4" value="{{question._id}}_no"
                                                        ng-change="answered('{{ question._id }}', 0)" ng-select="true"
-                                                       name="ans_{{question._id}}" ng-checked="true">
-                                                <strong>
-                                                    No
-                                                </strong>
-                                            </label>
+                                                       name="ans_{{question._id}}" ng-checked="true" />
+                                                    <label for="4">Say no</label>
+                                                </div>
+                                            </div>
                                             <!--answered : No-->
                                         </div>
 
-                                        <div class="col-lg-10" style="margin-left:20px;" ng-if="checkAnswer(question._id)==3">
+                                        <div class="col-lg-10" style="margin-left:;" ng-if="checkAnswer(question._id)==3">
 
-                                            <label class="radio"
-                                                   style="margin-bottom:20px;cursor:pointer;" >
-                                                <input type="radio" ng-model='choice' value='{{question._id}}_yes'
+                                            <div class="funkyradio">
+                                                <div class="funkyradio-primary">
+                                                    <input type="radio" ng-model="choice" id="5" value="{{question._id}}_yes"
                                                        ng-change="answered('{{ question._id}}',1)"
-                                                       name="ans_{{question._id}}" >
-                                                <strong>Yes</strong>
-                                            </label>
-
-
-                                            <label class="radio" style="cursor:pointer;">
-                                                <input type="radio"  ng-model='choice' value='{{question._id}}_no'
+                                                       name="ans_{{question._id}}" />
+                                                    <label for="5">Say yes</label>
+                                                </div>
+                                                <div class="funkyradio-info">
+                                                    <input type="radio" ng-model="choice" id="6" value="{{question._id}}_no"
                                                        ng-change="answered('{{ question._id }}', 0)" ng-select="true"
-                                                       name="ans_{{question._id}}">
-                                                <strong>
-                                                    No
-                                                </strong>
-                                            </label>
+                                                       name="ans_{{question._id}}" />
+                                                    <label for="6">Say no</label>
+                                                </div>
+                                            </div>
                                         <!--Not Yet answered-->
                                         </div>
                                     </div>
@@ -195,7 +204,7 @@
                             <div class="row">
                                 <div class="col-sm-2 pull-right">
                                     <button ng-click="submit_post()" type="submit" class="btn btn-primary btn-block btn-sm">
-                                        Post
+                                        <strong>Post</strong>
                                     </button>
                                 </div>
                             </div>
@@ -228,28 +237,24 @@
 					<a class="pull-left" style="padding: 5px;" href="#/profile/{{UserService.get(post.author)._id}}">
                         <img class="media-object img-circle" data-placement="top" style="width:35px;"
                              data-animation="am-fade-and-scale" data-html="true" data-container="body"
-                            data-title="<h5>{{UserService.get(post.author).name.first}} {{UserService.get(post.author).name.last}}</h5>
-                                <h5>Lives In {{ UserService.get(post.author).location.city }}, {{UserService.get(post.author).location.state}}</h5>"
+                            data-title="<h5>Lives In {{ UserService.get(post.author).location.city }}</h5>"
                             bs-tooltip ng-src="{{UserService.get(post.author).picture.thumbnail}}" />
 					</a>
 					<strong>
-						<a href="#/profile/{{UserService.get(post.author)._id}}" style="color:#133444">
+						<a href="#/profile/{{UserService.get(post.author)._id}}" style="color:#2196F3">
 							{{UserService.get(post.author).name.first}} {{UserService.get(post.author).name.last}}
 						</a>
-					</strong>&nbsp;wrote on his story.
+					</strong>&nbsp;
+                    <span style="opacity:0.7;">
+                        wrote on his story.
+                    </span>
 
-                    <button type="button" class="btn btn-sm btn-primary" data-html="true" data-title="surya muppalla"
-                            data-animation="am-fade-and-scale" data-container="body" data-content="<button class='btn btn-primary btn-sm'>surya</button>"
-                            data-placement="center" bs-modal>
-                        Click to toggle modal
-                    </button>
-
-                    <confirmdelete>
-                        <a class="pull-right delete-div" ng-if="user._id == UserService.get(post.author)._id" ng-click="deletediv(post._id)"
-                           style="cursor:pointer;font-size:12px">
-                            Delete
-                        </a>
-                    </confirmdelete>
+                    <a style="cursor:pointer;" class="pull-right delete-div" title="Delete this post"
+                       data-animation="am-fade-and-scale" ng-if="user._id == UserService.get(post.author)._id"
+                       data-template="modal.deletingPost.tpl.html"
+                       bs-modal>
+                        Delete
+                    </a>
 					<br>
 					<small class="text-muted">
                         <span class="glyphicon glyphicon-time" style="color:#2F5168"></span>
@@ -331,6 +336,79 @@
     .post-div:hover .delete-div{
         display:block;
     }
-
 </style>
+<script type="text/ng-template" id="modal.deletingPost.tpl.html">
+      <div class="modal" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content" style="border-radius:4px;">
+              <div class="modal-header" style="background-color:#f5f5f5;padding:12px 15px 8px 15px">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h5 class="modal-title">
+                    <label>
+                        Deleting Post
+                    </label>
+                </h5>
+              </div>
+              <div class="modal-body">
+                  <div class='row'>
+                    <div class='col-lg-12'>
+                        <h5>Are you sure you want to delete this post?</h5>
+                    </div>
+                  </div>
+              </div>
+              <div class="modal-footer" style="background-color:#f5f5f5;">
+                  <div class="row">
+                      <div class='col-lg-5 pull-right'>
+                        <span class='pull-right'>
+                            <button type="button" class="btn btn-sm btn-default" ng-click="$hide()">
+                                <strong>Cancel</strong>
+                            </button>&nbsp;
+                            <button class='btn btn-sm btn-danger' ng-click="confirm_delete(post._id)">
+                                <strong>Confirm Delete</strong>
+                            </button>
+                        </span>
+                      </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+      </div>
+</script>
+
+<script type="text/ng-template" id="modal.showProfileImage.tpl.html">
+      <div class="modal" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content" style="border-radius:4px;">
+              <div class="modal-header" style="background-color:#f5f5f5;padding:12px 15px 8px 15px">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h5 class="modal-title">
+                    <label>
+                        Showing Profile Picture
+                    </label>
+                </h5>
+              </div>
+              <div class="modal-body">
+                  <div class='row'>
+                    <div class='col-lg-12'>
+                        <div class="thumbnail" style="border:0px solid;margin-bottom:1px;">
+                            <img ng-src="{{ user.picture.large }}">
+                        </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="modal-footer" style="background-color:#f5f5f5;">
+                  <div class="row">
+                      <div class='col-lg-5 pull-right'>
+                        <span class='pull-right'>
+                            <button class='btn btn-sm btn-danger' ng-click="">
+                                <strong>Update Profile Image</strong>
+                            </button>
+                        </span>
+                      </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+      </div>
+</script>
 

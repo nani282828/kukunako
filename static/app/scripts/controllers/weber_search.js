@@ -59,23 +59,10 @@ angular.module('weberApp')
                 console.log('questions posted',data)
             });
         }
-
-
-
         /* starting code of signup goes here */
-
             $scope.registerUser = function() {
                 if (this.formData.gender) {
-
                 var self = this;
-                var interests = [];
-                var querystring = "";
-                for(var temp in $scope.tags){
-                    interests.push($scope.tags[temp].text.toString());
-                    querystring = querystring+$scope.tags[temp].text+" ";
-                }
-
-                //console.log('successdata', interestsSimilarWords)
                 var data = ['d','i','dd'];
                 $scope.signupBusy = $auth.signup({
                     email: self.formData.email,
@@ -84,18 +71,7 @@ angular.module('weberApp')
                     lastname: self.formData.lastname,
                     username: self.formData.firstname + self.formData.lastname,
                     gender: self.formData.gender,
-                    interests: interests,
-
-                    data : { 'interest1': {
-                                    'id':'55350611bed06933b3163cba',
-                                    'string': 'cricktet'
-                              },
-                              'interest2':{
-                                'id':'55350611bed06933b3163cba',
-                                'string': 'footbal'
-                              }
-                    }
-
+                    interests: $scope.interests_filter
                 }).then(function (response) {
                     //console.log('response data', response.data);
                     $location.path('/email_details/' + self.formData.email);

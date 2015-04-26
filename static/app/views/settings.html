@@ -1,21 +1,20 @@
-<div class="container">
+<div class="container" xmlns="http://www.w3.org/1999/html">
     <div class="row">
         <div class="col-lg-10 col-sm-12" style="">
             <!-- tabs left -->
           <div class="tabbable tabs-left">
               <div class="col-sm-3 col-md-3 colpadding">
-              <div class="panel-group" id="accordion">
+              <div class="panel-group">
                 <div class="panel panel-default">
                   <div class="panel-heading" style="background-color:#fff;border-top:1px solid #ddd;">
                     <h4 class="panel-title">
-                      <a data-toggle="collapse" data-parent="#accordion"
-                         data-target="#collapseOne" style="cursor:pointer;text-decoration:none;">
+                      <a style="cursor:pointer;text-decoration:none;">
                           <img src="{{ user.picture.thumbnail }}" style="width:40px;border-radius:5px;" class=""> &nbsp;
                           Account Settings
                       </a>
                     </h4>
                   </div>
-                  <div id="collapseOne" class="panel-collapse collapse in">
+                  <div class="panel-collapse">
                     <ul class="list-group">
                       <li class="list-group-item">
                           <span class="fa fa-user text-primary"></span>&nbsp;
@@ -24,7 +23,6 @@
                               <i class="fa fa-angle-right pull-right"></i>
                           </a>
                       </li>
-
                       <li class="list-group-item">
                           <span class="fa fa-lock text-primary"></span>&nbsp;
                           <a data-target="#b" data-toggle="tab" style="cursor:pointer;color:#333;">
@@ -32,13 +30,6 @@
                               <i class="fa fa-angle-right pull-right"></i>
                           </a>
                       </li>
-                      <!--<li class="list-group-item">
-                          <span class="fa fa-phone text-primary"></span>&nbsp;
-                          <a data-target="#c" data-toggle="tab" style="cursor:pointer;color:#333;">
-                              Mobile
-                              <i class="fa fa-angle-right pull-right"></i>
-                          </a>
-                      </li>-->
                       <li class="list-group-item">
                           <span class="fa fa-microphone text-primary"></span>&nbsp;
                           <a data-target="#d" data-toggle="tab" style="cursor:pointer;color:#333;">
@@ -46,20 +37,6 @@
                               <i class="fa fa-angle-right pull-right"></i>
                           </a>
                       </li>
-                      <!--<li class="list-group-item">
-                          <span class="fa fa-globe text-primary"></span>&nbsp;
-                          <a data-target="#a" data-toggle="tab" style="cursor:pointer;color:#333;">
-                              Notifications
-                              <i class="fa fa-angle-right pull-right"></i>
-                          </a>
-                      </li>
-                      <li class="list-group-item">
-                          <span class="fa fa-thumbs-o-up text-primary"></span>&nbsp;
-                          <a data-target="#a" data-toggle="tab" style="cursor:pointer;color:#333;">
-                              Connections
-                              <i class="fa fa-angle-right pull-right"></i>
-                          </a>
-                      </li>-->
                     </ul>
                   </div>
                 </div>
@@ -68,527 +45,332 @@
 
         <div class="tab-content col-lg-8 col-sm-12 colpadding">
             <div class="tab-pane active" id="a">
-                <div class="panel panel-default">
-                    <div class="panel-heading" style="background-color:#fff;border-top:1px solid #ddd;">
-                        <label>
-                            <span class="fa fa-user"></span>&nbsp;
-                            Account
-                        </label>
-                        <h5 style="opacity:0.65;margin-top:1px;margin-bottom:3px;">
-                            Change Account settings, language and more..
-                        </h5>
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default">
+                        <div style="cursor:pointer;padding: 25px;" class="panel-body" data-toggle="collapse"
+                                data-parent="#accordion" data-target="#1">
+                            <h4 class="panel-title">
+                                <div class="col-lg-3">
+                                    <a style="color:#000;opacity:0.6;">
+                                        Username
+                                    </a>
+                                    <span class="pull-right">
+                                        :
+                                    </span>
+                                </div>
+                                <div class="col-lg-5 col-lg-offset-1">
+                                    {{ user.username }}
+                                </div>
+                            </h4>
+                        </div>
+                        <div id="1" class="panel-collapse collapse out">
+                            <hr style="margin:0px 15px;" />
+                            <div class="panel-body" style="padding: 25px;">
+                                <div class="col-lg-12" style="margin-bottom:10px;">
+                                    <h5>
+                                        <span style="opacity:0.7;">Your username must be unique..Like</span>
+                                        <a style="opacity:1;">www.weber.ooo/{{ user.username }}</a>
+                                    </h5>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <form role="form" name="usernameInfo">
+                                                <input type="text" style="margin-bottom:10px;" placeholder="Enter username"
+                                                       autocomplete="off" id="username" name="username"
+                                                       ng-model="u_username" class="form-control input-sm" />
+                                                <span style="color:red;" ng-show="usernameInfo.username.$error.required
+                                                        && usernameInfo.username.$dirty">
+                                                       required
+                                                </span>
+                                                <button type="submit" ng-click="updateUsername()"
+                                                        class="btn btn-sm btn-primary" ng-disabled="!usernameInfo.$valid">
+                                                    Update
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="panel-body">
-                        <div class="row" style="cursor:pointer;"
-                             ng-click="username_section = !username_section">
-                            <div class="col-sm-12">
-                                <div class="jumbotron"
-                                     style="padding:10px;border-radius: 3px;margin-bottom:3px;">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <h5 style="opacity:0.80;" class="">
-                                                Username
-                                            </h5>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <h5>
-                                                <span style="cursor:pointer;">{{ user.username }}</span>
-                                            </h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" ng-show="username_section" style="padding-top:10px;">
-                            <div class="col-sm-12">
-                                <div class="row">
-                                    <div class="col-lg-8 col-lg-offset-3 colpadding">
-                                        <h6 style="line-height:1.5em;">
-                                            <span style="opacity:0.60;">
-                                                <i class="fa fa-exclamation-circle"></i>&nbsp;
-                                                Username must be Unique,&nbsp;
-                                                it's like
-                                            </span>
-                                            <a href="">http://www.weber.ooo/{{ user.username }}</a>
-                                        </h6>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-3 colpadding">
-                                        <h6 class="pull-right">
-                                            <label>
-                                                Username
-                                            </label>
-                                        </h6>
-                                    </div>
-                                    <div class="col-lg-8 colpadding">
-                                        <form name="myuForm">
-                                            <div class="row">
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control input-sm" id="username" name="username"
-                                                           ng-model="u_username" required
-                                                          placeholder="Enter Username" style="margin-bottom:8px;"  />
-                                                    <span style="color:red;" ng-show="myuForm.username.$error.required
-                                                            && myuForm.username.$dirty">
-                                                           required
-                                                    </span>
-                                                </div>
-                                            </div>
 
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <button type="submit" ng-click="username_section = !username_section;updateUsername()"
-                                                            class="btn btn-sm btn-primary" ng-disabled="!myuForm.$valid">
-                                                       Submit
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
+                    <div class="panel panel-default">
+                        <div style="cursor:pointer;padding: 25px;" class="panel-body" data-toggle="collapse"
+                                data-parent="#accordion" data-target="#2">
+                            <h4 class="panel-title">
+                                <div class="col-lg-3">
+                                    <a style="color:#000;opacity:0.6;">
+                                        Name
+                                    </a>
+                                    <span class="pull-right">
+                                        :
+                                    </span>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="row" style="cursor:pointer;padding-top:10px;"
-                             ng-click="email_section = !email_section">
-                            <div class="col-sm-12">
-                                <div class="jumbotron"
-                                     style="padding:10px;border-radius: 3px;margin-bottom:3px;">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <h5 style="opacity:0.80;" class="">
-                                                Email
-                                            </h5>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <h5>
-                                                <span style="cursor:pointer;">{{ user.email }}</span>
-                                            </h5>
-                                        </div>
-                                    </div>
+                                <div class="col-lg-5 col-lg-offset-1">
+                                    {{ user.name.first }} {{ user.name.last }}
                                 </div>
-                            </div>
+                            </h4>
                         </div>
-                        <div class="row" ng-show="email_section" style="padding-top:10px;">
-                            <div class="col-sm-12">
-                                <div class="row">
-                                    <div class="col-lg-offset-3 col-lg-8 colpadding">
-                                        <h6 style="opacity:0.60;">
-                                            <i class="fa fa-exclamation-circle"></i>&nbsp;
-                                            Your email can't be edited
-                                        </h6>
-                                    </div>
+                        <div id="2" class="panel-collapse collapse out">
+                            <hr style="margin:0px 20px;" />
+                            <div class="panel-body" style="padding: 25px;">
+                                <div class="col-lg-12" style="margin-bottom:10px;">
+                                    <h5>
+                                        <span style="opacity:0.7;">
+                                            Enter your first and last name to display on profile
+                                        </span>
+                                    </h5>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-3 colpadding">
-                                        <h6 class="pull-right">
-                                            <label>
-                                                Email
-                                            </label>
-                                        </h6>
-                                    </div>
-                                    <div class="col-lg-4 colpadding">
-                                        <form name="myForm2">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <input type="email" id="email" name="email" class="form-control input-sm"
-                                                           ng-model="formData.email" required disabled style="margin-bottom:5px;"
-                                                            placeholder="{{ user.email }}"/>
-                                                       <span style="color:red;" ng-show="myForm2.email.$error.required && myForm2.email.$dirty">
-                                                           required
-                                                       </span>
-                                                       <span style="color:red;" ng-show="!myForm2.email.$error.required && myForm2.email.$error.email && myForm.email.$dirty">
-                                                           invalid email
-                                                       </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <button type="submit" class="btn btn-sm btn-primary" ng-disabled="!myForm2.$valid">
-                                                       Submit
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row" style="cursor:pointer;padding-top:10px;"
-                             ng-click="firstname_lastname_section = !firstname_lastname_section">
-                            <div class="col-sm-12">
-                                <div class="jumbotron"
-                                     style="padding:10px;border-radius: 3px;margin-bottom:3px;">
+                                <div class="col-lg-7">
                                     <div class="row">
-                                        <div class="col-sm-3">
-                                            <h5 style="opacity:0.80;" class="">
-                                                Name
-                                            </h5>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <h5>
-                                                <span style="cursor:pointer;">{{ user.name.first }} {{ user.name.last }}</span>
-                                            </h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" ng-show="firstname_lastname_section" style="padding-top:10px;">
-                            <div class="col-sm-12">
-                                <form name="myForm3">
-                                    <div class="row">
-                                        <div class="col-lg-offset-3 col-lg-8 colpadding">
-                                            <h6 style="opacity:0.60;">
-                                                <i class="fa fa-exclamation-circle"></i>&nbsp;
-                                                Enter first and last name must
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-3 colpadding">
-                                            <h6 class="pull-right">
-                                                <label>
-                                                    First Name
-                                                </label>
-                                            </h6>
-                                        </div>
-                                        <div class="col-lg-4 colpadding">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <input type="text" class="form-control input-sm" id="firstName" name="firstName"
-                                                          ng-model="edit_first_name" required
-                                                          placeholder="Enter First Name" style="margin-bottom:5px;"  />
-                                                    <span style="color:red;" ng-show="myForm3.firstName.$error.required && myForm3.firstName.$dirty">
-                                                           required
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-3 colpadding">
-                                            <h6 class="pull-right">
-                                                <label>
-                                                    Last Name
-                                                </label>
-                                            </h6>
-                                        </div>
-                                        <div class="col-lg-4 colpadding">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <input type="text" class="form-control input-sm" id="lastName" name="lastName"
-                                                          ng-model="edit_last_name" required
-                                                          placeholder="Enter lastName" style="margin-bottom:5px;"  />
-                                                    <span style="color:red;" ng-show="myForm3.lastName.$error.required && myForm3.lastName.$dirty">
-                                                           required
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <button type="submit" ng-click="firstname_lastname_section = !firstname_lastname_section;updateFirstLastName()"
-                                                            class="btn btn-sm btn-primary" ng-disabled="!myForm3.$valid">
-                                                       Submit
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                        <div class="row" style="cursor:pointer;padding-top:10px;"
-                             ng-click="interests_section = !interests_section">
-                            <div class="col-sm-12">
-                                <div class="jumbotron"
-                                     style="padding:10px;border-radius: 3px;margin-bottom:3px;">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <h5 style="opacity:0.80;" class="">
-                                                Interests
-                                            </h5>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <h5>
-                                                <span ng-repeat="interest in user.interests"
-                                                      style="cursor:pointer;">
-                                                    {{ interest.text }}
-                                                    {{ interest.text }}{{$last ? '' : ', '}}
+                                        <div class="col-lg-8">
+                                            <form role="form" name="firstLastInfo">
+                                                <input type="text" style="margin-bottom:10px;" placeholder="Enter First name"
+                                                       autocomplete="off" id="firstName" name="firstName"
+                                                       ng-model="edit_first_name" class="form-control input-sm" />
+                                                <span style="color:red;" ng-show="firstLastInfo.firstName.$error.required
+                                                        && firstLastInfo.firstName.$dirty">
+                                                       required
                                                 </span>
-                                            </h5>
-                                            <h5 style="opacity:0.90;" ng-if="!(user.interests.length)">
-                                                <span style="cursor:pointer;">
-                                                    Please add some interests here
+                                                <input type="text" style="margin-bottom:10px;" placeholder="Enter Last name"
+                                                       autocomplete="off" id="lastName" name="lastName"
+                                                       ng-model="edit_last_name" class="form-control input-sm" />
+                                                <span style="color:red;" ng-show="firstLastInfo.lastName.$error.required
+                                                        && firstLastInfo.lastName.$dirty">
+                                                       required
                                                 </span>
-                                            </h5>
+                                                <button type="submit" ng-click="updateFirstLastName()"
+                                                        class="btn btn-sm btn-primary" ng-disabled="!firstLastInfo.$valid">
+                                                    Update
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row" ng-show="interests_section"
-                             style="padding-top:10px;">
-                            <div class="col-sm-12">
-                                <form name="myiForm">
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div style="cursor:pointer;padding: 25px;" class="panel-body" data-toggle="collapse"
+                                data-parent="#accordion" data-target="#3">
+                            <h4 class="panel-title">
+                                <div class="col-lg-3">
+                                    <a style="color:#000;opacity:0.6;">
+                                        Email
+                                    </a>
+                                    <span class="pull-right">
+                                        :
+                                    </span>
+                                </div>
+                                <div class="col-lg-5 col-lg-offset-1">
+                                    {{ user.email }}
+                                </div>
+                            </h4>
+                        </div>
+                        <div id="3" class="panel-collapse collapse out">
+                            <hr style="margin:0px 20px;" />
+                            <div class="panel-body" style="padding: 25px;">
+                                <div class="col-lg-12" style="margin-bottom:10px;">
+                                    <h5>
+                                        <span style="opacity:0.7;">
+                                            Your email can't be changed because it is unique..
+                                        </span>
+                                    </h5>
+                                </div>
+                                <div class="col-lg-7">
                                     <div class="row">
-                                        <div class="col-lg-offset-3 col-lg-8">
-                                            <h6 style="opacity:0.60;">
-                                                <i class="fa fa-exclamation-circle"></i>&nbsp;
-                                                Enter your interests here
-                                            </h6>
+                                        <div class="col-lg-8">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="optradio" checked>
+                                                <strong style="opacity:0.7;">
+                                                    {{ user.email }}
+                                                </strong>
+                                            </label>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div style="cursor:pointer;padding: 25px;" class="panel-body" data-toggle="collapse"
+                                data-parent="#accordion" data-target="#4">
+                            <h4 class="panel-title">
+                                <div class="col-lg-3">
+                                    <a style="color:#000;opacity:0.6;">
+                                        Interests
+                                    </a>
+                                    <span class="pull-right">
+                                        :
+                                    </span>
+                                </div>
+                                <div class="col-lg-8 col-lg-offset-1">
+                                    <span ng-repeat="interest in user.interests"
+                                          style="cursor:pointer;">
+                                        <!--{{ interest.text }}{{$last ? '' : ', '}}-->
+                                        {{ InterestsService.get(interest.text).interest_string }}{{$last ? '' : ', '}}
+
+                                   </span>
+                                    <span ng-if="!(user.interests.length)" style="cursor:pointer;">
+                                        Please add some interests here
+                                    </span>
+                                </div>
+                            </h4>
+                        </div>
+                        <div id="4" class="panel-collapse collapse out">
+                            <hr style="margin:0px 20px;" />
+                            <div class="panel-body" style="padding: 25px;">
+                                <div class="col-lg-12" style="margin-bottom:10px;">
+                                    <h5>
+                                        <span style="opacity:0.7;">
+                                            Enter your interests to provide relevant results to your search
+                                        </span>
+                                    </h5>
+                                </div>
+                                <div class="col-lg-7">
                                     <div class="row">
-                                        <div class="col-lg-3 colpadding">
-                                            <h6 class="pull-right">
-                                                <label>
-                                                    Interests
-                                                </label>
-                                            </h6>
-                                        </div>
-                                        <div class="col-lg-8 colpadding">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <tags-input ng-model="tags" id="interests_tag" name="interests_tag" on-tag-added="tagAdded($tag)"
+                                        <div class="col-lg-8">
+                                            <form role="form" name="myiForm">
+                                                <tags-input ng-model="tags" id="interests_tag" name="interests_tag" on-tag-added="tagAdded($tag)"
                                                                 on-tag-removed="tagRemoved($tag)" required>
                                                         <auto-complete source="loadTags($query)"></auto-complete>
-                                                    </tags-input>
-                                                    <span style="color:red;"
-                                                          ng-show="myiForm.interests_tag.$error.required && myiForm.interests_tag.$dirty">
-                                                           required
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="row" style="padding-top:10px;">
-                                                <div class="col-sm-12">
-                                                    <button type="submit"
-                                                            ng-click="interests_section = !interests_section;updateInterests()"
+                                                </tags-input>
+                                                <span style="color:red;"
+                                                      ng-show="myiForm.interests_tag.$error.required && myiForm.interests_tag.$dirty">
+                                                       required
+                                                </span>
+                                                <button style="margin-top:10px;" type="submit" ng-click="updateInterests()"
                                                             class="btn btn-sm btn-primary" ng-disabled="!myiForm.$valid">
-                                                       Submit
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                        <div class="row" style="cursor:pointer;padding-top:10px;"
-                             ng-click="location_section = !location_section">
-                            <div class="col-sm-12">
-                                <div class="jumbotron"
-                                     style="padding:10px;border-radius: 3px;margin-bottom:3px;">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <h5 style="opacity:0.80;" class="">
-                                                My Location
-                                            </h5>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <h5>
-                                                <span style="cursor:pointer;">
-                                                    {{ user.location.state }}, {{ user.location.city }}, {{ user.location.street }}
-                                                </span>
-                                            </h5>
+                                                    Update
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row" ng-show="location_section" style="padding-top:10px;">
-                            <div class="col-sm-12">
-                                <form name="myFormL">
-                                    <div class="row">
-                                        <div class="col-lg-offset-3 col-lg-8 colpadding">
-                                            <h6 style="opacity:0.60;">
-                                                <i class="fa fa-exclamation-circle"></i>&nbsp;
-                                                Enter Exact location to provide more benefits to your search
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-3 colpadding">
-                                            <h6 class="pull-right">
-                                                <label>
-                                                    Enter State
-                                                </label>
-                                            </h6>
-                                        </div>
-                                        <div class="col-lg-4 colpadding">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <input type="text" class="form-control input-sm" id="location_state" name="location_state"
-                                                          ng-model="location_state" required
-                                                          placeholder="Enter State Name" style="margin-bottom:5px;"  />
-                                                    <span style="color:red;"
-                                                          ng-show="myFormL.location_state.$error.required && myFormL.location_state.$dirty">
-                                                           required
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-3 colpadding">
-                                            <h6 class="pull-right">
-                                                <label>
-                                                    Enter Street
-                                                </label>
-                                            </h6>
-                                        </div>
-                                        <div class="col-lg-4 colpadding">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <input type="text" class="form-control input-sm" id="location_street" name="location_street"
-                                                          ng-model="location_street" required
-                                                          placeholder="Enter Street Name" style="margin-bottom:5px;"  />
-                                                    <span style="color:red;"
-                                                          ng-show="myFormL.location_street.$error.required && myFormL.location_street.$dirty">
-                                                           required
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-3 colpadding">
-                                            <h6 class="pull-right">
-                                                <label>
-                                                    Enter City
-                                                </label>
-                                            </h6>
-                                        </div>
-                                        <div class="col-lg-4 colpadding">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <input type="text" class="form-control input-sm" id="location_city" name="location_city"
-                                                          ng-model="location_city" required
-                                                          placeholder="Enter City" style="margin-bottom:5px;"  />
-                                                    <span style="color:red;" ng-show="myFormL.location_city.$error.required && myFormL.location_city.$dirty">
-                                                           required
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <button type="submit"
-                                                            ng-click="location_section = !location_section;updatechangelocation()"
-                                                            class="btn btn-sm btn-primary" ng-disabled="!myFormL.$valid">
-                                                       Submit
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                        <div class="row" style="cursor:pointer;padding-top:10px;"
-                             ng-click="study_section = !study_section">
-                            <div class="col-sm-12">
-                                <div class="jumbotron"
-                                     style="padding:10px;border-radius: 3px;margin-bottom:3px;">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <h5 style="opacity:0.80;" class="">
-                                                Studies
-                                            </h5>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <h5 ng-if="user.study.intermediate">
-                                                <span style="cursor:pointer;">
-                                                    {{ user.study.intermediate }}, {{ user.study.graduate }}
-                                                </span>
-                                            </h5>
-                                            <h5 ng-if="!(user.study.intermediate)">
-                                                <span style="cursor:pointer;">
-                                                    Please Update Your Studies
-                                                </span>
-                                            </h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" ng-show="study_section" style="padding-top:10px;">
-                            <div class="col-sm-12">
-                                <form name="myForms">
-                                    <div class="row">
-                                        <div class="col-lg-offset-3 col-lg-8 colpadding">
-                                            <h6 style="opacity:0.60;">
-                                                <i class="fa fa-exclamation-circle"></i>&nbsp;
-                                                Enter Exact location to provide more benefits to your search
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-3 colpadding">
-                                            <h6 class="pull-right">
-                                                <label>
-                                                    Intermediate
-                                                </label>
-                                            </h6>
-                                        </div>
-                                        <div class="col-lg-4 colpadding">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <input type="text" class="form-control input-sm" id="study_intermediate" name="study_intermediate"
-                                                          ng-model="study_intermediate" required
-                                                          placeholder="Enter Intermediate" style="margin-bottom:5px;"  />
-                                                    <span style="color:red;"
-                                                          ng-show="myForms.study_intermediate.$error.required && myForms.study_intermediate.$dirty">
-                                                           required
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-3 colpadding">
-                                            <h6 class="pull-right">
-                                                <label>
-                                                    Enter Graduation
-                                                </label>
-                                            </h6>
-                                        </div>
-                                        <div class="col-lg-4 colpadding">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <input type="text" class="form-control input-sm" id="study_graduate" name="study_graduate"
-                                                          ng-model="study_graduate" required
-                                                          placeholder="Enter Graduation" style="margin-bottom:5px;"  />
-                                                    <span style="color:red;" ng-show="myForms.study_graduate.$error.required && myForms.study_graduate.$dirty">
-                                                           required
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <button type="submit"
-                                                            ng-click="study_section = !study_section;updatechangestudy()"
-                                                            class="btn btn-sm btn-primary" ng-disabled="!myForms.$valid">
-                                                       Submit
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-
                     </div>
+
+                    <div class="panel panel-default">
+                        <div style="cursor:pointer;padding: 25px;" class="panel-body" data-toggle="collapse"
+                                data-parent="#accordion" data-target="#5">
+                            <h4 class="panel-title">
+                                <div class="col-lg-3">
+                                    <span style="color:#000;opacity:0.6;">
+                                        Location
+                                    </span>
+                                    <span class="pull-right">
+                                        :
+                                    </span>
+                                </div>
+                                <div class="col-lg-5 col-lg-offset-1">
+                                    {{ user.location.city }}, {{ user.location.state }}
+                                </div>
+                            </h4>
+                        </div>
+                        <div id="5" class="panel-collapse collapse out">
+                            <hr style="margin:0px 20px;" />
+                            <div class="panel-body" style="padding: 25px;">
+                                <div class="col-lg-12" style="margin-bottom:10px;">
+                                    <h5>
+                                        <span style="opacity:0.7;">
+                                            Enter Exact location to provide more benefits to your search
+                                        </span>
+                                    </h5>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <form role="form" name="myFormL">
+                                                <input type="text" style="margin-bottom:10px;" placeholder="Enter State"
+                                                       autocomplete="off" id="location_state" name="location_state"
+                                                       ng-model="location_state" class="form-control input-sm" />
+                                                <span style="color:red;"
+                                                          ng-show="myFormL.location_street.$error.required && myFormL.location_street.$dirty">
+                                                       required
+                                                </span>
+                                                <input type="text" style="margin-bottom:10px;" placeholder="Enter City"
+                                                       autocomplete="off" id="location_city" name="location_city"
+                                                       ng-model="location_city" class="form-control input-sm" />
+                                                <span style="color:red;" ng-show="myFormL.location_city.$error.required && myFormL.location_city.$dirty">
+                                                       required
+                                                </span>
+                                                <button type="submit" ng-click="updatechangelocation()"
+                                                        class="btn btn-sm btn-primary" ng-disabled="!myFormL.$valid">
+                                                    Update
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div style="cursor:pointer;padding: 25px;" class="panel-body" data-toggle="collapse"
+                                data-parent="#accordion" data-target="#6">
+                            <h4 class="panel-title">
+                                <div class="col-lg-3">
+                                    <span style="color:#000;opacity:0.6;">
+                                        Studies
+                                    </span>
+                                    <span class="pull-right">
+                                        :
+                                    </span>
+                                </div>
+                                <div class="col-lg-8 col-lg-offset-1">
+                                    <span ng-if="user.study.graduate">
+                                        {{ user.study.school }}, {{ user.study.graduate }}
+                                    </span>
+                                    <span ng-if="!(user.study.graduate)" style="cursor:pointer;">
+                                        Please Update Your Studies
+                                    </span>
+                                </div>
+                            </h4>
+                        </div>
+                        <div id="6" class="panel-collapse collapse out">
+                            <hr style="margin:0px 20px;" />
+                            <div class="panel-body" style="padding: 25px;">
+                                <div class="col-lg-12" style="margin-bottom:10px;">
+                                    <h5>
+                                        <span style="opacity:0.7;">
+                                            Enter your Studies
+                                        </span>
+                                    </h5>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <form role="form" name="myForms">
+                                                <input type="text" style="margin-bottom:10px;" placeholder="Enter School"
+                                                       autocomplete="off" id="study_intermediate" name="study_intermediate"
+                                                       ng-model="study_school" class="form-control input-sm" />
+                                                <span style="color:red;"
+                                                          ng-show="myForms.study_intermediate.$error.required && myForms.study_intermediate.$dirty">
+                                                       required
+                                                </span>
+                                                <input type="text" style="margin-bottom:10px;" placeholder="Enter Graduation"
+                                                       autocomplete="off" id="study_graduate" name="study_graduate"
+                                                       ng-model="study_graduate" class="form-control input-sm" />
+                                                <span style="color:red;" ng-show="myForms.study_graduate.$error.required && myForms.study_graduate.$dirty">
+                                                       required
+                                                </span>
+                                                <button type="submit" ng-click="updatechangestudy()"
+                                                        class="btn btn-sm btn-primary" ng-disabled="!myForms.$valid">
+                                                    Update
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="tab-pane" id="b">
@@ -844,63 +626,11 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-8">
-                                            <a class="popup-link"
-                                               data-popup-target="#example-popup">
+                                            <a class="" data-animation="am-fade-and-scale"
+                                               data-template="modal.changeProfileImage.tpl.html"
+                                               bs-modal>
                                                 Change Profile Picture
                                             </a>
-
-                                            <div id="example-popup" class="popup">
-                                                <div class="popup-body">
-                                                    <span class="popup-exit"></span>
-
-                                                    <div class="popup-content">
-                                                            <h2 class="popup-title">Update Profile Picture</h2>
-                                                            <div class="row">
-                                                                <div class="col-sm-12">
-                                                                    <span>
-                                                                        <h6 style="opacity:0.70">
-                                                                            <strong>
-                                                                                Note:&nbsp;
-                                                                            </strong>
-                                                                            Image should be less than 700px, Should be JPEG, PNG, GIF.
-                                                                        </h6>
-                                                                    </span>
-                                                                    <span>
-                                                                        <!--<input type="file" file-model="myFile" class="btn btn-sm btn-default" />-->
-                                                                        <form ng-show="enableCrop=true">
-                                                                            <input type="file" class="btn btn-primary btn-sm" id="fileInput" />
-                                                                        </form>
-                                                                        <br>
-
-                                                                          <div ng-if="enableCrop" class="cropArea" ng-class="{'big':size=='big', 'medium':size=='medium', 'small':size=='small'}">
-                                                                            <img-crop image="imageDataURI"
-                                                                                      result-image="$parent.resImageDataURI"
-                                                                                      change-on-fly="changeOnFly"
-                                                                                      area-type="{{type}}"
-                                                                                      area-min-size="selMinSize"
-                                                                                      result-image-format="{{resImgFormat}}"
-                                                                                      result-image-quality="resImgQuality"
-                                                                                      result-image-size="resImgSize"
-                                                                                      on-change="onChange($dataURI)"
-                                                                                      on-load-begin="onLoadBegin()"
-                                                                                      on-load-done="onLoadDone()"
-                                                                                      on-load-error="onLoadError()"
-                                                                            ></img-crop>
-                                                                                      <!--aspect-ratio="aspectRatio"-->
-                                                                          </div>
-                                                                    </span>
-                                                                    <span class="pull-left">
-                                                                        <input style="margin-top:5px"
-                                                                               ng-click="show_profile_picture = !show_profile_picture;uploadFile()"
-                                                                               type="submit" value="Update Profile Image"
-                                                                               class="btn btn-sm btn-default" />
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="popup-overlay"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -918,40 +648,75 @@
     </div>
 </div>
 
-
-<script>
-    jQuery(document).ready(function ($) {
-
-    $('[data-popup-target]').click(function () {
-        $('html').addClass('overlay');
-        var activePopup = $(this).attr('data-popup-target');
-        $(activePopup).addClass('visible');
-
-    });
-
-    $(document).keyup(function (e) {
-        if (e.keyCode == 27 && $('html').hasClass('overlay')) {
-            clearPopup();
-        }
-    });
-
-    $('.popup-exit').click(function () {
-        clearPopup();
-
-    });
-
-    $('.popup-overlay').click(function () {
-        clearPopup();
-    });
-
-    function clearPopup() {
-        $('.popup.visible').addClass('transitioning').removeClass('visible');
-        $('html').removeClass('overlay');
-
-        setTimeout(function () {
-            $('.popup').removeClass('transitioning');
-        }, 200);
-    }
-
-});
+<script type="text/ng-template" id="modal.changeProfileImage.tpl.html">
+  <div class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content" style="border-radius:4px;">
+          <div class="modal-header" style="background-color:#f5f5f5;padding:12px 15px 8px 15px">
+            <button type="button" class="close" ng-click="$hide()">&times;</button>
+            <h5 class="modal-title">
+                <label>
+                    Change Profile Picture
+                </label>
+            </h5>
+          </div>
+          <div class="modal-body">
+              <div class='row'>
+                <div class='col-lg-12'>
+                    <div class="thumbnail" style="border:0px solid;margin-bottom:1px;">
+                        <span>
+                            <h5 style="opacity:0.80">
+                                <strong>
+                                    Note:&nbsp;
+                                </strong>
+                                Image should be less than 700px, Should be JPEG, PNG, GIF.
+                            </h5>
+                        </span>
+                        <hr />
+                        <span>
+                            <span class="btn btn-sm btn-default btn-file">
+                                <h5>
+                                    <strong>
+                                        <i class="glyphicon glyphicon-camera"></i>&nbsp;
+                                        Upload Picture
+                                    </strong>
+                                </h5>
+                                <input type="file" name="file" onchange="angular.element(this).scope().uploadPile(this.files)" />
+                            </span>
+                            <div ng-show="enableCrop" style="margin-top:20px;" class="cropArea"
+                                 ng-class="{'big':size=='big', 'medium':size=='medium', 'small':size=='small'}">
+                                <img-crop image="imageDataURI"
+                                          result-image="$parent.resImageDataURI"
+                                          change-on-fly="changeOnFly"
+                                          area-type="{{type}}"
+                                          area-min-size="selMinSize"
+                                          result-image-format="{{resImgFormat}}"
+                                          result-image-quality="resImgQuality"
+                                          result-image-size="resImgSize"
+                                          on-change="onChange($dataURI)"
+                                          on-load-begin="onLoadBegin()"
+                                          on-load-done="onLoadDone()"
+                                          on-load-error="onLoadError()"
+                                ></img-crop>
+                                          <!--aspect-ratio="aspectRatio"-->
+                            </div>
+                        </span>
+                    </div>
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer" style="background-color:#f5f5f5;">
+              <div class="row">
+                  <div class='col-lg-5 pull-right'>
+                    <span class="pull-right" ng-show="showUploadButton">
+                        <input style="margin-top:5px" ng-click="uploadFile()" type="submit" value="Update Profile Image"
+                               class="btn btn-sm btn-success" />
+                    </span>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+  </div>
 </script>
+

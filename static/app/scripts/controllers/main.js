@@ -8,27 +8,42 @@
  */
 angular.module('weberApp')
 	.controller('MainCtrl', function($scope, $auth, $rootScope, $socket, Restangular, InfinitePosts,questions,
-	                                $alert, $http, CurrentUser,sortIListService,
+	                                $alert, $http, CurrentUser,sortIListService, InterestsService,
 	                                UserService, fileUpload, MatchButtonService) {
-
 		$scope.UserService = UserService;
         $scope.MatchButtonService = MatchButtonService;
         $scope.sortIListService = sortIListService;
-        $scope.show_only_profile_pic = true;
-        $scope.show_only_p_user_pic = false;
-
+        $scope.InterestsService = InterestsService;
+        console.log("====interests service", $scope.InterestsService)
 		$http.get('/api/me', {
 			headers: {
 				'Content-Type': 'application/json',
 				'Authorization': $auth.getToken()
 			}
 		}).success(function(user_id) {
-
 		    console.log('authorize token', $auth.getToken())
 			Restangular.one('people',JSON.parse(user_id)).get({seed:Math.random()},{'Authorization': $auth.getToken()}).then(function(user) {
                 console.log('user==>', user)
                 $scope.user = user;
-
+                //delete the post from infinite posts of the current user
+                function checkdeletepost(post_id){
+                    var status = false;
+                    var post = null;
+                    for(var k in $scope.infinitePosts.posts){
+                        if($scope.infinitePosts.posts[k]._id == post_id &&
+                            $scope.infinitePosts.posts[k].author == $scope.user._id){
+                                status = true;
+                                post =  $scope.infinitePosts.posts[k];
+                            }
+                    }
+                    return ({status:status, post:post});
+                }
+                $scope.confirm_delete = function(get_post_id){
+                    var result = checkdeletepost(get_post_id);
+                    if(result.status){
+                        $scope.infinitePosts.deletePost(result.post);
+                    }
+                }
                 // questions section functions
                 $scope.questions = new questions(user);
                 $scope.questions.getallquestions();
@@ -132,46 +147,4 @@ angular.module('weberApp')
 
 			});
 		});
-	})
-
-	.directive('confirmdelete', function ($compile, CurrentUser, Restangular, $routeParams, friendsActivity) {
-        return {
-            restrict: 'E',
-            replace: true,
-            link: function (scope, element, attrs) {},
-            controller:function($scope, $http, $route, $element, $attrs, $transclude){
-
-                function checkdeletepost(post_id){
-                    var status = false;
-                    var post = null;
-
-                    for(var k in $scope.infinitePosts.posts){
-                        if($scope.infinitePosts.posts[k]._id == post_id &&
-                            $scope.infinitePosts.posts[k].author == $scope.user._id){
-                                status = true;
-                                post =  $scope.infinitePosts.posts[k];
-                            }
-
-                    }
-                    return ({status:status, post:post});
-                }
-
-                $scope.deletediv = function(get_post_id){
-                    var html ='<a class="pull-right" ng-click="confirm_delete(\''+get_post_id+'\')" style="cursor:pointer;font-size:12px">Confirm Delete?</a>';
-                    $element.html(html);
-                    $compile($element.contents())($scope);
-
-
-                }
-
-                $scope.confirm_delete = function(get_post_id){
-                    var result = checkdeletepost(get_post_id);
-
-                    if(result.status){
-                        $scope.infinitePosts.deletePost(result.post);
-                    }
-
-                }
-            }
-        }
-    });
+	});

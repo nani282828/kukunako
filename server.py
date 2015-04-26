@@ -413,15 +413,12 @@ def signup():
             'friends' : [],
             'matchnotifications':[],
             'notifications':[],
-            'interests': get_interested_ids(request.json['data']),
-            #'interestsimilarwords': list(data),
+            'interests': get_interested_ids(request.json['interests']),
             'conversations':[]
         }
-
         accounts.insert(user)
         user_id = str(user['_id'])
         user_random_string = str(user['random_string'])
-
         msg = Message('Confirm your Weber account',
                       sender='Team@theweber.in',
                       recipients=[request.json['email']]
@@ -438,6 +435,22 @@ def signup():
         response.status_code = 401
         return response
     return 'hai'
+
+@app.route('/get_interested_ids', methods=['POST', 'GET'])
+def after_get_interests_ids():
+    data = get_interested_ids(request.json['interests'])
+    accounts = app.data.driver.db['people']
+    check_username = accounts.find_one({'username': request.json['username']})
+    if check_username:
+        response = accounts.update({'username':request.json['username']},{'$set':{'interests':data}})
+        send_response = jsonify(data = response)
+        send_response.status_code = 200
+        return send_response
+    else:
+        response = jsonify(error = 'sorry insertion failed')
+        response.status_code = 401
+        return response
+
 
 
 def get_interested_ids(data):
