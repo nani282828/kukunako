@@ -65,7 +65,7 @@ angular.module('weberApp')
 
          $scope.frndaddrequest = function(id){
 
-                html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
+                var html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
                 $element.html(html);
                 $compile($element.contents())($scope);
 
@@ -76,13 +76,13 @@ angular.module('weberApp')
                    // console.log('data123--------->', data)
                     if(data.data){
                          var html ='<addfriend><button ng-click="frndcancelrequest(\''+id+'\')"  class="btn btn-primary">cancel request</button></addfriend>';
-                         e =$compile(html)($scope);
+                         var e =$compile(html)($scope);
                          $element.replaceWith(e);
                          $route.reload();
 
                     }else{
                          var html ='<b>unable to process</b>';
-                         e =$compile(html)($scope);
+                         var e =$compile(html)($scope);
                          $element.replaceWith(e);
                          $route.reload();
                     }
@@ -102,7 +102,7 @@ angular.module('weberApp')
          controller:function($scope, $element, $attrs, $transclude){
          $scope.frndcancelrequest = function(id){
 
-                html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
+                var html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
                 $element.html(html);
                 $compile($element.contents())($scope);
 
@@ -112,12 +112,12 @@ angular.module('weberApp')
                     //console.log('data123--------->', data)
                     if(data.data){
                          var html ='<cancelrequest><button  ng-click="frndaddrequest(\''+id+'\')"  class="btn btn-primary">AddFriend</button></cancelrequest>';
-                         e =$compile(html)($scope);
+                         var e =$compile(html)($scope);
                          $element.replaceWith(e);
                          $route.reload();
                     }else{
                          var html ='<b>unable to process</b>';
-                         e =$compile(html)($scope);
+                         var e =$compile(html)($scope);
                          $element.replaceWith(e);
                          $route.reload();
                     }
@@ -145,7 +145,7 @@ angular.module('weberApp')
                     navbar_request = true;
                 }
 
-                html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
+                var html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
                 $element.html(html);
                 $compile($element.contents())($scope);
 
@@ -155,7 +155,7 @@ angular.module('weberApp')
                     //console.log('data123--------->', data)
                     if(data.data){
                          if(navbar_request){
-                            html = '<b> friends </b>';
+                            var html = '<b> friends </b>';
                          }else{
                             html ='<unaddfriend><button ng-click="friendunfriend()" class="btn btn-primary">unfriend</button></unaddfriend>';
                          }
@@ -165,7 +165,7 @@ angular.module('weberApp')
                          $route.reload();
                     }else{
                          var html ='<b>unable to process</b>';
-                         e =$compile(html)($scope);
+                         var e =$compile(html)($scope);
                          $element.replaceWith(e);
                          $route.reload();
                     }
@@ -189,16 +189,16 @@ angular.module('weberApp')
                    // console.log('data123--------->', data)
                     if(data.data){
                         if(navbar_request){
-                            html = '<b>rejected</b>';
+                            var html = '<b>rejected</b>';
                         }else{
-                            html ='<cancelrequest><button ng-click="frndaddrequest()" class="btn btn-primary">AddFriend</button></cancelrequest>';
+                            var  html ='<cancelrequest><button ng-click="frndaddrequest()" class="btn btn-primary">AddFriend</button></cancelrequest>';
                         }
 
-                         e =$compile(html)($scope);
+                         var e =$compile(html)($scope);
                          $element.replaceWith(e);
                          $route.reload();
                     }else{
-                         html ='<b>unable to process</b>';
+                         var html ='<b>unable to process</b>';
                          e =$compile(html)($scope);
                          $element.replaceWith(e);
                          $route.reload();
@@ -227,13 +227,13 @@ angular.module('weberApp')
                 data.then(function(data){
                     //console.log('data123--------->', data)
                     if(data.data){
-                         html ='<cancelrequest><button ng-click="frndaddrequest(\''+id+'\')" class="btn btn-primary">AddFriend</button></cancelrequest>';
-                         e =$compile(html)($scope);
+                         var html ='<cancelrequest><button ng-click="frndaddrequest(\''+id+'\')" class="btn btn-primary">AddFriend</button></cancelrequest>';
+                         var e =$compile(html)($scope);
                          $element.replaceWith(e);
                          $route.reload();
                     }else{
-                         html ='<b>unable to process</b>';
-                         e =$compile(html)($scope);
+                         var html ='<b>unable to process</b>';
+                         var e =$compile(html)($scope);
                          $element.replaceWith(e);
                          $route.reload();
                     }
