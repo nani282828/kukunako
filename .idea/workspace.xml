@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="216fe743-28d4-40b3-8b11-97a67a75a569" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/collectstatic.sh" afterPath="$PROJECT_DIR$/collectstatic.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/app/index.html" afterPath="$PROJECT_DIR$/static/app/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/app/scripts/servicectrls.min.js" afterPath="$PROJECT_DIR$/static/app/scripts/servicectrls.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="kukunako.iws" />
@@ -32,11 +30,12 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/app/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.84127" vertical-offset="0" max-vertical-offset="3781">
-              <caret line="26" column="88" selection-start-line="26" selection-start-column="88" selection-end-line="26" selection-end-column="88" />
+            <state vertical-scroll-proportion="-32.26984" vertical-offset="0" max-vertical-offset="3781">
+              <caret line="107" column="4" selection-start-line="107" selection-start-column="4" selection-end-line="107" selection-end-column="4" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <marker date="1430146663341" expanded="true" signature="5499:5572" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -45,8 +44,8 @@
       <file leaf-file-name="collectstatic.sh" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/collectstatic.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7536058" vertical-offset="0" max-vertical-offset="832">
-              <caret line="33" column="68" selection-start-line="33" selection-start-column="68" selection-end-line="33" selection-end-column="68" />
+            <state vertical-scroll-proportion="0.82211536" vertical-offset="0" max-vertical-offset="832">
+              <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -845,19 +844,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/app/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.84127" vertical-offset="0" max-vertical-offset="3781">
-          <caret line="26" column="88" selection-start-line="26" selection-start-column="88" selection-end-line="26" selection-end-column="88" />
+        <state vertical-scroll-proportion="-32.26984" vertical-offset="0" max-vertical-offset="3781">
+          <caret line="107" column="4" selection-start-line="107" selection-start-column="4" selection-end-line="107" selection-end-column="4" />
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <marker date="1430146663341" expanded="true" signature="5499:5572" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/collectstatic.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7536058" vertical-offset="0" max-vertical-offset="832">
-          <caret line="33" column="68" selection-start-line="33" selection-start-column="68" selection-end-line="33" selection-end-column="68" />
+        <state vertical-scroll-proportion="0.82211536" vertical-offset="0" max-vertical-offset="832">
+          <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
           <folding />
         </state>
       </provider>

@@ -31,4 +31,6 @@ static/bower_components/angular-busy/dist/angular-busy.min.css \
 static/bower_components/angucomplete/autocomplete.css \
 static/bower_components/angucomplete/style.css > static/bower_components/allcss.css
 
-java -jar /usr/share/yui-compressor/yui-compressor.jar --type js -v static/bower_components/allcss.css -o static/bower_components/allcss.min.css
+echo '-----------min all css file------------'
+java -jar /usr/share/yui-compressor/yui-compressor.jar --type css -v static/bower_components/allcss.css -o static/bower_components/allcss.min.css
+
