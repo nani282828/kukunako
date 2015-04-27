@@ -10,10 +10,7 @@ angular.module('weberApp')
     return {
         restrict: 'A',
         replace: true,
-
-
         controller:function($scope, $element, $attrs){
-
             $scope.chatroomdiv = function(id){
                 if($element[0].offsetHeight == 364){
                     $element.css('height', '40px');
@@ -58,8 +55,6 @@ angular.module('weberApp')
 
     };
 })
-
-
 .directive('cancelrequest', function ($compile, CurrentUser, Restangular, $routeParams, $route,friendsActivity, Friends) {
     return {
         restrict: 'E',
@@ -98,7 +93,7 @@ angular.module('weberApp')
     };
 })
 
-.directive('addfriend', function ($compile, CurrentUser, Restangular,$route, $routeParams, friendsActivity, Friends,$route) {
+.directive('addfriend', function ($compile, CurrentUser, Restangular,$route, $routeParams, friendsActivity, Friends) {
 
     return {
         restrict: 'E',
@@ -185,11 +180,9 @@ angular.module('weberApp')
                 }else{
                     navbar_request = true;
                 }
-
                 var html = '<image src="/static/app/images/pleasewait.gif" alt="no image found" style="position:absolute">';
                 $element.html(html);
                 $compile($element.contents())($scope);
-
                 var data = Friends.rejectRequest(cuserid, puserid);
                 //console.log('data----------->', data)
                 data.then(function(data){

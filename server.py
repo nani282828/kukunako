@@ -30,6 +30,7 @@ logging.basicConfig(filename='/var/log/weber_error.log', format='%(asctime)s %(m
 class TokenAuth(TokenAuth):
     def check_auth(self, token, allowed_roles, resource, method):
         accounts = app.data.driver.db['people']
+
         return accounts.find_one({'token': token})
 
 app = Eve(__name__,static_url_path='/static')
@@ -98,7 +99,8 @@ def login():
         return response
     token = create_token(user)
     print '========================================================'
-    #accounts.update({'email': request.json['email']},{'token':token})
+    print jwt.decode(token, TOKEN_SECRET)
+    accounts.update({'email': request.json['email']},{"$set":{'token':token}})
     return jsonify(token=token)
 
 

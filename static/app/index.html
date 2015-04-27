@@ -25,13 +25,11 @@
 
         <script src="static/bower_components/jquery/dist/jquery.min.js"></script>
 	    <script src="static/bower_components/angular/angular.min.js"></script>
-
         <script src="/static/app/scripts/app.js"></script>
+
         <!-- endbuild -->
     </head>
-
     <body ng-app="weberApp" ng-controller="indexCtrl">
-
     <!-------------------- login header ------------------------->
     <div ng-if="!(isloggin)" class="navbar navbar-default header-start-search navbar-fixed-top" style="background-color:#F8F8F8;">
     <div class="container" style="padding:10px;">
@@ -112,60 +110,57 @@
 	<script src="static/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
     <script src="static/bower_components/angular-animate/angular-animate.min.js"></script>
 	<script src="static/bower_components/angular-touch/angular-touch.min.js"></script>
+
+
+    <script src="static/bower_components/angular-route/angular-route.min.js"></script>
 	<script src="static/bower_components/angular-route/angular-route.min.js"></script>
 	<script src="static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="static/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
 	<script src="static/bower_components/angular-strap/dist/angular-strap.min.js"></script>
 	<script src="static/bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
 	<script src="static/bower_components/lodash/dist/lodash.compat.min.js"></script>
-	<script src="static/bower_components/restangular/dist/restangular.min.js"></script>
-	<script src="static/bower_components/satellizer/satellizer.min.js"></script>
-	<script src="static/bower_components/moment/moment.min.js"></script>
-	<script src="static/bower_components/angular-moment/angular-moment.min.js"></script>
-
     <!--<script src="static/bower_components/elasticsearch/elasticsearch.min.js"></script>
 	<script src="static/bower_components/elasticsearch/elasticsearch.angular.min.js"></script>-->
+    <script src="static/bower_components/moment/moment.min.js"></script>
+	<script src="static/bower_components/angular-moment/angular-moment.min.js"></script>
 
-    <script src="static/bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
-    <script src="static/bower_components/socket.io.js"></script>
-    <script src="static/bower_components/ngSocket.js"></script>
-
+    <script src="static/bower_components/sockt_ng_autocomplete.min.js"></script>
+    <script src="static/bower_components/allbower.min.js"></script>
+    <script src="/static/app/scripts/servicectrls.min.js"></script>
+    <!--<script src="static/bower_components/socket.io.min.js"></script>
+    <script src="static/bower_components/ngSocket.min.js"></script>
+    <script type="text/javascript" src="static/bower_components/angucomplete/autocomplete.min.js"></script>-->
+    <!--<script src="static/bower_components/rest_sate_moment_moment_min.min.js"></script>-->
+    <!--<script src="static/bower_components/restangular/dist/restangular.min.js"></script>
+	<script src="static/bower_components/satellizer/satellizer.min.js"></script>
+	-->
+    <!--<script src="static/bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
     <script type="text/javascript" src="static/bower_components/ngImgCrop/compile/minified/ng-img-crop.js"></script>
     <script type="text/javascript" src="static/bower_components/ng-tags-input/ng-tags-input.min.js"></script>
-    <script type="text/javascript" src="static/bower_components/angular-busy/dist/angular-busy.min.js"></script>
-    <script type="text/javascript" src="static/bower_components/angucomplete/autocomplete.js"></script>
-
-    <!--<script type="text/javascript" src="static/bower_components/ng-file-upload/angular-file-upload-shim.min.js"></script>
-    <script type="text/javascript" src="static/bower_components/ng-file-upload/angular-file-upload.min.js"></script>-->
-
+    <script type="text/javascript" src="static/bower_components/angular-busy/dist/angular-busy.min.js"></script>-->
 	<!-- build:js({.tmp,app}) scripts/scripts.js -->
-
-	<script src="/static/app/scripts/controllers/main.js"></script>
+	<!--<script src="/static/app/scripts/controllers/main.js"></script>
     <script src="/static/app/scripts/controllers/indexcontroller.js"></script>
 	<script src="/static/app/scripts/controllers/postscontroller.js"></script>
     <script src="/static/app/scripts/controllers/friends.js"></script>
     <script src="/static/app/scripts/controllers/confirm_email.js"></script>
 	<script src="/static/app/scripts/controllers/emaildetails.js"></script>
 	<script src="/static/app/scripts/controllers/forgot_password.js"></script>
-    <script src="/static/app/scripts/controllers/settings.js"></script>
-    <!--<script src="/static/app/scripts/controllers/allcontrollers.js"></script>-->
-
-    <script src="/static/app/scripts/services/SettingsService.js"></script>
+    <script src="/static/app/scripts/controllers/settings.js"></script>-->
+    <!--<script src="/static/app/scripts/controllers/allcontrollers.min.js"></script>
+    <script src="/static/app/scripts/services/allservices.min.js"></script>-->
+    <!--<script src="/static/app/scripts/services/SettingsService.js"></script>
 	<script src="/static/app/scripts/services/weberservice.js"></script>
     <script src="/static/app/scripts/services/friendRequests.js"></script>
-    <script src="/static/app/scripts/services/ChatSerivce.js"></script>
-    <!--<script src="/static/app/scripts/services/allservices.js"></script>-->
+    <script src="/static/app/scripts/services/ChatSerivce.js"></script>-->
     <!--<script src="/static/app/scripts/services/weberservice.min.js"></script>-->
-
-    <script src="/static/app/scripts/directives/requestsdirectives.js"></script>
-    <script src="/static/app/scripts/controllers/chatcontroller.js"></script>
+    <!--<script src="/static/app/scripts/directives/directives.js"></script>
+    <!--<script src="/static/app/scripts/controllers/chatcontroller.js"></script>
 	<script src="/static/app/scripts/controllers/userprofile.js"></script>
-	<!--<script src="/static/app/scripts/controllers/instantsearch.js"></script>-->
 	<script src="/static/app/scripts/controllers/login.js"></script>
 	<script src="/static/app/scripts/controllers/signup.js"></script>
 	<script src="/static/app/scripts/controllers/navbar.js"></script>
-	<!--<script src="/static/app/scripts/filters/fromnow.js"></script>-->
-	<script src="/static/app/scripts/controllers/weber_search.js"></script>
+	<script src="/static/app/scripts/controllers/weber_search.js"></script>-->
 	<!-- endbuild -->
 
 	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->

@@ -16,7 +16,7 @@ angular.module('weberApp')
     }).success(function(userId) {
 
             var date = new Date();
-            this.userId = userId;
+            var userId = userId;
 
             // file has been changed
             
