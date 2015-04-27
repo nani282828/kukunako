@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="216fe743-28d4-40b3-8b11-97a67a75a569" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/app/scripts/services/ChatSerivce.js" afterPath="$PROJECT_DIR$/static/app/scripts/services/ChatSerivce.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/app/scripts/controllers/chatcontroller.js" afterPath="$PROJECT_DIR$/static/app/scripts/controllers/chatcontroller.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/collectstatic.sh" afterPath="$PROJECT_DIR$/collectstatic.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/app/index.html" afterPath="$PROJECT_DIR$/static/app/index.html" />
     </list>
     <ignored path="kukunako.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,8 +30,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/app/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="3724">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state vertical-scroll-proportion="-6.031746" vertical-offset="0" max-vertical-offset="3762">
+              <caret line="20" column="61" selection-start-line="18" selection-start-column="7" selection-end-line="25" selection-end-column="85" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -40,11 +40,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="collectstatic.sh" pinned="false" current-in-tab="false">
+      <file leaf-file-name="collectstatic.sh" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/collectstatic.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.383333" vertical-offset="0" max-vertical-offset="513">
-              <caret line="17" column="198" selection-start-line="17" selection-start-column="198" selection-end-line="17" selection-end-column="198" />
+            <state vertical-scroll-proportion="0.7079327" vertical-offset="0" max-vertical-offset="832">
+              <caret line="31" column="83" selection-start-line="31" selection-start-column="83" selection-end-line="31" selection-end-column="83" />
               <folding />
             </state>
           </provider>
@@ -102,10 +102,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ChatSerivce.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ChatSerivce.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/app/scripts/services/ChatSerivce.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.42068964" vertical-offset="147" max-vertical-offset="7125">
+            <state vertical-scroll-proportion="-10.457143" vertical-offset="147" max-vertical-offset="7125">
               <caret line="27" column="85" selection-start-line="27" selection-start-column="85" selection-end-line="27" selection-end-column="85" />
               <folding />
             </state>
@@ -163,10 +163,10 @@
         <option value="$PROJECT_DIR$/static/app/scripts/directives/directives.js" />
         <option value="$PROJECT_DIR$/static/bower_components/allbower.min.js" />
         <option value="$PROJECT_DIR$/static/bower_components/somebower.min.js" />
-        <option value="$PROJECT_DIR$/collectstatic.sh" />
-        <option value="$PROJECT_DIR$/static/app/index.html" />
         <option value="$PROJECT_DIR$/static/app/scripts/controllers/chatcontroller.js" />
         <option value="$PROJECT_DIR$/static/app/scripts/services/ChatSerivce.js" />
+        <option value="$PROJECT_DIR$/static/app/index.html" />
+        <option value="$PROJECT_DIR$/collectstatic.sh" />
       </list>
     </option>
   </component>
@@ -824,25 +824,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/collectstatic.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.383333" vertical-offset="0" max-vertical-offset="513">
-          <caret line="17" column="198" selection-start-line="17" selection-start-column="198" selection-end-line="17" selection-end-column="198" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/app/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3724">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/app/scripts/controllers/chatcontroller.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="285" max-vertical-offset="7562">
@@ -853,8 +834,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/app/scripts/services/ChatSerivce.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42068964" vertical-offset="147" max-vertical-offset="7125">
+        <state vertical-scroll-proportion="-10.457143" vertical-offset="147" max-vertical-offset="7125">
           <caret line="27" column="85" selection-start-line="27" selection-start-column="85" selection-end-line="27" selection-end-column="85" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/app/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.031746" vertical-offset="0" max-vertical-offset="3762">
+          <caret line="20" column="61" selection-start-line="18" selection-start-column="7" selection-end-line="25" selection-end-column="85" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collectstatic.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7079327" vertical-offset="0" max-vertical-offset="832">
+          <caret line="31" column="83" selection-start-line="31" selection-start-column="83" selection-end-line="31" selection-end-column="83" />
           <folding />
         </state>
       </provider>

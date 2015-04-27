@@ -19,3 +19,14 @@ cat static/bower_components/socket.io.min.js  static/bower_components/ngSocket.m
 
 echo '-----------compression done-----------'
 
+
+echo '-----css file combine-----'
+
+cat static/app/styles/main.css \
+static/app/styles/chat_css.css \
+static/bower_components/ngImgCrop/compile/minified/ng-img-crop.css \
+static/bower_components/ng-tags-input/ng-tags-input.css \
+static/bower_components/ng-tags-input/ng-tags-input.bootstrap.css \
+static/bower_components/angular-busy/dist/angular-busy.min.css \
+static/bower_components/angucomplete/autocomplete.css \
+static/bower_components/angucomplete/style.css > static/bower_components/allcss.css
