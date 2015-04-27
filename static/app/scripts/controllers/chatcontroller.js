@@ -214,7 +214,6 @@ angular.module('weberApp')
 
                  // closing open div
                  $scope.close_div = function(id){
-
                     for(k in $rootScope.chatactivity.messages){
                         if($rootScope.chatactivity.messages[k].id == id){
                             // remove get chat room

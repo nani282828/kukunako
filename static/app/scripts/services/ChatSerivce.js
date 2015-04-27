@@ -25,7 +25,7 @@ angular.module('weberApp')
             if (this.currentuser.friends.length !== 0) {
 
                 var params = '{"_id": {"$in":["'+(this.currentuser.friends).join('", "') + '"'+']}}';
-                Restangular.all('people').getList({where :params})
+                Restangular.all('people').getList({where :params, seed: Math.random()})
                     .then(function(data){
                         this.chatfriends.push.apply(this.chatfriends, data);
                     }.bind(this));
